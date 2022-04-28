@@ -40,6 +40,8 @@ app.get("/profile", function (req, res) {
     }
 });
 
+app.use(express.urlencoded({ extended: true }));
+
 app.post("/login", function (req, res) {
 
     console.log("What was sent: ", req.body.email, req.body.password);
@@ -68,6 +70,8 @@ app.post("/login", function (req, res) {
         }
     })
     */
+
+    res.send({status: "success", msg: "logged in"});
 })
 
 
@@ -87,4 +91,4 @@ app.get("/logout", function (req, res) {
 
 
 let port = 8000;
-app.listen(port);
+app.listen(port, console.log("Server is running!"));
