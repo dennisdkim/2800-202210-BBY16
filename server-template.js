@@ -1,6 +1,7 @@
 
 //Requires
 const express = require("express");
+const session = require("express-session");
 const app = express();
 app.use(express.json());
 const fs = require("fs");
@@ -13,14 +14,19 @@ app.use("/html", express.static("./app/html"));
 
 app.get("/", function (req, res) {
 
-    if (req.session.loggedIn) {
-        res.redirect("/profile");
-    } else {
-        let doc = fs.readFileSync("./app/html/login.html", "utf8");
-        res.set("Server", "Wazubi Engine");
-        res.set("X-Powered-By", "Wazubi");
-        res.send(doc);
-    }
+    // if (req.session.loggedIn) {
+    //     res.redirect("/profile");
+    // } else {
+    //     let doc = fs.readFileSync("./app/html/login.html", "utf8");
+    //     res.set("Server", "Wazubi Engine");
+    //     res.set("X-Powered-By", "Wazubi");
+    //     res.send(doc);
+    // }
+
+    let doc = fs.readFileSync("./app/html/login.html", "utf8");
+    res.set("Server", "Wazubi Engine");
+    res.set("X-Powered-By", "Wazubi");
+    res.send(doc);
 
 });
 
@@ -81,4 +87,4 @@ app.get("/logout", function (req, res) {
 
 
 let port = 8000;
-app.listen(port, initializeDB);
+app.listen(port);
