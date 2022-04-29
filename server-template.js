@@ -12,29 +12,39 @@ app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
 
+app.use(session(
+    {
+        secret: "abc123bby16project",
+        name: "weCoolSessionID",
+        resave: false,
+        saveUninitialized: true
+    })
+);
+
 app.get("/", function (req, res) {
-
-    // if (req.session.loggedIn) {
-    //     res.redirect("/profile");
-    // } else {
-    //     let doc = fs.readFileSync("./app/html/login.html", "utf8");
-    //     res.set("Server", "Wazubi Engine");
-    //     res.set("X-Powered-By", "Wazubi");
-    //     res.send(doc);
-    // }
-
-    let doc = fs.readFileSync("./app/html/login.html", "utf8");
-    res.set("Server", "Wazubi Engine");
-    res.set("X-Powered-By", "Wazubi");
-    res.send(doc);
-
+    if (req.session.loggedIn) {
+        res.redirect("/home");
+    } else {
+        let doc = fs.readFileSync("./app/html/login.html", "utf8");
+        res.set("Server", "Wazubi Engine");
+        res.set("X-Powered-By", "Wazubi");
+        res.send(doc);
+    }
 });
 
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
-        let profile = fs.readFileSync("./app/html/index.html", "utf8");
+        let profile = fs.readFileSync("./app/html/profile.html", "utf8");
         console.log("Logged in by: " + req.session.name);
         res.send(profile);
+    } else {
+        res.redirect("/");
+    }
+});
+
+app.get("/home", function (req, res) {
+    if (req.session.loggedIn) {
+        res.send(fs.readFileSync("./app/html/home.html", "utf8"));
     } else {
         res.redirect("/");
     }
@@ -46,6 +56,16 @@ app.post("/login", function (req, res) {
 
     console.log("What was sent: ", req.body.email, req.body.password);
 
+    let sampleEmail = "lester@test.ca";
+    let samplePw = "12345";
+
+    if(req.body.email == sampleEmail && req.body.password == samplePw) {
+        req.session.loggedIn = true;
+        req.session.email = req.body.email;
+        res.send({ status: "success", msg: "Logged in. "});
+    } else {
+        res.send({ status: "fail", msg: "Account not found. "})
+    }
     /*
     const mysql = require('mysql2');
     const connection = mysql.createConnection(
@@ -70,13 +90,10 @@ app.post("/login", function (req, res) {
         }
     })
     */
-
-    res.send({status: "success", msg: "logged in"});
 })
 
 
 app.get("/logout", function (req, res) {
-
     if (req.session) {
         req.session.destroy(function (error) {
             if (error) {
