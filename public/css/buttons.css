@@ -1,0 +1,35 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  background-color: rgb(213,220,227);
+}
+
+/* makes inputs the same color and size */
+input {
+  display: block;
+  border-radius: 10px;
+  border: none;
+  padding: 10px 20px;
+  font-size: 36px;
+  cursor: pointer;
+  text-align: center;
+}
+
+::placeholder { 
+  color: rgb(105,134,157);
+}
+
+a, a:hover, a:focus, a:active {
+      color: inherit;
+}
+
+#loginButton {
+  background-color: rgb(105,134,157);
+  color: rgb(213,220,227);
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: 36px;
+}

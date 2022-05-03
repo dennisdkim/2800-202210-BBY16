@@ -1,20 +1,38 @@
-body {
-  background-color: rgb(213,220,227);
+.container {
+  display: grid;
+  height:100vh;
+  grid-template-columns: auto;
+  grid-template-rows: 20% 80%;
 }
 
-#loginButton {
-  background-color: rgb(105,134,157);
-  color: rgb(213,220,227);
+.logo {
+  background-color: white;
+  width: 100vw;
+  align-items: center;
 }
 
-::placeholder { 
-  color: rgb(105,134,157);
+#logoImg{
+  width: 25%;
+  margin: auto;
+  display: block;
 }
 
-#noacc {
-    color: rgb(105,134,157);
+.login-form {
+  margin: auto;
+  width: 60%;
+  /* border: 5px solid #FFFF00; */
 }
 
-a, a:hover, a:focus, a:active {
-      color: inherit;
+input{
+  margin: auto;
 }
+
+.login-form > div {
+  text-align: center;
+}
+
+/* @media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) { 
+
+} */

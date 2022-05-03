@@ -4,22 +4,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Signin</title>
-  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/public/css/buttons.css">
+  <link rel="stylesheet" href="/public/css/login.css">
 </head>
 
 <body>
-  <div id="login-form">
-    <input type="email" id="email" name="email" placeholder="Email" />
-    <br />
-    <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
-      required="required" />
-    <br />
-    <input type="button" id="loginButton" name="signin" value="Sign In" />
+  <div class="container">
+    <div class="logo">
+      <img id="logoImg" src="/public/img/logo/logo.jpg" alt="logo">
+    </div>
+    <div class="login-form">
+      <input type="email" id="email" name="email" placeholder="Email" />
+      <br />
+      <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
+        required="required" />
+      <br />
+      <input type="button" id="loginButton" name="signin" value="Sign In" />
+      <br>
+      <div id="noacc">
+        Don't have an account? <a href="./signup.html">Sign Up Here</a>
+      </div>
+    </div>
   </div>
-  <div id="noacc">
-    No account? <a href="./signup.html">Sign Up Here</a>
-  </div>
-  <script src="js/login.js"></script>
+  <script src="/public/js/login.js"></script>
 </body>
 
 </html>
