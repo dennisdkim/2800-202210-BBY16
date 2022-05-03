@@ -35,7 +35,7 @@ app.get("/", function (req, res) {
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
         let profile = fs.readFileSync("./app/html/profile.html", "utf8");
-        console.log("Logged in by: " + req.session.name);
+        console.log("Logged in by: " + req.session.email);
         res.send(profile);
     } else {
         res.redirect("/");
