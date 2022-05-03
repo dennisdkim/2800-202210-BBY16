@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
+  <title>Signin</title>
+  <link rel="stylesheet" href="style/css/login.css">
 </head>
 
 <body>
@@ -13,9 +14,12 @@
     <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
       required="required" />
     <br />
-    <input type="button" id="loginButton" name="login" value="Login" />
+    <input type="button" id="loginButton" name="signin" value="Sign In" />
   </div>
-  <script src="js/client.js"></script>
+  <div id="noacc">
+    No account? <a href="./signup.html">Sign Up Here</a>
+  </div>
+  <script src="js/login.js"></script>
 </body>
 
 </html>
