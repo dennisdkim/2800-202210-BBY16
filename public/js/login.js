@@ -44,6 +44,24 @@ async function submitLogin(data) {
   }
 }
 
+async function tryUserDB(){
+  try{
+   let response = await fetch("/tryLogin", {
+     method: 'GET'
+   });
+   if (response == 200){
+     console.log("db initialized");
+   } else {
+     console.log("db initialization failed");
+   }
+  } catch (error){
+    console.log(error)
+  }
+}
+
+tryUserDB();
+
+
 document.getElementById("loginButton").addEventListener("click", function (e) {
   // submitJSON("/login", {
   //   email: document.getElementById("email").value,

@@ -5,6 +5,7 @@ const session = require("express-session");
 const app = express();
 app.use(express.json());
 const fs = require("fs");
+const mysql = require("mysql2");
 
 //Mapping system paths to app's virtual paths
 app.use("/js", express.static("./public/js"));
@@ -32,6 +33,62 @@ app.get("/", function (req, res) {
     }
 });
 
+app.get("/tryLogin", function (req, res){
+// Let's build the DB if it doesn't exist
+    const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      multipleStatements: true
+    });
+
+    const createDBAndTables = `CREATE DATABASE IF NOT EXISTS db;
+        use db;
+        CREATE TABLE IF NOT EXISTS user (
+        userID int NOT NULL AUTO_INCREMENT,
+        fname VARCHAR(30) NOT NULL,
+        lname VARCHAR(30) NOT NULL,
+        email VARCHAR(30) NOT NULL,
+        displayName VARCHAR(30) NOT NULL,
+        password VARCHAR(30) NOT NULL,
+        admin BIT NOT NULL DEFAULT 0,
+        PRIMARY KEY (userID));`;
+    connection.connect();
+    connection.query(createDBAndTables, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        console.log(results);
+  
+      });
+      connection.end();
+    console.log("try login passed");
+});
+
+
+app.post("/tryInsert", function (req, res){
+    res.setHeader('Content-Type', 'application/json');
+
+    let connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'db'
+      });
+      connection.connect();
+      connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
+            [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+            function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        console.log('Rows returned are: ', results);
+        res.send({ status: "success", msg: "Record added." });
+      });
+    //   console.log("finished tryLogin");
+      connection.end();
+});
+
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
         let profile = fs.readFileSync("./app/html/profile.html", "utf8");
@@ -40,6 +97,11 @@ app.get("/profile", function (req, res) {
     } else {
         res.redirect("/");
     }
+});
+
+app.get("/signUp", function (req, res) {
+        let doc = fs.readFileSync("./app/html/signup.html", "utf8");
+        res.send(doc);
 });
 
 app.get("/home", function (req, res) {
