@@ -22,6 +22,7 @@ async function submitLogin(data) {
   }
 }
 
+//initializes db.
 async function tryUserDB(){
   try{
    let response = await fetch("/tryLogin", {
@@ -37,7 +38,7 @@ async function tryUserDB(){
   }
 }
 
-//tryUserDB();
+tryUserDB();
 
 // Event listener for "Login" button. Upon clicking it, it will take the params in html fields and passes it to submitLogin()
 document.getElementById("loginButton").addEventListener("click", function (e) {

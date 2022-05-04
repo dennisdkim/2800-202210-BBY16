@@ -34,7 +34,7 @@ app.get("/", function (req, res) {
     }
 });
 
-//creates a user table for databse//
+//creates a user table for database//
 app.get("/tryLogin", function (req, res){
 // Let's build the DB if it doesn't exist
     const connection = mysql.createConnection({
@@ -120,44 +120,32 @@ app.get("/home", function (req, res) {
 //user login verification//
 app.use(express.urlencoded({ extended: true }));
 
+//Verifies user credentials exist within db. 
+//If credentials are correct, user is logged in.
 app.post("/login", function (req, res) {
 
     console.log("What was sent: ", req.body.email, req.body.password);
-
-    let sampleEmail = "lester@test.ca";
-    let samplePw = "12345";
-
-    if(req.body.email == sampleEmail && req.body.password == samplePw) {
-        req.session.loggedIn = true;
-        req.session.email = req.body.email;
-        res.send({ status: "success", msg: "Logged in. "});
-    } else {
-        res.send({ status: "fail", msg: "Account not found. "})
-    }
-    /*
-    const mysql = require('mysql2');
     const connection = mysql.createConnection(
         {
             host: "localhost",
             user: "root",
             password: "",
-            database: "assignment6"
+            database: "db"
         }
     );
-    connection.query(`SELECT * FROM a00805677_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
+
+    //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
+    connection.query(`SELECT * FROM user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             console.log(results);
             req.session.loggedIn = true;
-            req.session.email = req.body.email;
-            req.session.userid = results[0].userid;
-            req.session.name = results[0].username;
             res.send({ status: "success", msg: "Logged in." });
+            console.log("login success");
 
         } else {
             res.send({ status: "fail", msg: "User account not found." });
         }
     })
-    */
 })
 
 //user logout code//

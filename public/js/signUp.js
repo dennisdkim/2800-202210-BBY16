@@ -1,3 +1,4 @@
+//Sends input field data to server to be inserted into db.
 async function submitSignUp(data){
   try {
     let response = await fetch("/tryInsert", {
@@ -12,7 +13,7 @@ async function submitSignUp(data){
     let parsedJSON = await response.json();
     console.log("From the server", parsedJSON);
     if (parsedJSON.status == "success") {
-      // window.location.replace("/");
+      window.location.replace("/");
     } else {
       console.log("Sign up failed.");
     }
@@ -21,6 +22,7 @@ async function submitSignUp(data){
   }
 };
 
+//event listener to call submitSignUp method upon button click.
 document.getElementById("signUpButton").addEventListener("click", function (e) {
   console.log("I'm in");
   submitSignUp({
