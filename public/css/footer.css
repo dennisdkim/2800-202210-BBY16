@@ -1,16 +1,14 @@
 #footer-component {
-    height: 100px;
+    height: 80px;
     width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     border: black 1px dotted;
 }
 
 #settings-button img, #maps-button img, #timeline-button img {
     height: 40px;
     width: 40px;
+    opacity: 0.5;
 }

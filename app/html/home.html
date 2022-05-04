@@ -4,15 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Home Page</title>
+  <link rel="stylesheet" href="./css/home.css">
 </head>
 
 <body>
   <div id="navbar"></div>
-  <div>
-    <a class="button" href="./map.html">Find a Coolzone</a>
-    <br />
-    <a class="button" href="">Host a Coolzone</a>
+  <div id="content">
+    <div id="welcome-screen">
+      <div id="greeting-messages">
+        <h3 id="greeting-message-1">Welcome back <span id="greeting-message-username">username</span></h3>
+        <h3 id="greeting-message-2">We found <span id="greeting-message-coolzonenum">#</span> of coolzones near you.
+        </h3>
+      </div>
+      <div id="welcome-screen-buttons">
+        <a class="button" href="./map.html">Find one</a>
+        <a class="button" href="">Host one</a>
+      </div>
+
+    </div>
   </div>
+
   <div id="footer"></div>
   <script>
 
@@ -25,16 +36,29 @@
       fetch("/getNavbarFooter", option).then(
         function (res) {
           const result = res.json().then(
-          components => {
-            console.log(components);
-            document.getElementById("navbar").innerHTML = components.navbar;
-            document.getElementById("footer").innerHTML = components.footer;
-          }
+            components => {
+              console.log(components);
+              document.getElementById("navbar").innerHTML = components.navbar;
+              document.getElementById("footer").innerHTML = components.footer;
+              let profileMenu = document.getElementById("profile-menu");
+              profileMenu.hidden = true;
+
+              
+
+              document.getElementById("user-avatar").addEventListener("click", function (k) {
+                console.log("this is a test");
+                if (profileMenu.hidden) {
+                  profileMenu.hidden = false;
+                } else {
+                  profileMenu.hidden = true;
+                }
+
+              });
+            }
           )
         }
       )
     }
-
   </script>
 
 </body>
