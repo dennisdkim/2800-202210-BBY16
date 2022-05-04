@@ -11,7 +11,7 @@
 }
 
   #logoImg{
-    width: 400px;
+    width: 350px;
     margin: auto;
     display: block;
   }
@@ -19,7 +19,7 @@
   .login-form {
     grid-row: 3 / 4;
     margin: auto;
-    width: 60%;
+    width: 100vw;
   }
 
   input{
@@ -49,7 +49,7 @@
   }
 
   #logoImg{
-    width: 400px;
+    width: 350px;
     margin: auto;
     display: block;
   }
