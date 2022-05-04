@@ -1,7 +1,7 @@
 .container {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 30% 30% 40%;
+  grid-template-rows: 20vh 10vh 30vh;
 }
 
 .logoContainer {
@@ -11,7 +11,7 @@
 }
 
   #logoImg{
-    width: 350px;
+    width: 400px;
     margin: auto;
     display: block;
   }
@@ -30,11 +30,16 @@
     text-align: center;
   }
 
+  .buttonsContainer {
+    grid-row: 4 / 5;
+    background-image: url(public\img\background.jpg);
+  }
+
 @media only screen and (min-width: 700px) {
   .container {
     display: grid;
     height:100vh;
-    grid-template-rows: 20% 2% 78%;
+    grid-template-rows: 20vh 10vh 30vh;
   }
 
   .logoContainer {
@@ -44,13 +49,13 @@
   }
 
   #logoImg{
-    width: 300px;
+    width: 400px;
     margin: auto;
     display: block;
   }
 
   .login-form {
-    grid-row: 2 / 4;
+    grid-row: 3 / 4;
     margin: auto;
     width: 60%;
   }
