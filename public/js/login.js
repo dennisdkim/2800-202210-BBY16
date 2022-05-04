@@ -1,3 +1,4 @@
+// Function definition to submit login credential info. The user input params are sent to server for authentication
 async function submitLogin(data) {
   try {
     let response = await fetch("/login", {
@@ -38,7 +39,7 @@ async function tryUserDB(){
 
 //tryUserDB();
 
-
+// Event listener for "Login" button. Upon clicking it, it will take the params in html fields and passes it to submitLogin()
 document.getElementById("loginButton").addEventListener("click", function (e) {
   submitLogin({
     email: document.getElementById("email").value,

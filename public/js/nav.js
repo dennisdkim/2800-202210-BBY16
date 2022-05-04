@@ -1,3 +1,4 @@
+// Function definition of logout process, fetches /logout from the server which destroys the current session
 async function logout() {
   try {
     let response = await fetch("/logout", {
@@ -15,6 +16,8 @@ async function logout() {
   }
 }
 
+
+// Event listener on the "Logout" button in the navbar to log out 
 document.getElementById("logout").addEventListener("click", function (k) {
   logout();
 });
