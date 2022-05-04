@@ -36,7 +36,7 @@ async function tryUserDB(){
   }
 }
 
-tryUserDB();
+//tryUserDB();
 
 
 document.getElementById("loginButton").addEventListener("click", function (e) {

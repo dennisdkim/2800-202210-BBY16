@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>Home Page</title>
 </head>
+
 <body>
-  <h1>Logged in!</h1>
+  <div id="navbar"></div>
   <div>
-    <a class="button" href="./map.html" >Find a Coolzone</a>
-    <br/>
+    <a class="button" href="./map.html">Find a Coolzone</a>
+    <br />
     <a class="button" href="">Host a Coolzone</a>
   </div>
-  <div class="navbar">
-    <a class="navButton" href="./home.html">Home</a>
-    <a class="navButton" href="./settings.html">Settings</a>
-    <a class="navButton" href="./profile.html">Profile</a>
-    <a class="navButton" href="./timeline.html">Timeline</a>
-    <a class="navButton" href="./map.html">Map</a>
-  </div>
+  <div id="footer"></div>
+  <script>
+
+    loadNavbarFooter();
+
+    function loadNavbarFooter() {
+      const option = {
+        method: 'GET',
+      }
+      fetch("/getNavbarFooter", option).then(
+        function (res) {
+          const result = res.json().then(
+          components => {
+            console.log(components);
+            document.getElementById("navbar").innerHTML = components.navbar;
+            document.getElementById("footer").innerHTML = components.footer;
+          }
+          )
+        }
+      )
+    }
+
+  </script>
+
 </body>
+
 </html>

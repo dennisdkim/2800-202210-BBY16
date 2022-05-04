@@ -22,6 +22,7 @@ app.use(session(
     })
 );
 
+//Root route//
 app.get("/", function (req, res) {
     if (req.session.loggedIn) {
         res.redirect("/home");
@@ -33,6 +34,7 @@ app.get("/", function (req, res) {
     }
 });
 
+//creates a user table for databse//
 app.get("/tryLogin", function (req, res){
 // Let's build the DB if it doesn't exist
     const connection = mysql.createConnection({
@@ -65,7 +67,7 @@ app.get("/tryLogin", function (req, res){
     console.log("try login passed");
 });
 
-
+//inputs into the user database table//
 app.post("/tryInsert", function (req, res){
     res.setHeader('Content-Type', 'application/json');
 
@@ -89,6 +91,7 @@ app.post("/tryInsert", function (req, res){
       connection.end();
 });
 
+//loads the profile page//
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
         let profile = fs.readFileSync("./app/html/profile.html", "utf8");
@@ -99,11 +102,13 @@ app.get("/profile", function (req, res) {
     }
 });
 
+//loads the signup page//
 app.get("/signUp", function (req, res) {
         let doc = fs.readFileSync("./app/html/signup.html", "utf8");
         res.send(doc);
 });
 
+//loads the home page//
 app.get("/home", function (req, res) {
     if (req.session.loggedIn) {
         res.send(fs.readFileSync("./app/html/home.html", "utf8"));
@@ -112,6 +117,7 @@ app.get("/home", function (req, res) {
     }
 });
 
+//user login verification//
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/login", function (req, res) {
@@ -154,7 +160,7 @@ app.post("/login", function (req, res) {
     */
 })
 
-
+//user logout code//
 app.get("/logout", function (req, res) {
     if (req.session) {
         req.session.destroy(function (error) {
@@ -166,6 +172,14 @@ app.get("/logout", function (req, res) {
             }
         });
     }
+});
+
+//returns a navbar and footer to the page//
+app.get("/getNavbarFooter", function (req, res) {
+    const navbar = fs.readFileSync("./app/html/components/navbar.html", "utf8");
+    const footer = fs.readFileSync("./app/html/components/footer.html", "utf8");
+    const components = {"navbar": navbar, "footer": footer,};
+    res.send(JSON.stringify(components));
 });
 
 
