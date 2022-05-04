@@ -1,38 +1,65 @@
 .container {
   display: grid;
-  height:100vh;
   grid-template-columns: auto;
-  grid-template-rows: 20% 80%;
+  grid-template-rows: 30% 30% 40%;
 }
 
-.logo {
-  background-color: white;
-  width: 100vw;
-  align-items: center;
+.logoContainer {
+    background-color: white;
+    width: 100vw;
+    align-items: center;
 }
 
-#logoImg{
-  width: 25%;
-  margin: auto;
-  display: block;
+  #logoImg{
+    width: 350px;
+    margin: auto;
+    display: block;
+  }
+
+  .login-form {
+    grid-row: 3 / 4;
+    margin: auto;
+    width: 60%;
+  }
+
+  input{
+    margin: auto;
+  }
+
+  .login-form > div {
+    text-align: center;
+  }
+
+@media only screen and (min-width: 700px) {
+  .container {
+    display: grid;
+    height:100vh;
+    grid-template-rows: 20% 2% 78%;
+  }
+
+  .logoContainer {
+    background-color: white;
+    width: 100vw;
+    align-items: center;
+  }
+
+  #logoImg{
+    width: 300px;
+    margin: auto;
+    display: block;
+  }
+
+  .login-form {
+    grid-row: 2 / 4;
+    margin: auto;
+    width: 60%;
+  }
+
+  input{
+    margin: auto;
+  }
+
+  .login-form > div {
+    text-align: center;
+  }
 }
-
-.login-form {
-  margin: auto;
-  width: 60%;
-  /* border: 5px solid #FFFF00; */
-}
-
-input{
-  margin: auto;
-}
-
-.login-form > div {
-  text-align: center;
-}
-
-/* @media only screen 
-  and (min-device-width: 375px) 
-  and (max-device-width: 812px) { 
-
-} */
