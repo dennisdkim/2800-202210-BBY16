@@ -18,6 +18,7 @@ async function submitLogin(data) {
       window.location.replace("/admin");
     } else {
       console.log("Login failed.");
+      document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
     }
   } catch (error) {
     console.log(error);

@@ -12,13 +12,14 @@ async function submitSignUp(data){
     console.log("Response object", response);
     let parsedJSON = await response.json();
     console.log("From the server", parsedJSON);
-    if (parsedJSON.status == "exists") {
-      console.log(parsedJSON.msg);
-    }
     if (parsedJSON.status == "success") {
       window.location.replace("/");
     } else {
-      console.log("Sign up failed.");
+      if (parsedJSON.status == "exists") {
+        document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
+      } else {
+        document.getElementById("errorMsg").innerHTML = "Sign up failed";
+      }
     }
   } catch (error) {
     console.log(error);
