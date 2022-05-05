@@ -12,11 +12,16 @@ async function submitSignUp(data){
     console.log("Response object", response);
     let parsedJSON = await response.json();
     console.log("From the server", parsedJSON);
+    document.getElementById("errorMsgEmail").innerHTML = "";
+    document.getElementById("errorMsgDisplay").innerHTML = "";
+    document.getElementById("errorMsg").innerHTML = "";
     if (parsedJSON.status == "success") {
       window.location.replace("/");
     } else {
-      if (parsedJSON.status == "exists") {
-        document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
+      if (parsedJSON.status == "emailExists") {
+        document.getElementById("errorMsgEmail").innerHTML = parsedJSON.msg;
+      } else if (parsedJSON.status == "displayExists"){
+        document.getElementById("errorMsgDisplay").innerHTML = parsedJSON.msg;
       } else {
         document.getElementById("errorMsg").innerHTML = "Sign up failed";
       }

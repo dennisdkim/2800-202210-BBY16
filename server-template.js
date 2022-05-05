@@ -68,7 +68,7 @@ app.get("/tryLogin", function (req, res){
 });
 
 //inputs into the user database table//
-app.post("/tryInsert", function (req, res){
+app.post("/tryInsert", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
 
     let connection = mysql.createConnection({
@@ -76,19 +76,38 @@ app.post("/tryInsert", function (req, res){
         user: 'root',
         password: '',
         database: 'db'
-      });
-      connection.connect();
-      connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
-            [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
-            function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        console.log('Rows returned are: ', results);
-        res.send({ status: "success", msg: "Record added." });
-      });
-    //   console.log("finished tryLogin");
-      connection.end();
+    });
+    connection.connect();
+    // Checking for email or display name in existing accounts
+    connection.query('SELECT * FROM user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            // If account with email or display name exists, then do not create account and send message
+            if (results.length > 0) {
+                console.log("Account exists already.");
+                if (results[0].email == req.body.email) {
+                    res.send({status: "emailExists", msg: "Email is in use"});
+                } else {
+                    res.send({status: "displayExists", msg: "Display name is in use"});
+                }
+                connection.end();
+            }
+            // If account with email does not exist, create new account with email
+            else {
+                connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
+                [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    console.log('Rows returned are: ', results);
+                    res.send({ status: "success", msg: "Record added."});
+                });
+                connection.end();
+            }
+        });
 });
 
 //loads the profile page//
