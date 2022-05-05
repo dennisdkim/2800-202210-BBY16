@@ -4,11 +4,16 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border: black 1px dotted;
 }
 
 #settings-button img, #maps-button img, #timeline-button img {
     height: 40px;
     width: 40px;
     opacity: 0.5;
+}
+
+@media screen and (min-width: 600px) {
+    #footer-component {
+        display: none;
+    }
 }
