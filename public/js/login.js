@@ -12,10 +12,8 @@ async function submitLogin(data) {
     console.log("Response object", response);
     let parsedJSON = await response.json();
     console.log("From the server", parsedJSON);
-    if (parsedJSON.status == "success" && parsedJSON.admin == 0) {
+    if (parsedJSON.status == "success") {
       window.location.replace("/home");
-    } else if (parsedJSON.status == "success" && parsedJSON.admin == 1){
-      window.location.replace("/admin");
     } else {
       console.log("Login failed.");
       document.getElementById("errorMsg").innerHTML = parsedJSON.msg;

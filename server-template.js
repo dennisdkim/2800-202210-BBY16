@@ -121,8 +121,10 @@ app.get("/signUp", function (req, res) {
 
 //loads the home page//
 app.get("/home", function (req, res) {
-    if (req.session.loggedIn) {
+    if (req.session.loggedIn && req.session.admin == 0) {
         res.send(fs.readFileSync("./app/html/home.html", "utf8"));
+    } else if (req.session.loggedIn && req.session.admin > 0){
+        res.send(fs.readFileSync("./app/html/admin.html", "utf8"))
     } else {
         res.redirect("/");
     }

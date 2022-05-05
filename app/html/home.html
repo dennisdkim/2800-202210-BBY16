@@ -25,46 +25,8 @@
   </div>
 
   <div id="footer"></div>
-<<<<<<< HEAD
-  <script>
-
-
-
-    loadNavbarFooter();
-
-    function loadNavbarFooter() {
-      const option = {
-        method: 'GET',
-      }
-      fetch("/getNavbarFooter", option).then(
-        function (res) {
-          const result = res.json().then(
-            components => {
-              console.log(components);
-              document.getElementById("navbar").innerHTML = components.navbar;
-              document.getElementById("footer").innerHTML = components.footer;
-              document.getElementById("greeting-message-username").innerHTML = components.name;
-              console.log(components.email);
-              let profileMenu = document.getElementById("profile-menu");
-              profileMenu.classList.add("hidden");
-
-              
-
-              document.getElementById("user-avatar").addEventListener("click", function (k) {
-                console.log("this is a test");
-                profileMenu.classList.toggle("hidden");
-              });
-            }
-          )
-        }
-      )
-    }
-  </script>
-
-=======
   <script src="/js/nav_footer_loader.js"></script>
   
->>>>>>> b6926cd69cc679b2d25141f488f6aa81bd546566
 </body>
 
 </html>
