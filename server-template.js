@@ -47,10 +47,10 @@ app.get("/tryLogin", function (req, res) {
         userID int NOT NULL AUTO_INCREMENT,
         fname VARCHAR(30) NOT NULL,
         lname VARCHAR(30) NOT NULL,
-        email VARCHAR(30) NOT NULL,
-        displayName VARCHAR(30) NOT NULL,
+        email VARCHAR(30) NOT NULL UNIQUE,
+        displayName VARCHAR(30) NOT NULL UNIQUE,
         password VARCHAR(30) NOT NULL,
-        admin BIT NOT NULL DEFAULT 0,
+        admin TINYINT NOT NULL DEFAULT 0,
         PRIMARY KEY (userID));`;
     connection.connect();
     connection.query(createDBAndTables, function (error, results, fields) {
@@ -114,6 +114,17 @@ app.get("/profile", function (req, res) {
     }
 });
 
+//loads the admin page//
+app.get("/admin", function (req, res) {
+    if (req.session.loggedIn) {
+        let admin = fs.readFileSync("./app/html/admin.html", "utf8");
+        console.log("Logged in by: " + req.session.email);
+        res.send(admin);
+    } else {
+        res.redirect("/");
+    }
+});
+
 //loads the signup page//
 app.get("/signUp", function (req, res) {
     let doc = fs.readFileSync("./app/html/signup.html", "utf8");
@@ -150,15 +161,18 @@ app.post("/login", function (req, res) {
     connection.query(`SELECT * FROM user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             console.log(results);
-            // console.log(fields);
             req.session.loggedIn = true;
-            req.session.isAdmin = results.admin;
-            req.session.username = results.displayName;
-            console.log("hello " + req.session.username);
+            req.session.displayName = results[0].displayName;
+            req.session.email = results[0].email;
+            req.session.name = results[0].fname + " " + results[0].lname;
+            req.session.admin = results[0].admin;
             res.send({
                 status: "success",
-                msg: "Logged in."
+                msg: "Logged in.",
+                admin: req.session.admin
+                // admin: 0
             });
+            console.log(req.session.admin);
             console.log("login success");
 
         } else {
@@ -191,6 +205,9 @@ app.get("/getNavbarFooter", function (req, res) {
     const components = {
         "navbar": navbar,
         "footer": footer,
+        "displayName": req.session.displayName,
+        "email": req.session.email,
+        "name": req.session.name
     };
     res.send(JSON.stringify(components));
 });

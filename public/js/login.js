@@ -12,8 +12,10 @@ async function submitLogin(data) {
     console.log("Response object", response);
     let parsedJSON = await response.json();
     console.log("From the server", parsedJSON);
-    if (parsedJSON.status == "success") {
+    if (parsedJSON.status == "success" && parsedJSON.admin == 0) {
       window.location.replace("/home");
+    } else if (parsedJSON.status == "success" && parsedJSON.admin == 1){
+      window.location.replace("/admin");
     } else {
       console.log("Login failed.");
     }
@@ -38,7 +40,7 @@ async function tryUserDB(){
   }
 }
 
-// tryUserDB();
+tryUserDB();
 
 // Event listener for "Login" button. Upon clicking it, it will take the params in html fields and passes it to submitLogin()
 document.getElementById("loginButton").addEventListener("click", function (e) {
