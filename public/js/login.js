@@ -16,6 +16,7 @@ async function submitLogin(data) {
       window.location.replace("/home");
     } else {
       console.log("Login failed.");
+      document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
     }
   } catch (error) {
     console.log(error);
