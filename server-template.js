@@ -113,6 +113,39 @@ app.get("/admin", function (req, res) {
     }
 });
 
+//loads the settings page//
+app.get("/settings", function (req, res) {
+    if (req.session.loggedIn) {
+        let settings = fs.readFileSync("./app/html/settings.html", "utf8");
+        console.log("Logged in by: " + req.session.email);
+        res.send(settings);
+    } else {
+        res.redirect("/");
+    }
+});
+
+//loads the timeline page//
+app.get("/timeline", function (req, res) {
+    if (req.session.loggedIn) {
+        let timeline = fs.readFileSync("./app/html/timeline.html", "utf8");
+        console.log("Logged in by: " + req.session.email);
+        res.send(timeline);
+    } else {
+        res.redirect("/");
+    }
+});
+
+//loads the map page//
+app.get("/map", function (req, res) {
+    if (req.session.loggedIn) {
+        let map = fs.readFileSync("./app/html/map.html", "utf8");
+        console.log("Logged in by: " + req.session.email);
+        res.send(map);
+    } else {
+        res.redirect("/");
+    }
+});
+
 //loads the signup page//
 app.get("/signUp", function (req, res) {
         let doc = fs.readFileSync("./app/html/signup.html", "utf8");
