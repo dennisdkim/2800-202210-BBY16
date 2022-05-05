@@ -168,7 +168,7 @@ app.post("/login", function (req, res) {
         } else {
             res.send({
                 status: "fail",
-                msg: "User account not found."
+                msg: "Account not found"
             });
         }
     })
