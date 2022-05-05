@@ -75,11 +75,11 @@ app.post("/tryInsert", function (req, res) {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'db'
+        database: 'COMP2800'
     });
     connection.connect();
     // Checking for email or display name in existing accounts
-    connection.query('SELECT * FROM user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
+    connection.query('SELECT * FROM BBY_16_user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
@@ -96,7 +96,7 @@ app.post("/tryInsert", function (req, res) {
             }
             // If account with email does not exist, create new account with email
             else {
-                connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
+                connection.query('INSERT INTO BBY_16_user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
                 [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
                 function (error, results, fields) {
                     if (error) {
@@ -195,12 +195,12 @@ app.post("/login", function (req, res) {
             host: "localhost",
             user: "root",
             password: "",
-            database: "db"
+            database: "COMP2800"
         }
     );
 
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
-    connection.query(`SELECT * FROM user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
+    connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             console.log(results);
             req.session.loggedIn = true;
@@ -261,11 +261,11 @@ app.get("/getUserTable", function (req, res) {
             host: "localhost",
             user: "root",
             password: "",
-            database: "db"
+            database: "COMP2800"
         }
     );
     
-    connection.query(`SELECT * FROM user;`, function (error, results, fields) {
+    connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
         if (results.length > 0) {
             console.log(results);
             console.log("User info success");
