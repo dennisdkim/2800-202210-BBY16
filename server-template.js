@@ -187,7 +187,6 @@ app.get("/logout", function (req, res) {
 app.get("/getNavbarFooter", function (req, res) {
     const navbar = fs.readFileSync("./app/html/components/navbar.html", "utf8");
     const footer = fs.readFileSync("./app/html/components/footer.html", "utf8");
-<<<<<<< HEAD
     const components = {
         "navbar": navbar,
         "footer": footer,
@@ -195,9 +194,6 @@ app.get("/getNavbarFooter", function (req, res) {
         "email": req.session.email,
         "name": req.session.name
     };
-=======
-    const components = {"navbar": navbar, "footer": footer,};
->>>>>>> b6926cd69cc679b2d25141f488f6aa81bd546566
     res.send(JSON.stringify(components));
 });
 
