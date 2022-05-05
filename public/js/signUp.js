@@ -12,6 +12,9 @@ async function submitSignUp(data){
     console.log("Response object", response);
     let parsedJSON = await response.json();
     console.log("From the server", parsedJSON);
+    if (parsedJSON.status == "exists") {
+      console.log(parsedJSON.msg);
+    }
     if (parsedJSON.status == "success") {
       window.location.replace("/");
     } else {
