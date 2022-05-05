@@ -1,3 +1,4 @@
+
 //Requires
 const express = require("express");
 const session = require("express-session");
@@ -12,12 +13,14 @@ app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
 
-app.use(session({
-    secret: "abc123bby16project",
-    name: "weCoolSessionID",
-    resave: false,
-    saveUninitialized: true
-}));
+app.use(session(
+    {
+        secret: "abc123bby16project",
+        name: "weCoolSessionID",
+        resave: false,
+        saveUninitialized: true
+    })
+);
 
 //Root route//
 app.get("/", function (req, res) {
@@ -32,13 +35,13 @@ app.get("/", function (req, res) {
 });
 
 //creates a user table for database//
-app.get("/tryLogin", function (req, res) {
-    // Let's build the DB if it doesn't exist
+app.get("/tryLogin", function (req, res){
+// Let's build the DB if it doesn't exist
     const connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        multipleStatements: true
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      multipleStatements: true
     });
 
     const createDBAndTables = `CREATE DATABASE IF NOT EXISTS db;
@@ -58,14 +61,14 @@ app.get("/tryLogin", function (req, res) {
             console.log(error);
         }
         console.log(results);
-
-    });
-    connection.end();
+  
+      });
+      connection.end();
     console.log("try login passed");
 });
 
 //inputs into the user database table//
-app.post("/tryInsert", function (req, res) {
+app.post("/tryInsert", function (req, res){
     res.setHeader('Content-Type', 'application/json');
 
     let connection = mysql.createConnection({
@@ -73,34 +76,19 @@ app.post("/tryInsert", function (req, res) {
         user: 'root',
         password: '',
         database: 'db'
-    });
-    connection.connect();
-    // Checking for email in existing accounts
-    connection.query('SELECT * FROM user WHERE email = ?', req.body.email,
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-            }
-            // If account with email exists, then do not create account and send message
-            if (results.length == 1) {
-                console.log("Account exists already.");
-                res.send({status: "exists", msg: "Account with submitted email exists already"});
-                connection.end();
-            }
-            // If account with email does not exist, create new account with email
-            else {
-                connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
-                [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
-                function (error, results, fields) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    console.log('Rows returned are: ', results);
-                    res.send({ status: "success", msg: "Record added."});
-                });
-                connection.end();
-            }
-        });
+      });
+      connection.connect();
+      connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
+            [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+            function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        console.log('Rows returned are: ', results);
+        res.send({ status: "success", msg: "Record added." });
+      });
+    //   console.log("finished tryLogin");
+      connection.end();
 });
 
 //loads the profile page//
@@ -116,8 +104,8 @@ app.get("/profile", function (req, res) {
 
 //loads the signup page//
 app.get("/signUp", function (req, res) {
-    let doc = fs.readFileSync("./app/html/signup.html", "utf8");
-    res.send(doc);
+        let doc = fs.readFileSync("./app/html/signup.html", "utf8");
+        res.send(doc);
 });
 
 //loads the home page//
@@ -130,42 +118,32 @@ app.get("/home", function (req, res) {
 });
 
 //user login verification//
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.urlencoded({ extended: true }));
 
 //Verifies user credentials exist within db. 
 //If credentials are correct, user is logged in.
 app.post("/login", function (req, res) {
 
     console.log("What was sent: ", req.body.email, req.body.password);
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "db"
-    });
+    const connection = mysql.createConnection(
+        {
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "db"
+        }
+    );
 
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
     connection.query(`SELECT * FROM user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             console.log(results);
-            // console.log(fields);
             req.session.loggedIn = true;
-            req.session.isAdmin = results.admin;
-            req.session.username = results.displayName;
-            console.log("hello " + req.session.username);
-            res.send({
-                status: "success",
-                msg: "Logged in."
-            });
+            res.send({ status: "success", msg: "Logged in." });
             console.log("login success");
 
         } else {
-            res.send({
-                status: "fail",
-                msg: "User account not found."
-            });
+            res.send({ status: "fail", msg: "User account not found." });
         }
     })
 })
@@ -188,13 +166,36 @@ app.get("/logout", function (req, res) {
 app.get("/getNavbarFooter", function (req, res) {
     const navbar = fs.readFileSync("./app/html/components/navbar.html", "utf8");
     const footer = fs.readFileSync("./app/html/components/footer.html", "utf8");
-    const components = {
-        "navbar": navbar,
-        "footer": footer,
-    };
+    const components = {"navbar": navbar, "footer": footer,};
     res.send(JSON.stringify(components));
 });
 
+//returns the info for all users to be sent to admin//
+app.get("/getUserTable", function (req, res) {
+
+    //should have a check to make sure user is admin before executing the next code//
+
+    const connection = mysql.createConnection(
+        {
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "db"
+        }
+    );
+    
+    connection.query(`SELECT * FROM user;`, function (error, results, fields) {
+        if (results.length > 0) {
+            console.log(results);
+            console.log("User info success");
+            res.send(JSON.stringify(results));
+
+        } else {
+            res.send({ status: "fail", msg: "User account not found." });
+        }
+    })
+
+});
 
 let port = 8000;
 app.listen(port, console.log("Server is running!"));
