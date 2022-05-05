@@ -154,7 +154,11 @@ app.post("/login", function (req, res) {
     connection.query(`SELECT * FROM user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             console.log(results);
+            // console.log(fields);
             req.session.loggedIn = true;
+            req.session.isAdmin = results.admin;
+            req.session.username = results.displayName;
+            console.log("hello " + req.session.username);
             res.send({
                 status: "success",
                 msg: "Logged in."
