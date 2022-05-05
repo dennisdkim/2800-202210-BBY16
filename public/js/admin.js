@@ -27,7 +27,7 @@ function loadUserTable () {
                     newRow.innerHTML += `<td>${users[i].email}</td>`;
                     newRow.innerHTML += `<td>${users[i].displayName}</td>`;
                     newRow.innerHTML += `<td>${users[i].password}</td>`;
-                    newRow.innerHTML += `<td>${users[i].admin.data[0]}</td>`;
+                    newRow.innerHTML += `<td>${users[i].admin}</td>`;
                     newTable.appendChild(newRow);
                 }
 
