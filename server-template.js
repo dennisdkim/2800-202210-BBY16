@@ -75,16 +75,20 @@ app.post("/tryInsert", function (req, res) {
         database: 'db'
     });
     connection.connect();
-    // Checking for email in existing accounts
-    connection.query('SELECT * FROM user WHERE email = ?', req.body.email,
+    // Checking for email or display name in existing accounts
+    connection.query('SELECT * FROM user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
             }
-            // If account with email exists, then do not create account and send message
-            if (results.length == 1) {
+            // If account with email or display name exists, then do not create account and send message
+            if (results.length > 0) {
                 console.log("Account exists already.");
-                res.send({status: "exists", msg: "Account with submitted email exists already"});
+                if (results[0].email == req.body.email) {
+                    res.send({status: "exists", msg: "Email is in use"});
+                } else {
+                    res.send({status: "exists", msg: "Display name is in use"});
+                }
                 connection.end();
             }
             // If account with email does not exist, create new account with email
