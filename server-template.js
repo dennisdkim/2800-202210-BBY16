@@ -44,9 +44,9 @@ app.get("/tryLogin", function (req, res){
       multipleStatements: true
     });
 
-    const createDBAndTables = `CREATE DATABASE IF NOT EXISTS db;
-        use db;
-        CREATE TABLE IF NOT EXISTS user (
+    const createDBAndTables = `CREATE DATABASE IF NOT EXISTS COMP2800;
+        use COMP2800;
+        CREATE TABLE IF NOT EXISTS BBY_16_user (
         userID int NOT NULL AUTO_INCREMENT,
         fname VARCHAR(30) NOT NULL,
         lname VARCHAR(30) NOT NULL,
@@ -75,10 +75,10 @@ app.post("/tryInsert", function (req, res){
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'db'
+        database: 'COMP2800'
       });
       connection.connect();
-      connection.query('INSERT INTO user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
+      connection.query('INSERT INTO BBY_16_user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
             [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
             function (error, results, fields) {
         if (error) {
@@ -87,7 +87,6 @@ app.post("/tryInsert", function (req, res){
         console.log('Rows returned are: ', results);
         res.send({ status: "success", msg: "Record added." });
       });
-    //   console.log("finished tryLogin");
       connection.end();
 });
 
@@ -176,12 +175,12 @@ app.post("/login", function (req, res) {
             host: "localhost",
             user: "root",
             password: "",
-            database: "db"
+            database: "COMP2800"
         }
     );
 
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
-    connection.query(`SELECT * FROM user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
+    connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             console.log(results);
             req.session.loggedIn = true;
@@ -193,7 +192,6 @@ app.post("/login", function (req, res) {
                 status: "success",
                 msg: "Logged in.",
                 admin: req.session.admin
-                // admin: 0
             });
             console.log(req.session.admin);
             console.log("login success");
@@ -242,11 +240,11 @@ app.get("/getUserTable", function (req, res) {
             host: "localhost",
             user: "root",
             password: "",
-            database: "db"
+            database: "COMP2800"
         }
     );
     
-    connection.query(`SELECT * FROM user;`, function (error, results, fields) {
+    connection.query(`SELECT * FROM bby_16_user;`, function (error, results, fields) {
         if (results.length > 0) {
             console.log(results);
             console.log("User info success");
