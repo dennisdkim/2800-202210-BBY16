@@ -9,38 +9,16 @@ async function submitLogin(data) {
       },
       body: JSON.stringify(data)
     });
-    console.log("Response object", response);
     let parsedJSON = await response.json();
-    console.log("From the server", parsedJSON);
     if (parsedJSON.status == "success") {
       window.location.replace("/home");
     } else {
-      console.log("Login failed.");
       document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
     }
   } catch (error) {
     console.log(error);
   }
 }
-
-//initializes db.
-async function tryUserDB(){
-  try{
-   let response = await fetch("/tryLogin", {
-     method: 'GET'
-   });
-   if (response == 200){
-     console.log("db initialized");
-   } else {
-     console.log("db initialization failed");
-   }
-  } catch (error){
-    console.log(error)
-  }
-}
-
-// not for use when initializing db using sql file. Uncomment below if not using sql file.
-tryUserDB();
 
 // Event listener for "Login" button. Upon clicking it, it will take the params in html fields and passes it to submitLogin()
 document.getElementById("loginButton").addEventListener("click", function (e) {
