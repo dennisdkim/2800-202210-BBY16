@@ -3,7 +3,6 @@ testButton.addEventListener("click", loadUserTable);
 
 // loads all user data and displays a table onto the admin page//
 function loadUserTable () {
-    console.log("clicked");
     const option = {
         method: 'GET',
     }
@@ -19,8 +18,6 @@ function loadUserTable () {
 
                 for( i=0; i < users.length; i++) {
                     let newRow = document.createElement("tr");
-                    console.log("user " + i);
-                    console.log(users[i]);
                     newRow.innerHTML += `<td>${users[i].userID}</td>`;
                     newRow.innerHTML += `<td>${users[i].fname}</td>`;
                     newRow.innerHTML += `<td>${users[i].lname}</td>`;

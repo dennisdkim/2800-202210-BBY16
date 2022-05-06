@@ -9,9 +9,7 @@ async function submitSignUp(data){
       },
       body: JSON.stringify(data)
     });
-    console.log("Response object", response);
     let parsedJSON = await response.json();
-    console.log("From the server", parsedJSON);
     document.getElementById("errorMsgEmail").innerHTML = "";
     document.getElementById("errorMsgDisplay").innerHTML = "";
     document.getElementById("errorMsg").innerHTML = "";
@@ -33,7 +31,6 @@ async function submitSignUp(data){
 
 //event listener to call submitSignUp method upon button click.
 document.getElementById("signUpButton").addEventListener("click", function (e) {
-  console.log("I'm in");
   submitSignUp({
     fname: document.getElementById("fname").value,
     lname: document.getElementById("lname").value,

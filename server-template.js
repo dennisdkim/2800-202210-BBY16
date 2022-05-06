@@ -60,11 +60,8 @@ app.get("/tryLogin", function (req, res){
         if (error) {
             console.log(error);
         }
-        console.log(results);
-  
       });
       connection.end();
-    console.log("try login passed");
 });
 
 //inputs into the user database table//
@@ -86,7 +83,6 @@ app.post("/tryInsert", function (req, res) {
             }
             // If account with email or display name exists, then do not create account and send message
             if (results.length > 0) {
-                console.log("Account exists already.");
                 if (results[0].email == req.body.email) {
                     res.send({status: "emailExists", msg: "Email is in use"});
                 } else {
@@ -102,7 +98,6 @@ app.post("/tryInsert", function (req, res) {
                     if (error) {
                         console.log(error);
                     }
-                    console.log('Rows returned are: ', results);
                     res.send({ status: "success", msg: "Account created."});
                 });
                 connection.end();
@@ -114,7 +109,6 @@ app.post("/tryInsert", function (req, res) {
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
         let profile = fs.readFileSync("./app/html/profile.html", "utf8");
-        console.log("Logged in by: " + req.session.email);
         res.send(profile);
     } else {
         res.redirect("/");
@@ -125,7 +119,6 @@ app.get("/profile", function (req, res) {
 app.get("/admin", function (req, res) {
     if (req.session.loggedIn) {
         let admin = fs.readFileSync("./app/html/admin.html", "utf8");
-        console.log("Logged in by: " + req.session.email);
         res.send(admin);
     } else {
         res.redirect("/");
@@ -136,7 +129,6 @@ app.get("/admin", function (req, res) {
 app.get("/settings", function (req, res) {
     if (req.session.loggedIn) {
         let settings = fs.readFileSync("./app/html/settings.html", "utf8");
-        console.log("Logged in by: " + req.session.email);
         res.send(settings);
     } else {
         res.redirect("/");
@@ -147,7 +139,6 @@ app.get("/settings", function (req, res) {
 app.get("/timeline", function (req, res) {
     if (req.session.loggedIn) {
         let timeline = fs.readFileSync("./app/html/timeline.html", "utf8");
-        console.log("Logged in by: " + req.session.email);
         res.send(timeline);
     } else {
         res.redirect("/");
@@ -158,7 +149,6 @@ app.get("/timeline", function (req, res) {
 app.get("/map", function (req, res) {
     if (req.session.loggedIn) {
         let map = fs.readFileSync("./app/html/map.html", "utf8");
-        console.log("Logged in by: " + req.session.email);
         res.send(map);
     } else {
         res.redirect("/");
@@ -188,8 +178,6 @@ app.use(express.urlencoded({ extended: true }));
 //Verifies user credentials exist within db. 
 //If credentials are correct, user is logged in.
 app.post("/login", function (req, res) {
-
-    console.log("What was sent: ", req.body.email, req.body.password);
     const connection = mysql.createConnection(
         {
             host: "localhost",
@@ -202,7 +190,6 @@ app.post("/login", function (req, res) {
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
-            console.log(results);
             req.session.loggedIn = true;
             req.session.displayName = results[0].displayName;
             req.session.email = results[0].email;
@@ -213,9 +200,6 @@ app.post("/login", function (req, res) {
                 msg: "Logged in.",
                 admin: req.session.admin
             });
-            console.log(req.session.admin);
-            console.log("login success");
-
         } else {
             res.send({ status: "fail", msg: "User account not found." });
         }
@@ -229,7 +213,6 @@ app.get("/logout", function (req, res) {
             if (error) {
                 res.status(400).send("Unable to log out.");
             } else {
-                console.log("logged out of session.");
                 res.redirect("/");
             }
         });
@@ -278,10 +261,7 @@ app.get("/getUserTable", function (req, res) {
     connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
 
         if (results.length > 0) {
-            console.log(results);
-            console.log("User info success");
             res.send(JSON.stringify(results));
-
         } else {
             res.send({ status: "fail", msg: "User account not found." });
         }
