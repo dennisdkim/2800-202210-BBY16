@@ -16,12 +16,12 @@ async function submitSignUp(data){
     document.getElementById("errorMsgDisplay").innerHTML = "";
     document.getElementById("errorMsg").innerHTML = "";
     if (parsedJSON.status == "success") {
-      window.location.replace("/");
+      document.getElementById("errorMsg").innerHTML = parsedJSON.msg + "<br/>";
     } else {
       if (parsedJSON.status == "emailExists") {
-        document.getElementById("errorMsgEmail").innerHTML = parsedJSON.msg;
+        document.getElementById("errorMsgEmail").innerHTML = parsedJSON.msg + "<br/>";
       } else if (parsedJSON.status == "displayExists"){
-        document.getElementById("errorMsgDisplay").innerHTML = parsedJSON.msg;
+        document.getElementById("errorMsgDisplay").innerHTML = parsedJSON.msg + "<br/>";
       } else {
         document.getElementById("errorMsg").innerHTML = "Sign up failed";
       }

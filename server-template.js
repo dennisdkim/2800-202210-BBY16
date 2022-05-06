@@ -103,7 +103,7 @@ app.post("/tryInsert", function (req, res) {
                         console.log(error);
                     }
                     console.log('Rows returned are: ', results);
-                    res.send({ status: "success", msg: "Record added."});
+                    res.send({ status: "success", msg: "Account created."});
                 });
                 connection.end();
             }
