@@ -40,7 +40,7 @@ async function tryUserDB(){
 }
 
 // not for use when initializing db using sql file. Uncomment below if not using sql file.
-// tryUserDB();
+tryUserDB();
 
 // Event listener for "Login" button. Upon clicking it, it will take the params in html fields and passes it to submitLogin()
 document.getElementById("loginButton").addEventListener("click", function (e) {
