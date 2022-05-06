@@ -44,9 +44,9 @@ app.get("/tryLogin", function (req, res){
       multipleStatements: true
     });
 
-    const createDBAndTables = `CREATE DATABASE IF NOT EXISTS db;
-        use db;
-        CREATE TABLE IF NOT EXISTS user (
+    const createDBAndTables = `CREATE DATABASE IF NOT EXISTS COMP2800;
+        use COMP2800;
+        CREATE TABLE IF NOT EXISTS BBY_16_user (
         userID int NOT NULL AUTO_INCREMENT,
         fname VARCHAR(30) NOT NULL,
         lname VARCHAR(30) NOT NULL,
@@ -212,7 +212,6 @@ app.post("/login", function (req, res) {
                 status: "success",
                 msg: "Logged in.",
                 admin: req.session.admin
-                // admin: 0
             });
             console.log(req.session.admin);
             console.log("login success");
@@ -251,6 +250,16 @@ app.get("/getNavbarFooter", function (req, res) {
     res.send(JSON.stringify(components));
 });
 
+//returns the first and last name, email, and display name to the page//
+app.get("/getGreetingName", function (req, res) {
+    const greetingName = {
+        "displayName": req.session.displayName,
+        "email": req.session.email,
+        "name": req.session.name
+    };
+    res.send(JSON.stringify(greetingName));
+});
+
 //returns the info for all users to be sent to admin//
 app.get("/getUserTable", function (req, res) {
 
@@ -265,7 +274,9 @@ app.get("/getUserTable", function (req, res) {
         }
     );
     
+
     connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
+
         if (results.length > 0) {
             console.log(results);
             console.log("User info success");

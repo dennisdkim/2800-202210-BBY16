@@ -25,6 +25,27 @@
   </div>
 
   <div id="footer"></div>
+  <script>
+
+    // loads users first and last name in a greeting on home page
+    // temporary function placement.
+    loadGreetingName();
+
+    function loadGreetingName(){
+      const option = {
+        method: 'GET',
+      }
+      fetch("/getGreetingName", option).then(
+        function (res) {
+          const result = res.json().then(
+            greetingName => {
+              document.getElementById("greeting-message-username").innerHTML = greetingName.name;
+            }
+          )
+        }
+      )
+    }
+  </script>
   <script src="/js/nav_footer_loader.js"></script>
   
 </body>
