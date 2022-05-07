@@ -1,3 +1,6 @@
+
+'use strict';
+
 let testButton = document.getElementById("test-button");
 testButton.addEventListener("click", loadUserTable);
 
@@ -16,7 +19,7 @@ function loadUserTable () {
                 headerRow.innerHTML = "<th>User ID</th><th>First name</th><th>Last Name</th><th>Email</th><th>Username</th><th>Password</th><th>Admin</th>";
                 newTable.appendChild(headerRow);
 
-                for( i=0; i < users.length; i++) {
+                for( let i=0; i < users.length; i++) {
                     let newRow = document.createElement("tr");
                     newRow.innerHTML += `<td>${users[i].userID}</td>`;
                     newRow.innerHTML += `<td>${users[i].fname}</td>`;

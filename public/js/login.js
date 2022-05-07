@@ -1,3 +1,6 @@
+
+'use strict';
+
 // Function definition to submit login credential info. The user input params are sent to server for authentication
 async function submitLogin(data) {
   try {

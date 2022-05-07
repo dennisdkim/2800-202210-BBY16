@@ -1,3 +1,6 @@
+
+'use strict';
+
 loadNavbarFooter();
 
     function loadNavbarFooter() {
