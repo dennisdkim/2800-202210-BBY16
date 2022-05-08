@@ -1,3 +1,6 @@
+
+'use strict';
+
 //Sends input field data to server to be inserted into db.
 async function submitSignUp(data){
   try {
