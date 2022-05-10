@@ -1,4 +1,3 @@
-
 'use strict';
 
 //Requires
@@ -15,14 +14,12 @@ app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
 
-app.use(session(
-    {
-        secret: "abc123bby16project",
-        name: "weCoolSessionID",
-        resave: false,
-        saveUninitialized: true
-    })
-);
+app.use(session({
+    secret: "abc123bby16project",
+    name: "weCoolSessionID",
+    resave: false,
+    saveUninitialized: true
+}));
 
 //Root route//
 app.get("/", function (req, res) {
@@ -37,13 +34,13 @@ app.get("/", function (req, res) {
 });
 
 //creates a user table for database//
-app.get("/tryLogin", function (req, res){
-// Let's build the DB if it doesn't exist
+app.get("/tryLogin", function (req, res) {
+    // Let's build the DB if it doesn't exist
     const connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      multipleStatements: true
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        multipleStatements: true
     });
 
     const createDBAndTables = `CREATE DATABASE IF NOT EXISTS COMP2800;
@@ -62,8 +59,8 @@ app.get("/tryLogin", function (req, res){
         if (error) {
             console.log(error);
         }
-      });
-      connection.end();
+    });
+    connection.end();
 });
 
 //inputs into the user database table//
@@ -86,22 +83,31 @@ app.post("/tryInsert", function (req, res) {
             // If account with email or display name exists, then do not create account and send message
             if (results.length > 0) {
                 if (results[0].email == req.body.email) {
-                    res.send({status: "emailExists", msg: "Email is in use"});
+                    res.send({
+                        status: "emailExists",
+                        msg: "Email is in use"
+                    });
                 } else {
-                    res.send({status: "displayExists", msg: "Display name is in use"});
+                    res.send({
+                        status: "displayExists",
+                        msg: "Display name is in use"
+                    });
                 }
                 connection.end();
             }
             // If account with email does not exist, create new account with email
             else {
                 connection.query('INSERT INTO BBY_16_user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
-                [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
-                function (error, results, fields) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    res.send({ status: "success", msg: "Account created."});
-                });
+                    [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        res.send({
+                            status: "success",
+                            msg: "Account created."
+                        });
+                    });
                 connection.end();
             }
         });
@@ -159,15 +165,15 @@ app.get("/map", function (req, res) {
 
 //loads the signup page//
 app.get("/signUp", function (req, res) {
-        let doc = fs.readFileSync("./app/html/signup.html", "utf8");
-        res.send(doc);
+    let doc = fs.readFileSync("./app/html/signup.html", "utf8");
+    res.send(doc);
 });
 
 //loads the home page//
 app.get("/home", function (req, res) {
     if (req.session.loggedIn && req.session.admin == 0) {
         res.send(fs.readFileSync("./app/html/home.html", "utf8"));
-    } else if (req.session.loggedIn && req.session.admin > 0){
+    } else if (req.session.loggedIn && req.session.admin > 0) {
         res.send(fs.readFileSync("./app/html/admin.html", "utf8"))
     } else {
         res.redirect("/");
@@ -175,19 +181,19 @@ app.get("/home", function (req, res) {
 });
 
 //user login verification//
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 
 //Verifies user credentials exist within db. 
 //If credentials are correct, user is logged in.
 app.post("/login", function (req, res) {
-    const connection = mysql.createConnection(
-        {
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "COMP2800"
-        }
-    );
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
 
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
@@ -205,7 +211,10 @@ app.post("/login", function (req, res) {
                 admin: req.session.admin
             });
         } else {
-            res.send({ status: "fail", msg: "User account not found." });
+            res.send({
+                status: "fail",
+                msg: "User account not found."
+            });
         }
     })
 })
@@ -247,6 +256,7 @@ app.get("/getGreetingName", function (req, res) {
     res.send(JSON.stringify(greetingName));
 });
 
+//returns any user info that may be of use
 app.get("/getUserInfo", function (req, res) {
     const userData = {
         "userID": req.session.uid,
@@ -262,26 +272,103 @@ app.get("/getUserTable", function (req, res) {
 
     //should have a check to make sure user is admin before executing the next code//
 
-    const connection = mysql.createConnection(
-        {
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "COMP2800"
-        }
-    );
-    
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+
 
     connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
 
         if (results.length > 0) {
             res.send(JSON.stringify(results));
         } else {
-            res.send({ status: "fail", msg: "User account not found." });
+            res.send({
+                status: "fail",
+                msg: "User account not found."
+            });
         }
     })
 
 });
+
+// Checks the database for the current user's password to verify identity before making changes
+
+app.post("/verifyPw", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    if (req.body.password1 != req.body.password2) {
+        res.send({
+            status: "fail",
+            msg: "Passwords do not match"
+        });
+    } else {
+        let connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '',
+            database: 'COMP2800'
+        });
+        connection.connect();
+        connection.query('SELECT * FROM BBY_16_user WHERE password = ? AND userID = ?;', [req.body.password1, req.session.uid],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                if (results.length == 1) {
+                    res.send({
+                        status: "success",
+                        msg: "Account found"
+                    });
+                } else {
+                    res.send({
+                        status: "fail",
+                        msg: "Wrong password"
+                    });
+                }
+            });
+        connection.end();
+    }
+});
+
+// Submit new information to the current user's profile in the database
+app.post("/submit-changes", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    let connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'COMP2800'
+    });
+    connection.connect();
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.session.uid],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            req.session.fname = req.body.fname;
+            req.session.lname = req.body.lname;
+            req.session.displayName = req.body.lname;
+            if (req.body.newPw != "") {
+                connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        res.send({
+                            status: "success",
+                            msg: "Changes saved"
+                        });
+                    });
+            } else {
+                res.send({
+                    status: "success",
+                    msg: "Changes saved"
+                });
+            }
+        });
+})
 
 let port = 8000;
 app.listen(port, console.log("Server is running!"));
