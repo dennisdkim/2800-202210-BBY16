@@ -117,6 +117,16 @@ app.get("/profile", function (req, res) {
     }
 });
 
+//loads the profile page//
+app.get("/coolzone", function (req, res) {
+    if (req.session.loggedIn) {
+        let profile = fs.readFileSync("./app/html/coolzone.html", "utf8");
+        res.send(profile);
+    } else {
+        res.redirect("/");
+    }
+});
+
 //loads the admin page//
 app.get("/admin", function (req, res) {
     if (req.session.loggedIn) {
