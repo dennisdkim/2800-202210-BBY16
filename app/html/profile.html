@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
+  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
   <title>Profile</title>
 </head>
+
 <body>
+  <div id="navbar"></div>
   <div>
     <h1>Profile page!</h1>
   </div>
-  <div>
-    <ul>
-      <li>
-        <label for="name">Name: </label>
-        <input type="text">
-      </li>
-      <li>
-        <label for="username">Username: </label>
-        <input type="text" id="username">
-      </li>
-      <li>
-        <label for="password">Password: </label>
-        <input type="password" id="password">
-      </li>
-    </ul>
+  <div id="profile-info">
+    <div id="avatar">avatar goes here</div>
+    <h4><span id="fullName">First Last</span></h4>
+    <h4><span id="displayName">display Name</span></h4>
+    <h4><span id="userEmail">email</span></h4>
+    <button type="button" id="editButton">Edit</button>
   </div>
-  <div>
-    <button type="reset"> Cancel </button>
-    <button type="submit"> Save </button>
-  </div>
-  <div>
-    <button type="button" id="logout">Logout</button>
-  </div>
-    <div class="navbar">
-    <a class="navButton" href="./home.html">Home</a>
-    <a class="navButton" href="./settings.html">Settings</a>
-    <a class="navButton" href="./profile.html">Profile</a>
-    <a class="navButton" href="./timeline.html">Timeline</a>
-    <a class="navButton" href="./map.html">Map</a>
-  </div>
+  <div id="footer"></div>
+
+  <template id="passwordVerification">
+    <p>For security purposes, please confirm your password</p>
+    <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
+      required="required" />
+    <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
+      pattern="[A-Z0-9a-z]{8,20}" required="required" />
+    <div id="errorMessage"></div>
+    <button type="button" id="cancelButtonPw">Cancel</button>
+  </template>
+
+  <template id="editForm">
+    <input type="text" id="fname" name="fname" placeholder="First Name" />
+    <br />
+    <input type="text" id="lname" name="lname" placeholder="Last Name" />
+    <br />
+    <input type="text" id="displayName" name="displayName" placeholder="Display Name" />
+    <button type="button" id="cancelButtonEdit">Cancel</button>
+    <button type="button" id="saveButton">Save</button>
+  </template>
+
+  <script src="/js/profile.js"></script>
+  <script src="/js/nav_footer_loader.js"></script>
 </body>
+
 </html>
