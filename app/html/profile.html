@@ -16,32 +16,26 @@
   </div>
   <div id="profile-info">
     <div id="avatar">avatar goes here</div>
-    <h4><span id="fullName">First Last</span></h4>
-    <h4><span id="displayName">display Name</span></h4>
-    <h4><span id="userEmail">email</span></h4>
-    <button type="button" id="editButton">Edit</button>
-  </div>
-  <div id="footer"></div>
-
-  <template id="passwordVerification">
-    <p>For security purposes, please confirm your password</p>
-    <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
-      required="required" />
-    <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
-      pattern="[A-Z0-9a-z]{8,20}" required="required" />
-    <div id="errorMessage"></div>
-    <button type="button" id="cancelButtonPw">Cancel</button>
-  </template>
-
-  <template id="editForm">
     <input type="text" id="fname" name="fname" placeholder="First Name" />
-    <br />
     <input type="text" id="lname" name="lname" placeholder="Last Name" />
     <br />
     <input type="text" id="displayName" name="displayName" placeholder="Display Name" />
-    <button type="button" id="cancelButtonEdit">Cancel</button>
+    <br />
+    <!-- <input type="email" id="email" name="email" placeholder="Email" />
+    <br /> -->
+    <input type="password" id="newPassword" name="password" placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}"/>
+
+    <p>For security purposes, please confirm your current password to confirm changes:</p>
+    <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
+      required="required" />
+    <br />
+    <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
+      pattern="[A-Z0-9a-z]{8,20}" required="required" />
+    <div id="errorMessage"></div>
+    <button type="button" id="cancelButton">Cancel</button>
     <button type="button" id="saveButton">Save</button>
-  </template>
+  </div>
+  <div id="footer"></div>
 
   <script src="/js/profile.js"></script>
   <script src="/js/nav_footer_loader.js"></script>

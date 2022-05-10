@@ -193,9 +193,11 @@ app.post("/login", function (req, res) {
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             req.session.loggedIn = true;
+            req.session.uid = results[0].userID;
             req.session.displayName = results[0].displayName;
             req.session.email = results[0].email;
-            req.session.name = results[0].fname + " " + results[0].lname;
+            req.session.fname = results[0].fname;
+            req.session.lname = results[0].lname;
             req.session.admin = results[0].admin;
             res.send({
                 status: "success",
@@ -230,7 +232,7 @@ app.get("/getNavbarFooter", function (req, res) {
         "footer": footer,
         "displayName": req.session.displayName,
         "email": req.session.email,
-        "name": req.session.name
+        "name": req.session.fname + " " + req.session.lname
     };
     res.send(JSON.stringify(components));
 });
@@ -240,9 +242,19 @@ app.get("/getGreetingName", function (req, res) {
     const greetingName = {
         "displayName": req.session.displayName,
         "email": req.session.email,
-        "name": req.session.name
+        "name": req.session.fname + " " + req.session.lname
     };
     res.send(JSON.stringify(greetingName));
+});
+
+app.get("/getUserInfo", function (req, res) {
+    const userData = {
+        "userID": req.session.uid,
+        "fname": req.session.fname,
+        "lname": req.session.lname,
+        "displayName": req.session.displayName,
+    };
+    res.send(JSON.stringify(userData));
 });
 
 //returns the info for all users to be sent to admin//
