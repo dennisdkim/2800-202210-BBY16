@@ -5,15 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
+  <link rel="stylesheet" href="./css/map.css">
   <title>Map</title>
 </head>
 <body>
-  <div>
-    <h1>Map page</h1>
-  </div>
-  <div>
-    <h1>Hello, dude</h1>
-  </div>
+  <div id="navbar"></div>
+  <div id="map"></div>
   <div>
     <a id="filterButton" href="">FilterButton</a>
     <br/>
@@ -26,5 +23,9 @@
     <a class="navButton" href="./timeline.html">Timeline</a>
     <a class="navButton" href="./map.html">Map</a>
   </div>
+  <div id="footer"></div>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOqbqaS0oBq9r9N35OvJiD20aEvr__grI&libraries=places"></script>
+  <script src="/js/map.js"></script>
+  <script src="/js/nav_footer_loader.js"></script>
 </body>
 </html>
