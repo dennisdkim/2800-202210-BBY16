@@ -10,42 +10,52 @@
 </head>
 
 <body>
-  <div id="navbar"></div>
+  <!-- <div id="navbar"></div> -->
 
-  <form class="topContainer" action="/">
-    <label for="CZname">Coolzone Name: </label>
-    <input type="text" id="CoolzoneName" name="Coolzone Name">
-    <br />
-    <label for="location">Location: </label>
-    <input type="text" id="location" name="Coolzone Name">
-    <br />
-  </form>
+  <div class="container">
+    <form class="topContainer" action="/">
+      <label id="csName" for="CZname">Coolzone Name: </label>
+      <input type="text" id="CoolzoneName" name="Coolzone Name">
+      <label id="loc" for="location">Location: </label>
+      <input type="text" id="location" name="location">
+      <label id="time" for="time">Time: </label>
+      <input type="time" id="timeTag" name="Time">
+      <label id="date" for="date">Date: </label>
+      <input type="date" id="dateTag" name="Date">
+    </form>
 
-  <form class="addyContainer" action="/">
-    <span>Address</span>
-    <br />
-    <label for="streetNumber">Street Number: </label>
-    <input type="text" id="streetNum" name="Street Num">
-    <br />
-    <label for="streetName">Street Name: </label>
-    <input type="text" id="streetName" name="Street Name">
-    <br />
-    <label for="city">City: </label>
-    <input type="text" id="city" name="City">
-    <br />
-  </form>
+    <form class="addyContainer" action="/">
+      <span>Address</span>
+      <label class="streetNumber">Street Number: </label>
+      <input type="text" class="streetNumber" name="Street Num">
+      <label class="streetName">Street Name: </label>
+      <input type="text" class="streetName" name="Street Name">
+      <label class="city">City: </label>
+      <input type="text" class="city" name="City">
+    </form>
 
-  <div class="descriptionContainer">
-    <span>Description</span>
-    <br />
-    <input type="text" id="description" name="Description" placeholder="Enter a small description about the CoolZone!">
+    <div class="descriptionContainer">
+      <span>Description</span>
+      <input type="text" id="description" name="Description"
+        placeholder="Enter a small description about the CoolZone!">
+    </div>
+
+    <div class="amenitiesContainer">
+      <span>Amenities</span>
+      <button>Air Conditioned </button>
+      <button>Free Drinks </button>
+      <button>Water Park </button>
+      <button>Swimming Pools </button>
+      <button>Outdoors </button>
+      <button>Free Wifi </button>
+    </div>
+
   </div>
 
   <div class="botContainer">
-    <input type="button" id="signUpButton" name="signup" value="Save Changes" />
+    <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
   </div>
-
-  <div id="footer"></div>
+  <!-- <div id="footer"></div> -->
   <script src="/js/nav_footer_loader.js"></script>
 </body>
 

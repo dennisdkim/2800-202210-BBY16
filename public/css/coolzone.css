@@ -1,4 +1,99 @@
-* {
-  background-color: red;
-  font-size: 24px;
+/* body {
+    width: 100vw;
+    min-height: 500px;
+    overflow: hidden;
+} */
+
+.container {
+  display: grid;
+  grid-template-rows: auto;
 }
+
+.topContainer {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-template-rows: repeat(4, 25%);
+}
+
+.addyContainer {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: repeat(4, 25%);
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
+}
+
+.descriptionContainer {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
+  justify-items: stretch;
+}
+
+.amenitiesContainer {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
+}
+
+.botContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  display: block;
+  text-align: center;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: rgb(105,134,157);
+}
+
+#CoolzoneName, #location, #timeTag, #dateTag{
+  width: 70%;
+  margin-bottom: 10px;
+}
+  
+  
+.streetName, .streetNumber, .city {
+  margin: 0px 5px 10px;
+  width: 85%;
+}
+
+.streetNumber{
+  grid-row: 2 / 3;
+}
+
+.streetName{
+  grid-row: 3 / 4;
+}
+
+.city {
+  grid-row: 4 / 5;
+}
+
+
+
+#description {
+  grid-row: 2 / end;
+  grid-column: 1 / end;
+}
+
+#createCoolzone {
+  background-color: rgb(105,134,157);
+  color: rgb(213,220,227);
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: 26px;
+}
+span {
+  background-color: rgb(105,134,157);
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+
+    

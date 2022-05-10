@@ -71,6 +71,27 @@ ALTER TABLE `bby_16_user`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
+--
+-- Table structure for table `bby_16_coolzone`
+--
+
+CREATE TABLE `coolzone` (
+  `eventID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `location` varchar(30) NOT NULL,
+  `streetNum` varchar(30) NOT NULL,
+  `streetName` varchar(30) NOT NULL,
+  `city` varchar(30) NOT NULL,
+  `description` varchar(30) NOT NULL,
+  `airCon` tinyint(4) NULL DEFAULT 0,
+  `drinks` tinyint(4) NULL DEFAULT 0,
+  `waterPark` tinyint(4) NULL DEFAULT 0,
+  `pools` tinyint(4) NULL DEFAULT 0,
+  `outdoors` tinyint(4) NULL DEFAULT 0,
+  `wifi` tinyint(4) NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
