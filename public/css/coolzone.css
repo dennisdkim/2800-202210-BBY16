@@ -3,10 +3,10 @@
 
 /* ----universal selectors---- */
 * {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    font-size: 20px;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
 }
 
 .container {
@@ -53,7 +53,7 @@
 }
 
 
-.botContainer {
+.botContainer, .picContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,6 +85,11 @@ input {
   margin-top: 15px;
   font-size: 26px;
 }
+
+#picButton{
+  border-radius: 10px;
+}
+
 span {
   background-color: rgb(105,134,157);
   border-bottom-right-radius: 5px;
@@ -94,6 +99,53 @@ span {
 #description {
   width: 90%;
   height: 100px;
+}
+
+@media only screen and (min-width: 615px) {
+* {
+  font-size: 24px;
+  background-color: lightcyan;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 20% 30% 30% 20%;
+  grid-template-rows: 50% 30% 30% 30%;
+}
+
+.topContainer {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.addyContainer {
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+}
+
+.topContainer {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.descriptionContainer{
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.amenitiesContainer {
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+}
+
+.picContainer{
+  grid-column: 3 / 4;
+  grid-row: 3 / 4;
+}
+
+.botContainer{
+  grid-column: 1 / end;
+  grid-row: 4 / end;
 }
 
     
