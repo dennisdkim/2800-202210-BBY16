@@ -4,39 +4,52 @@
     overflow: hidden;
 } */
 
+* {
+  font-size: 20px;
+}
 .container {
-  display: grid;
-  grid-template-rows: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .topContainer {
-  display: grid;
-  grid-template-columns: 30% 70%;
-  grid-template-rows: repeat(4, 25%);
+  display: flex;
+  flex-direction: row;
 }
 
-.addyContainer {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  grid-template-rows: repeat(4, 25%);
-  border: 2px solid rgb(105,134,157);
-  border-radius: 10px;
-}
-
-.descriptionContainer {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  border: 2px solid rgb(105,134,157);
-  border-radius: 10px;
-  justify-items: stretch;
-}
-
-.amenitiesContainer {
+.addyContainer, .descriptionContainer, .amenitiesContainer {
   display: flex;
   flex-direction: column;
   border: 2px solid rgb(105,134,157);
   border-radius: 10px;
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
 }
+
+.amenities{
+  display: flex;
+  flex-direction: column;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputContainer, .labelContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-content: stretch;
+  flex-wrap: wrap;
+}
+
+.descInputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
 
 .botContainer {
   display: flex;
@@ -52,8 +65,8 @@ input {
   border-color: rgb(105,134,157);
 }
 
-#CoolzoneName, #location, #timeTag, #dateTag{
-  width: 70%;
+#CoolzoneName, #location, #timeTag, #dateTag, #endtimeTag, #enddateTag{
+  width: 80%;
   margin-bottom: 10px;
 }
   
@@ -61,25 +74,6 @@ input {
 .streetName, .streetNumber, .city {
   margin: 0px 5px 10px;
   width: 85%;
-}
-
-.streetNumber{
-  grid-row: 2 / 3;
-}
-
-.streetName{
-  grid-row: 3 / 4;
-}
-
-.city {
-  grid-row: 4 / 5;
-}
-
-
-
-#description {
-  grid-row: 2 / end;
-  grid-column: 1 / end;
 }
 
 #createCoolzone {
@@ -95,5 +89,9 @@ span {
   border-top-left-radius: 5px;
 }
 
+#description {
+  width: 90%;
+  height: 100px;
+}
 
     

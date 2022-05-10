@@ -14,42 +14,67 @@
 
   <div class="container">
     <form class="topContainer" action="/">
-      <label id="csName" for="CZname">Coolzone Name: </label>
-      <input type="text" id="CoolzoneName" name="Coolzone Name">
-      <label id="loc" for="location">Location: </label>
-      <input type="text" id="location" name="location">
-      <label id="time" for="time">Time: </label>
-      <input type="time" id="timeTag" name="Time">
-      <label id="date" for="date">Date: </label>
-      <input type="date" id="dateTag" name="Date">
+      <div class="labelContainer">
+        <label id="csName" for="CZname">Coolzone Name: </label>
+        <label id="loc" for="location">Location: </label>
+        <label id="time" for="time">Start Time: </label>
+        <label id="endtime" for="time">End Time: </label>
+        <label id="date" for="date">Start Date: </label>
+        <label id="enddate" for="date">End Date: </label>
+      </div>
+      <div class="inputContainer">
+        <input type="text" id="CoolzoneName" name="Coolzone Name">
+        <input type="text" id="location" name="location">
+        <input type="time" id="timeTag" name="Time">
+        <input type="time" id="endtimeTag" name="Time">
+        <input type="date" id="dateTag" name="Date">
+        <input type="date" id="enddateTag" name="End Date">
+      </div>
     </form>
-
+    <br>
     <form class="addyContainer" action="/">
-      <span>Address</span>
-      <label class="streetNumber">Street Number: </label>
-      <input type="text" class="streetNumber" name="Street Num">
-      <label class="streetName">Street Name: </label>
-      <input type="text" class="streetName" name="Street Name">
-      <label class="city">City: </label>
-      <input type="text" class="city" name="City">
+      <div class="containerName">
+        <span>Address</span>
+      </div>
+      <br />
+      <div class="infoContainer">
+        <div class="labelContainer">
+          <label class="streetNumber">Street Number: </label>
+          <label class="streetName">Street Name: </label>
+          <label class="city">City: </label>
+        </div>
+        <div class="inputContainer">
+          <input type="text" class="streetNumber" name="Street Num">
+          <input type="text" class="streetName" name="Street Name">
+          <input type="text" class="city" name="City">
+        </div>
+      </div>
     </form>
-
+    <br>
     <div class="descriptionContainer">
-      <span>Description</span>
-      <input type="text" id="description" name="Description"
-        placeholder="Enter a small description about the CoolZone!">
+      <div class="containerName">
+        <span>Description</span>
+      </div>
+      <br />
+      <div class="descInputContainer">
+        <input type="text" id="description" name="Description"
+          placeholder="Enter a small description about the CoolZone!">
+      </div>
     </div>
-
+    <br>
     <div class="amenitiesContainer">
-      <span>Amenities</span>
-      <button>Air Conditioned </button>
-      <button>Free Drinks </button>
-      <button>Water Park </button>
-      <button>Swimming Pools </button>
-      <button>Outdoors </button>
-      <button>Free Wifi </button>
+      <div class="containerName">
+        <span>Amenities</span>
+      </div>
+      <div class="amenities">
+        <button>Air Conditioned </button>
+        <button>Free Drinks </button>
+        <button>Water Park </button>
+        <button>Swimming Pools </button>
+        <button>Outdoors </button>
+        <button>Free Wifi </button>
+      </div>
     </div>
-
   </div>
 
   <div class="botContainer">
