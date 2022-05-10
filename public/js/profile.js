@@ -1,5 +1,7 @@
 'use strict';
 // Fields //
+var oldFirstName;
+var oldLastName;
 var oldDisplayName;
 
 // Buttons // 
@@ -16,12 +18,15 @@ async function loadProfileData() {
     document.getElementById("fname").value = infoParsed.fname;
     document.getElementById("lname").value = infoParsed.lname;
     document.getElementById("displayName").value = infoParsed.displayName;
+    oldFirstName = infoParsed.fname;
+    oldLastName = infoParsed.lname;
     oldDisplayName = infoParsed.displayName;
   } catch (error) {
     console.log(error);
   }
 }
 
+// Verifies the two passwords at the bottom of the page before committing any changes
 async function verifyPassword(passwords) {
   let verified = false;
   try {
@@ -34,7 +39,6 @@ async function verifyPassword(passwords) {
       body: JSON.stringify(passwords)
     });
     let parsedResponse = await pwStatus.json();
-    console.log("From server: ", parsedResponse);
     if (parsedResponse.status == "fail") {
       document.getElementById("pwMessage").innerHTML = parsedResponse.msg;
     } else {
@@ -46,6 +50,7 @@ async function verifyPassword(passwords) {
   }
 }
 
+// Submits the new values in the inputs to the database given the display name is unique
 async function submitChanges(newInfo) {
   try {
     let submitStatus = await fetch("/submit-changes", {
@@ -75,7 +80,6 @@ saveButton.addEventListener("click", function (e) {
     password1: document.getElementById("password").value,
     password2: document.getElementById("passwordVerify").value
   }).then((verified) => {
-    console.log(verified);
     if (verified) {
       let changes = {
         fname: document.getElementById("fname").value,
@@ -89,4 +93,10 @@ saveButton.addEventListener("click", function (e) {
       document.getElementById("passwordVerify").value = "";
     }
   });
+});
+
+cancelButton.addEventListener("click", function (e) {
+  document.getElementById("fname").value = oldFirstName;
+  document.getElementById("lname").value = oldLastName;
+  document.getElementById("displayName").value = oldDisplayName;
 });
