@@ -1,4 +1,6 @@
 'use strict';
+// Fields //
+var oldDisplayName;
 
 // Buttons // 
 let cancelButton = document.getElementById("cancelButton");
@@ -14,6 +16,7 @@ async function loadProfileData() {
     document.getElementById("fname").value = infoParsed.fname;
     document.getElementById("lname").value = infoParsed.lname;
     document.getElementById("displayName").value = infoParsed.displayName;
+    oldDisplayName = infoParsed.displayName;
   } catch (error) {
     console.log(error);
   }
@@ -33,7 +36,7 @@ async function verifyPassword(passwords) {
     let parsedResponse = await pwStatus.json();
     console.log("From server: ", parsedResponse);
     if (parsedResponse.status == "fail") {
-      document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
+      document.getElementById("pwMessage").innerHTML = parsedResponse.msg;
     } else {
       verified = true;
     }
@@ -54,8 +57,9 @@ async function submitChanges(newInfo) {
       body: JSON.stringify(newInfo)
     });
     let parsedResponse = await submitStatus.json();
-    if (parsedResponse.status == "success") {
-      document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
+    document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
+    if (parsedResponse.status == "fail") {
+      document.getElementById("displayName").value = oldDisplayName;
     }
   } catch (error) {
     console.log(error);
@@ -65,6 +69,7 @@ async function submitChanges(newInfo) {
 // Calling loadProfileData
 loadProfileData();
 
+// Saves new data onto the database when the "save button" is clicked and passwords match 
 saveButton.addEventListener("click", function (e) {
   verifyPassword({
     password1: document.getElementById("password").value,

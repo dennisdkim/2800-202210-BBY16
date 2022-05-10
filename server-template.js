@@ -342,33 +342,43 @@ app.post("/submit-changes", function (req, res) {
         database: 'COMP2800'
     });
     connection.connect();
-    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.session.uid],
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-            }
-            req.session.fname = req.body.fname;
-            req.session.lname = req.body.lname;
-            req.session.displayName = req.body.lname;
-            if (req.body.newPw != "") {
-                connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
-                    function (error, results, fields) {
-                        if (error) {
-                            console.log(error);
-                        }
-                        res.send({
-                            status: "success",
-                            msg: "Changes saved"
+    connection.query('SELECT * FROM bby_16_user WHERE displayName = ? AND userID <> ?;', [req.body.displayName, req.session.uid],
+    function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        if (results.length > 0) {
+            res.send({status: "fail", msg: "This display name is taken"});
+        } else {
+            connection.query('UPDATE bby_16_user SET fname = ?, lname = ?, displayName = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.session.uid],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                req.session.fname = req.body.fname;
+                req.session.lname = req.body.lname;
+                req.session.displayName = req.body.displayName;
+                if (req.body.newPw != "") {
+                    connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
+                        function (error, results, fields) {
+                            if (error) {
+                                console.log(error);
+                            }
+                            res.send({
+                                status: "success",
+                                msg: "Changes saved"
+                            });
                         });
+                } else {
+                    res.send({
+                        status: "success",
+                        msg: "Changes saved"
                     });
-            } else {
-                res.send({
-                    status: "success",
-                    msg: "Changes saved"
-                });
-            }
-        });
-})
+                }
+            });
+        }
+    });
+});
 
 let port = 8000;
 app.listen(port, console.log("Server is running!"));
