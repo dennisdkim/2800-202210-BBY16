@@ -242,6 +242,7 @@ app.get("/getNavbarFooter", function (req, res) {
         "email": req.session.email,
         "name": req.session.name
     };
+    res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(components));
 });
 
