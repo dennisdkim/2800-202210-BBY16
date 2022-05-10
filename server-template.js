@@ -117,11 +117,11 @@ app.get("/profile", function (req, res) {
     }
 });
 
-//loads the profile page//
+//loads the coolzone page//
 app.get("/coolzone", function (req, res) {
     if (req.session.loggedIn) {
-        let profile = fs.readFileSync("./app/html/coolzone.html", "utf8");
-        res.send(profile);
+        let coolzone = fs.readFileSync("./app/html/coolzone.html", "utf8");
+        res.send(coolzone);
     } else {
         res.redirect("/");
     }
