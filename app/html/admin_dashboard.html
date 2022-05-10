@@ -4,21 +4,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/admin_dashboard.css">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
-  <title>Admin Welcome Page</title>
+  <title>Admin Dashboard</title>
 </head>
 <body>
   <div id="navbar"></div>
   <div id="content">
-    <h3 id="greeting-message">Welcome back <span id="greeting-message-username">username</span></h3>
-    <div id="links">
-      <a class="link-button" href="/admin_dashboard">View All Users</a>
-      <a class="link-button" href="/admin_dashboard">Find a User</a>
-      <a class="link-button" href="/home">Use WeCool</a>
+      <div id="search-container">
+        <input type="text" id="search-user-bar" placeholder="Search User">
+      </div>
+    <h4 id="user-list-header">Showing all users</h4>
+    <div id="user-list-container">
+
     </div>
   </div>
   <div id="footer"></div>
   <script src="/js/nav_footer_loader.js"></script>
+  <script src="/js/admin.js"></script>
 </body>
 </html>

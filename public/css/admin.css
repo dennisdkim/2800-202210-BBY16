@@ -22,7 +22,39 @@ body {
     height: calc(100vh - 180px);
     width: 100%;
     background-color: lightgrey;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
 }
+
+#greeting-message {
+    color: #69869D;
+    font-size: 2em;
+    font-weight: 200;
+    margin-bottom: min(20%, 200px);
+}
+
+#links {
+    display: flex;
+    flex-direction: column;
+}
+
+.link-button {
+    width: 270px;
+    height: 70px;
+    background-color: #69869D;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+
 
 /* ----user table---- */
 #content td, tr, th {

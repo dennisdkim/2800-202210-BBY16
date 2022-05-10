@@ -1,0 +1,79 @@
+/* ----import font---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* ----universal selectors---- */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ----page sizing---- */
+body {
+    width: 100vw;
+    height: 100vh;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+/* ----main content window----- */
+#content {
+    min-height: 500px;
+    min-height: calc(100vh - 180px);
+    max-height: calc(100vh - 180px);
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    position: relative;
+    
+}
+
+#search-container {
+    height: 60px;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-color: rgba(255,255,255,0.8);
+}
+
+#search-user-bar {
+    height: 40px;
+    width: 80%;
+    border-radius: 10px;
+
+}
+
+#user-list-header {
+    width: 80%;
+    text-align: left;
+    height:10%;
+    padding: 10px 0;
+}
+
+#user-list-container {
+
+    width: 100%;
+    min-height: 90%;
+    max-height: 90%;
+    overflow: auto;
+    padding: 0 10%;
+
+
+}
+
+.user {
+    margin-top: 20px;
+    width: 100%;
+    height: 80px;
+    border: black solid 1px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+
+}

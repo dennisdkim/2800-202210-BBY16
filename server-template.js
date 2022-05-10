@@ -245,6 +245,43 @@ app.get("/getGreetingName", function (req, res) {
     res.send(JSON.stringify(greetingName));
 });
 
+//retruns the admin dashboard page//
+app.get("/admin_dashboard", function (req, res) {
+    if (req.session.loggedIn && req.session.admin > 0){
+        res.send(fs.readFileSync("./app/html/admin_dashboard.html", "utf8"));
+    } else {
+        res.redirect("/");
+    }
+});
+
+//returns a list of users to the admin dashboard//
+app.get("/getUserList", function (req, res) {
+    if (req.session.loggedIn && req.session.admin > 0){
+
+        const connection = mysql.createConnection(
+            {
+                host: "localhost",
+                user: "root",
+                password: "",
+                database: "COMP2800"
+            }
+        );
+        
+        connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user;`, function (error, results, fields) {
+    
+            if (results.length > 0) {
+                res.send(JSON.stringify(results));
+            } else {
+                res.send({ status: "fail", msg: "No user accounts found." });
+            }
+        });
+
+    } else {
+        res.send("Admin status required for access.");
+    }
+});
+
+
 //returns the info for all users to be sent to admin//
 app.get("/getUserTable", function (req, res) {
 
@@ -259,7 +296,6 @@ app.get("/getUserTable", function (req, res) {
         }
     );
     
-
     connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
 
         if (results.length > 0) {
