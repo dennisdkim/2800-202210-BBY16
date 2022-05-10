@@ -8,6 +8,10 @@
   font-size: 22px;
 }
 
+body{
+  background-color: lightgrey;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -103,13 +107,11 @@ span {
 @media only screen and (min-width: 615px) {
 * {
   font-size: 24px;
-  background-color: lightcyan;
 }
-
 .container {
   display: grid;
-  grid-template-columns: 20% 30% 30% 20%;
-  grid-template-rows: 50% 30% 30% 30%;
+  grid-template-columns: 15% 35% 35% 15%;
+  grid-template-rows:50% 50% 20% 20%;
 }
 
 .topContainer {
@@ -119,7 +121,7 @@ span {
 
 .addyContainer {
   grid-column: 2 / 3;
-  grid-row: 2 / 3;
+  grid-row: 2 / 4;
 }
 
 .topContainer {
@@ -134,17 +136,18 @@ span {
 
 .amenitiesContainer {
   grid-column: 3 / 4;
-  grid-row: 2 / 3;
+  grid-row: 2 / 4;
 }
 
 .picContainer{
   grid-column: 3 / 4;
-  grid-row: 3 / 4;
+  grid-row: 4 / 5;
+  align-self: center;
 }
 
 .botContainer{
   grid-column: 1 / end;
-  grid-row: 4 / end;
+  grid-row: 5 / end;
 }
 
 }
