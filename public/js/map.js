@@ -52,5 +52,10 @@ function initMap() {
   }, error, options);
 }
 
-
 window.onload = initMap;
+
+
+// displays all coolzones within radius provided in ascending distance order
+function displayCoolzones(){
+
+}

@@ -10,18 +10,27 @@
 </head>
 <body>
   <div id="navbar"></div>
+  <div id="content">
   <div id="map"></div>
-  <div>
-    <a id="filterButton" href="">FilterButton</a>
-    <br/>
-    <a id="curLocButton" href="">Center Map to Current Location Button</a>
+  <div id="filters">
+    <h2 id="mapFilterText">Map Filters</h2>
+    <div id="filterOptions">
+      <input type="checkbox" id="aircon">
+      <label for="aircon">Air Conditioning</label>
+      <input type="checkbox" id="freeWater">
+      <label for="freeWater">Free Water</label>
+      <input type="checkbox" id="swimmingPool">
+      <label for="swimmingPool">Swimming Pool</label>
+      <input type="checkbox" id="waterParks">
+      <label for="waterParks">Water Park</label>
+      <input type="checkbox" id="outdoor">
+      <label for="outdoor">Outdoor</label>
+      <input type="checkbox" id="indoor">
+      <label for="indoor">Indoor</label>
+      <input type="checkbox" id="freeWifi">
+      <label for="freeWifi">Free Wi-Fi</label>
+    </div>
   </div>
-  <div class="navbar">
-    <a class="navButton" href="./home.html">Home</a>
-    <a class="navButton" href="./settings.html">Settings</a>
-    <a class="navButton" href="./profile.html">Profile</a>
-    <a class="navButton" href="./timeline.html">Timeline</a>
-    <a class="navButton" href="./map.html">Map</a>
   </div>
   <div id="footer"></div>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOqbqaS0oBq9r9N35OvJiD20aEvr__grI&libraries=places"></script>
