@@ -3,6 +3,7 @@
 var oldFirstName;
 var oldLastName;
 var oldDisplayName;
+var oldEmail;
 
 // Buttons // 
 let cancelButton = document.getElementById("cancelButton");
@@ -18,9 +19,19 @@ async function loadProfileData() {
     document.getElementById("fname").value = infoParsed.fname;
     document.getElementById("lname").value = infoParsed.lname;
     document.getElementById("displayName").value = infoParsed.displayName;
+    document.getElementById("email").value = infoParsed.email;
+    //Saving initial values in case changes need to be reverted 
     oldFirstName = infoParsed.fname;
     oldLastName = infoParsed.lname;
     oldDisplayName = infoParsed.displayName;
+    oldEmail = infoParsed.email;
+    //DOM calls to insert display pic into div #avatar if it exists
+    if (infoParsed.avatarExists) {
+      var avatar = document.createElement("img");
+      avatar.src = "/img/userAvatars/avatar-user" + infoParsed.userID + ".png";
+      avatar.setAttribute("alt", "user " + infoParsed.userID +"'s avatar");
+      document.getElementById("avatar").appendChild(avatar);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -43,7 +54,7 @@ async function verifyPassword(passwords) {
       document.getElementById("pwMessage").innerHTML = parsedResponse.msg;
     } else {
       verified = true;
-      document.getElementById("pwMessage").innerHTML = parsedResponse.msg;
+      document.getElementById("pwMessage").innerHTML = "Password Authentication successful";
     }
     return verified;
   } catch (error) {
@@ -64,14 +75,12 @@ async function submitChanges(newInfo) {
     });
     let parsedResponse = await submitStatus.json();
     document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
-    if (parsedResponse.status == "fail") {
-      document.getElementById("displayName").value = oldDisplayName;
-    }
   } catch (error) {
     console.log(error);
   }
 }
 
+//Uploads display picture into app's file system and will be named according to current user id
 function uploadAvatar(e) {
   e.preventDefault();
   const avatarUpload = document.querySelector("#avatar-upload");
@@ -107,6 +116,7 @@ saveButton.addEventListener("click", function (e) {
         fname: document.getElementById("fname").value,
         lname: document.getElementById("lname").value,
         displayName: document.getElementById("displayName").value,
+        email: document.getElementById("email").value,
         newPw: document.getElementById("newPassword").value
       };
       submitChanges(changes);
@@ -123,4 +133,8 @@ cancelButton.addEventListener("click", function (e) {
   document.getElementById("fname").value = oldFirstName;
   document.getElementById("lname").value = oldLastName;
   document.getElementById("displayName").value = oldDisplayName;
+  document.getElementById("email").value = oldEmail;
+  document.getElementById("newPassword").value = "";
+  document.getElementById("password").value = "";
+  document.getElementById("passwordVerify").value = "";
 });

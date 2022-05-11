@@ -7,6 +7,7 @@ const app = express();
 app.use(express.json());
 const fs = require("fs");
 const mysql = require("mysql2");
+const mysqlprom = require("mysql2/promise");
 const multer = require("multer");
 
 //Mapping system paths to app's virtual paths
@@ -20,11 +21,13 @@ const avatarStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, "./public/img/userAvatars/");
     },
-    filename: function(req, file, callback) {
+    filename: function (req, file, callback) {
         callback(null, "avatar-user" + req.session.uid + ".png");
     }
 });
-const avatarUpload = multer({storage: avatarStorage});
+const avatarUpload = multer({
+    storage: avatarStorage
+});
 
 app.use(session({
     secret: "abc123bby16project",
@@ -270,11 +273,14 @@ app.get("/getGreetingName", function (req, res) {
 
 //returns any user info that may be of use
 app.get("/getUserInfo", function (req, res) {
+    const avatarPath = "./public/img/userAvatars/avatar-user" + req.session.uid + ".png";
     const userData = {
         "userID": req.session.uid,
         "fname": req.session.fname,
         "lname": req.session.lname,
         "displayName": req.session.displayName,
+        "email": req.session.email,
+        "avatarExists": fs.existsSync(avatarPath)
     };
     res.send(JSON.stringify(userData));
 });
@@ -354,43 +360,72 @@ app.post("/submit-changes", function (req, res) {
         database: 'COMP2800'
     });
     connection.connect();
+    //Checking to see if new display name is already in use
     connection.query('SELECT * FROM bby_16_user WHERE displayName = ? AND userID <> ?;', [req.body.displayName, req.session.uid],
-    function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        if (results.length > 0) {
-            res.send({status: "fail", msg: "This display name is taken"});
-        } else {
-            connection.query('UPDATE bby_16_user SET fname = ?, lname = ?, displayName = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.session.uid],
-            function (error, results, fields) {
-                if (error) {
-                    console.log(error);
-                }
-                req.session.fname = req.body.fname;
-                req.session.lname = req.body.lname;
-                req.session.displayName = req.body.displayName;
-                if (req.body.newPw != "") {
-                    connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
-                        function (error, results, fields) {
-                            if (error) {
-                                console.log(error);
-                            }
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            if (results.length > 0) {
+                connection.end();
+                res.send({
+                    status: "displayFail",
+                    msg: "This display name is taken"
+                });
+            } else {
+                //Checking to see if new email is already in use
+                connection.query('SELECT * FROM bby_16_user WHERE email = ? AND userID <> ?;', [req.body.email, req.session.uid],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        if (results.length > 0) {
+                            connection.end();
                             res.send({
-                                status: "success",
-                                msg: "Changes saved"
+                                status: "emailFail",
+                                msg: "This email is already in use"
                             });
-                        });
-                } else {
-                    res.send({
-                        status: "success",
-                        msg: "Changes saved"
+                        } else {
+                            updateChanges(req, res, connection);
+                        }
                     });
-                }
-            });
-        }
-    });
+            }
+        });
 });
+
+//Update all fields with the valid inputs after checks have been done
+function updateChanges(req, res, connection) {
+    connection.query('UPDATE bby_16_user SET fname = ?, lname = ?, displayName = ?, email = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.session.uid],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            req.session.fname = req.body.fname;
+            req.session.lname = req.body.lname;
+            req.session.displayName = req.body.displayName;
+            req.session.email = req.body.email;
+            //Checking to see if the new password field is empty (empty string) - if its empty, don't update, if there is a new pw then update
+            if (req.body.newPw != "") {
+                connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        connection.end();
+                        res.send({
+                            status: "success",
+                            msg: "Changes saved"
+                        });
+                    });
+            } else {
+                connection.end();
+                res.send({
+                    status: "success",
+                    msg: "Changes saved"
+                });
+            }
+        });
+}
 
 // Uploads avatar image to file system
 app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
