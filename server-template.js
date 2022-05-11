@@ -7,12 +7,24 @@ const app = express();
 app.use(express.json());
 const fs = require("fs");
 const mysql = require("mysql2");
+const multer = require("multer");
 
 //Mapping system paths to app's virtual paths
 app.use("/js", express.static("./public/js"));
 app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
+
+//Storage for user uploaded files
+const avatarStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./public/img/userAvatars/");
+    },
+    filename: function(req, file, callback) {
+        callback(null, "avatar-user" + req.session.uid + ".png");
+    }
+});
+const avatarUpload = multer({storage: avatarStorage});
 
 app.use(session({
     secret: "abc123bby16project",
@@ -319,7 +331,7 @@ app.post("/verifyPw", function (req, res) {
                 if (results.length == 1) {
                     res.send({
                         status: "success",
-                        msg: "Account found"
+                        msg: "Success!"
                     });
                 } else {
                     res.send({
@@ -380,5 +392,11 @@ app.post("/submit-changes", function (req, res) {
     });
 });
 
+// Uploads avatar image to file system
+app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
+    // console.log(res);
+});
+
+//Run server on port 8000
 let port = 8000;
 app.listen(port, console.log("Server is running!"));

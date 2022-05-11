@@ -11,19 +11,18 @@
 
 <body>
   <div id="navbar"></div>
-  <div>
-    <h1>Profile page!</h1>
-  </div>
   <div id="profile-info">
     <div id="avatar">avatar goes here</div>
+    <h1>Profile page!</h1>
+  </div>
+  <div id="profile-form">
     <input type="text" id="fname" name="fname" placeholder="First Name" />
     <input type="text" id="lname" name="lname" placeholder="Last Name" />
     <br />
     <input type="text" id="displayName" name="displayName" placeholder="Display Name" />
     <br />
-    <!-- <input type="email" id="email" name="email" placeholder="Email" />
-    <br /> -->
     <input type="password" id="newPassword" name="password" placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}"/>
+    <input id="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" placeholder=""/>
     <div id="errorMessage"></div>
     <p>For security purposes, please confirm your current password to confirm changes:</p>
     <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"

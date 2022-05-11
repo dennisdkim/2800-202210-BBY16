@@ -43,6 +43,7 @@ async function verifyPassword(passwords) {
       document.getElementById("pwMessage").innerHTML = parsedResponse.msg;
     } else {
       verified = true;
+      document.getElementById("pwMessage").innerHTML = parsedResponse.msg;
     }
     return verified;
   } catch (error) {
@@ -71,6 +72,27 @@ async function submitChanges(newInfo) {
   }
 }
 
+function uploadAvatar(e) {
+  e.preventDefault();
+  const avatarUpload = document.querySelector("#avatar-upload");
+  const formData = new FormData();
+  formData.append("avatar", avatarUpload.files[0]);
+
+  fetch("/upload-avatar", {
+    method: 'POST',
+    body: formData
+  })
+  // .then(function(res) {
+  //   let parsedResponse = res.json();
+  //   if (parsedResponse.status == "success") {
+  //     document.getElementById("errorMessage").innerHTML += " and " + parsedResponse.msg;
+  //   } else {
+  //     document.getElementById("errorMessage").innerHTML += " and display picture could not be updated";
+  //   }
+  // })
+  .catch(function(err) {("Error:", err)});
+}
+
 // Calling loadProfileData
 loadProfileData();
 
@@ -88,6 +110,7 @@ saveButton.addEventListener("click", function (e) {
         newPw: document.getElementById("newPassword").value
       };
       submitChanges(changes);
+      uploadAvatar(e);
       document.getElementById("newPassword").value = "";
       document.getElementById("password").value = "";
       document.getElementById("passwordVerify").value = "";
@@ -95,6 +118,7 @@ saveButton.addEventListener("click", function (e) {
   });
 });
 
+// Cancels changes made to input fields by re-inserting old values taken at page load 
 cancelButton.addEventListener("click", function (e) {
   document.getElementById("fname").value = oldFirstName;
   document.getElementById("lname").value = oldLastName;
