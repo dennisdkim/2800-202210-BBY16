@@ -72,7 +72,7 @@ function loadUserList() {
                         user[i].addEventListener("click", (e) => {
                             console.log(e.currentTarget.value);
                             toggleEditUserMenu(1);
-
+                            clearDeleteUserCode();
                             
                             fetch("/loadUserData", {
                                 method: 'POST',
@@ -155,12 +155,17 @@ deleteUserCode.addEventListener("input", () => {
     }
 })
 
+//resets the delete user code field//
+function clearDeleteUserCode () {
+    deleteUserCode.value = "";
+    deleteUserButton.disabled = true;
+}
+
 deleteUserButton.addEventListener("click", (e)=> {
     console.log(e.currentTarget.value);
-    console.log(document.getElementById("confirm-delete-code").value);
     
     fetch("/deleteUser", {
-        method: 'POST',
+        method: "POST",
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
@@ -176,9 +181,9 @@ deleteUserButton.addEventListener("click", (e)=> {
             )
         }
     )
+
+
 })
-
-
 /*
 //function for adding a new user//
 function addUser() {
