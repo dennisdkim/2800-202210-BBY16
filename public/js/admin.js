@@ -147,7 +147,6 @@ saveUserInfoButton.addEventListener("click", (e) => {
 //function for deleting a user//
 deleteUserButton.addEventListener("click", (e)=> {
     console.log(e.currentTarget.value);
-    /*
     fetch("/deleteUser", {
         method: 'POST',
         headers: {
@@ -164,7 +163,6 @@ deleteUserButton.addEventListener("click", (e)=> {
             )
         }
     )
-    */
 })
 
 

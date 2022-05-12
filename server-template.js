@@ -194,6 +194,7 @@ app.post("/login", function (req, res) {
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             req.session.loggedIn = true;
+            req.session.userID = results[0].userID;
             req.session.displayName = results[0].displayName;
             req.session.email = results[0].email;
             req.session.name = results[0].fname + " " + results[0].lname;
@@ -281,6 +282,7 @@ app.post("/loadUserData", function (req, res) {
     });
 });
 
+// Updates the user info and checks if display name and email is already in use, before setting values 
 app.post("/editUserData", function(req, res) {
     const connection = mysql.createConnection({
         host: "localhost",
@@ -307,12 +309,15 @@ app.post("/editUserData", function(req, res) {
                     }
                 }
                 if (displayNameTaken && emailTaken) {
+                    connection.end();
                     res.send({status:"fail", msg: "The display name and email is taken"});
                 } else {
                     if (displayNameTaken) {
+                        connection.end();
                         res.send({status:"fail", msg: "The display name is taken"});
                     }
                     if (emailTaken) {
+                        connection.end();
                         res.send({status:"fail", msg: "The email is taken"});
                     }
                 }
@@ -325,7 +330,7 @@ app.post("/editUserData", function(req, res) {
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
 
-    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ?, WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
@@ -343,12 +348,65 @@ function updateChanges(req, res, connection) {
                         if (error) {
                             console.log(error);
                         }
+                        connection.end();
                         res.send({status: "success", msg: "Changes saved"});
                     });
             } 
             else {
+                connection.end();
                 res.send({status: "success", msg: "Changes saved"});
             }
+        });
+}
+
+app.post("/deleteUser", function(req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE userID = ? AND displayName = ?;', [req.body.userID, req.body.displayName],
+        function(error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            if (results.length == 0) {
+                connection.end();
+                res.send({status: "fail", msg: "Incorrect display name"});
+            } else {
+                if (req.session.userID == req.body.userID) {
+                    connection.end();
+                    res.send({status: "fail", msg: "Cannot delete yourself"});
+                }
+                if (results[0].admin == 1) {
+                    if (getAdminCount(connection) > 1) {
+                        connection.query('DELETE FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
+                            connection.end();
+                            res.send({status: "success", msg: "Admin deleted"});
+                        });
+                    } else {
+                        connection.end();
+                        res.send({status: "fail", msg: "There must always be at least 1 admin"});
+                    }
+                } else {
+                    connection.query('DELETE FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
+                        connection.end();
+                        res.send({status: "success", msg: "User deleted"});
+                    });
+                }
+            }
+        });
+});
+
+// Helper function get get admin user counts from database
+function getAdminCount(connection){
+    connection.query('SELECT * FROM BBY_16_user WHERE admin = 1;',
+        function (error, results, fields){
+            if (error) {
+                console.log(error);
+            }
+            return results.length;
         });
 }
 
