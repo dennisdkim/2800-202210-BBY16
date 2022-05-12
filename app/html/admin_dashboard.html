@@ -25,7 +25,7 @@
                 <h4 class="form-title">Edit Existing User</h4>
                 <img id="profile-form-pic" src="img/userAvatars/default.png" alt="profile">
                 <div id="profile-title">
-                    <h4 id="profie-id">User ID: 1</h4>
+                    <h4>User ID: <span id="profie-id">1</span></h4>
                     <h4 id="profie-name">Dennis Kim</h4>
                     <h4 id="profie-email">dkim@my.bcit.ca</h4>
                 </div>
@@ -49,6 +49,11 @@
                     <p>Password</p>
                     <input type="password" id="newPassword" name="password" placeholder="New Password"
                         pattern="[A-Z0-9a-z]{8,20}" />
+                </div>
+                <div class="input-field">
+                    <p>Administrator</p>
+                    <input type="checkbox" id="adminStatus" name="isAdmin" 
+                        />
                 </div>
 
                 <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
@@ -86,6 +91,11 @@
                     <p>Password</p>
                     <input type="password" id="newUser-Password" name="password" placeholder="New Password"
                         pattern="[A-Z0-9a-z]{8,20}" />
+                </div>
+                <div class="input-field">
+                    <p>Administrator</p>
+                    <input type="checkbox" id="newUser-adminStatus" name="isAdmin" 
+                        />
                 </div>
 
                 <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"

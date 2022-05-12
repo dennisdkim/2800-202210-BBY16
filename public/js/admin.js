@@ -69,6 +69,7 @@ function loadUserList() {
                             console.log(e.currentTarget.value);
                             toggleEditUserMenu(1);
 
+                            
                             fetch("/loadUserData", {
                                 method: 'POST',
                                 headers: {
@@ -85,6 +86,7 @@ function loadUserList() {
                                     )
                                 }
                             )
+                            
                         });
                     }
                 });
@@ -92,7 +94,9 @@ function loadUserList() {
     )
 }
 
+/*
 //function to edit user data //
+
 function editUser() {
     
     fetch("/editUserData", {
@@ -102,11 +106,13 @@ function editUser() {
             "Content-Type": 'application/json'
           },
         body: JSON.stringify({
+            userID: document.getElementById("profie-id").innerHTML,
             displayName: document.getElementById("newUser-DisplayName").value.trim(),
             fname: document.getElementById("newUser-fname").value.trim(),
             lName: document.getElementById("newUser-lname").value.trim(),
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
+            admin: document.getElementById("").value,
         }) 
     }).then(
         function (res) {
@@ -122,14 +128,15 @@ function editUser() {
 
 
 //function for deleting a user//
-function deleteUser(e) {
+let deleteUserButton = document.getElementById("deleteButton");
+deleteUserButton.addEventListener("click", (e)=> {
     fetch("/loadUserData", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify(e.currentTarget.value)
+        body: JSON.stringify({userID: e.currentTarget.value})
     }).then(
         function (res) {
             const userData = res.json().then(
@@ -139,7 +146,7 @@ function deleteUser(e) {
             )
         }
     )
-}
+})
 
 //function for adding a new user//
 function addUser() {
@@ -156,6 +163,7 @@ function addUser() {
             lName: document.getElementById("newUser-lname").value.trim(),
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
+            admin: document.getElementById("").value,
         }) 
     }).then(
         function (res) {
@@ -171,7 +179,4 @@ function addUser() {
 
 
 
-//function for user search//
-
-
-
+*/

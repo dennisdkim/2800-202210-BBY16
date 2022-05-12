@@ -317,30 +317,5 @@ app.get("/getUserList", function (req, res) {
 });
 
 
-//returns the info for all users to be sent to admin//
-app.get("/getUserTable", function (req, res) {
-
-    //should have a check to make sure user is admin before executing the next code//
-
-    const connection = mysql.createConnection(
-        {
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "COMP2800"
-        }
-    );
-    
-    connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
-
-        if (results.length > 0) {
-            res.send(JSON.stringify(results));
-        } else {
-            res.send({ status: "fail", msg: "User account not found." });
-        }
-    })
-
-});
-
 let port = 8000;
 app.listen(port, console.log("Server is running!"));
