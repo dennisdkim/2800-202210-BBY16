@@ -16,8 +16,11 @@ async function loadProfileData() {
       method: 'GET',
     });
     let infoParsed = await profileInfo.json();
+    document.getElementById("fnameDisplay").innerHTML = infoParsed.fname;
     document.getElementById("fname").value = infoParsed.fname;
+    document.getElementById("lnameDisplay").innerHTML = infoParsed.lname;
     document.getElementById("lname").value = infoParsed.lname;
+    document.getElementById("displayNameDisplay").innerHTML = infoParsed.displayName;
     document.getElementById("displayName").value = infoParsed.displayName;
     document.getElementById("email").value = infoParsed.email;
     //Saving initial values in case changes need to be reverted 
@@ -30,10 +33,10 @@ async function loadProfileData() {
       var avatar = document.createElement("img");
       avatar.src = "/img/userAvatars/avatar-user" + infoParsed.userID + ".png";
       avatar.setAttribute("alt", "user " + infoParsed.userID +"'s avatar");
-      document.getElementById("avatar").appendChild(avatar);
+      document.getElementById("profile-info").replaceChild(avatar, document.getElementById("avatar"));
     }
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 }
 
@@ -58,7 +61,7 @@ async function verifyPassword(passwords) {
     }
     return verified;
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 }
 
@@ -76,7 +79,7 @@ async function submitChanges(newInfo) {
     let parsedResponse = await submitStatus.json();
     document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 }
 
@@ -90,16 +93,7 @@ function uploadAvatar(e) {
   fetch("/upload-avatar", {
     method: 'POST',
     body: formData
-  })
-  // .then(function(res) {
-  //   let parsedResponse = res.json();
-  //   if (parsedResponse.status == "success") {
-  //     document.getElementById("errorMessage").innerHTML += " and " + parsedResponse.msg;
-  //   } else {
-  //     document.getElementById("errorMessage").innerHTML += " and display picture could not be updated";
-  //   }
-  // })
-  .catch(function(err) {("Error:", err)});
+  }).catch((err) => { ("Error:", err); });
 }
 
 // Calling loadProfileData
@@ -120,10 +114,13 @@ saveButton.addEventListener("click", function (e) {
         newPw: document.getElementById("newPassword").value
       };
       submitChanges(changes);
-      uploadAvatar(e);
+      if (document.getElementById("avatar-upload").files.length == 1) {
+        uploadAvatar(e);
+      }
       document.getElementById("newPassword").value = "";
       document.getElementById("password").value = "";
       document.getElementById("passwordVerify").value = "";
+      loadProfileData;
     }
   });
 });

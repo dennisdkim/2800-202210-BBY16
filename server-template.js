@@ -332,7 +332,7 @@ app.post("/verifyPw", function (req, res) {
         connection.query('SELECT * FROM BBY_16_user WHERE password = ? AND userID = ?;', [req.body.password1, req.session.uid],
             function (error, results, fields) {
                 if (error) {
-                    console.log(error);
+                    throw error;
                 }
                 if (results.length == 1) {
                     res.send({
@@ -364,7 +364,7 @@ app.post("/submit-changes", function (req, res) {
     connection.query('SELECT * FROM bby_16_user WHERE displayName = ? AND userID <> ?;', [req.body.displayName, req.session.uid],
         function (error, results, fields) {
             if (error) {
-                console.log(error);
+                throw error;
             }
             if (results.length > 0) {
                 connection.end();
@@ -377,7 +377,7 @@ app.post("/submit-changes", function (req, res) {
                 connection.query('SELECT * FROM bby_16_user WHERE email = ? AND userID <> ?;', [req.body.email, req.session.uid],
                     function (error, results, fields) {
                         if (error) {
-                            console.log(error);
+                            throw error;
                         }
                         if (results.length > 0) {
                             connection.end();
@@ -398,7 +398,7 @@ function updateChanges(req, res, connection) {
     connection.query('UPDATE bby_16_user SET fname = ?, lname = ?, displayName = ?, email = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.session.uid],
         function (error, results, fields) {
             if (error) {
-                console.log(error);
+                throw error;
             }
             req.session.fname = req.body.fname;
             req.session.lname = req.body.lname;
@@ -409,7 +409,7 @@ function updateChanges(req, res, connection) {
                 connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
                     function (error, results, fields) {
                         if (error) {
-                            console.log(error);
+                            throw error;
                         }
                         connection.end();
                         res.send({
@@ -429,7 +429,7 @@ function updateChanges(req, res, connection) {
 
 // Uploads avatar image to file system
 app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
-    // console.log(res);
+    req.file.filename = req.file.originalname;
 });
 
 //Run server on port 8000
