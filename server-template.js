@@ -316,10 +316,37 @@ app.post("/editUserData", function(req, res) {
                     }
                 }
             } else {
-                updateDB(connection, req);
+                updateChanges(req,res,connection);
             }
         });
 });
+
+//Update all fields with the valid inputs after checks have been done
+function updateChanges(req, res, connection) {
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.userID],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            if (req.session.admin == 0) {
+                req.session.fname = req.body.fname;
+                req.session.lname = req.body.lname;
+                req.session.displayName = req.body.displayName;
+                req.session.email = req.body.email;
+            }
+            if (req.body.admin) {
+                connection.query('UPDATE BBY_16_user SET admin = ? WHERE userID = ?;', [req.body.admin, req.body.userID],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        res.send({status: "success", msg: "Changes saved"});
+                    });
+            } else {
+                res.send({status: "success", msg: "Changes saved"});
+            }
+        });
+}
 
 //retruns the admin dashboard page//
 app.get("/admin_dashboard", function (req, res) {
