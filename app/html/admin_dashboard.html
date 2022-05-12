@@ -1,26 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/admin_dashboard.css">
-  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
-  <title>Admin Dashboard</title>
-</head>
-<body>
-  <div id="navbar"></div>
-  <div id="content">
-      <div id="search-container">
-        <input type="text" id="search-user-bar" placeholder="Search User">
-      </div>
-    <h4 id="user-list-header">Showing all users</h4>
-    <div id="user-list-container">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin_dashboard.css">
+    <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+    <div id="navbar"></div>
+    <div id="content">
+        <h4 id="user-list-header">Showing all users</h4>
+        <div id="search-container">
+            <input type="text" id="search-user-bar" placeholder="Search User">
+        </div>
+        <div id="user-list-container">
+
+        </div>
+        <div id="userEditMenu">
+            <div id="profile-form">
+                <img id="profile-form-pic" src="img/userAvatars/default.png" alt="profile">
+                <div id="profile-title">
+                    <h4 id="profie-id">User ID: 1</h4>
+                    <h4 id="profie-name">Dennis Kim</h4>
+                    <h4 id="profie-email">dkim@my.bcit.ca</h4>
+                </div>
+                <div class="input-field">
+                    <p>Username</p>
+                    <input type="text" id="displayName" name="displayName" />
+                </div>
+                <div class="input-field">
+                    <p>First Name</p>
+                    <input type="text" id="fname" name="fname" />
+                </div>
+                <div class="input-field">
+                    <p>Last Name</p>
+                    <input type="text" id="lname" name="lname" />
+                </div>
+                <div class="input-field">
+                    <p>Email</p>
+                    <input type="email" id="email" name="email" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <p>Password</p>
+                    <input type="password" id="newPassword" name="password" placeholder="New Password"
+                        pattern="[A-Z0-9a-z]{8,20}" />
+                </div>
+
+                <input id="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+                    placeholder="" />
+                <div id="errorMessage"></div>
+
+                <button type="button" class="profile-button" id="cancelButton"
+                    onclick=toggleEditUserMenu()>Close</button>
+                <button type="button" class="profile-button" id="deleteButton">Delete User</button>
+                <button type="button" class="profile-button" id="saveButton">Save Changes</button>
+            </div>
+
+        </div>
     </div>
-  </div>
-  <div id="footer"></div>
-  <script src="/js/nav_footer_loader.js"></script>
-  <script src="/js/admin.js"></script>
+    <div id="footer"></div>
+    <script src="/js/nav_footer_loader.js"></script>
+    <script src="/js/admin.js"></script>
+
+
 </body>
+
 </html>
