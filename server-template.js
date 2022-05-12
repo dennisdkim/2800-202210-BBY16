@@ -24,14 +24,6 @@ app.use(session(
     })
 );
 
-// used for importing database into HEROKU deployment
-module.exports = {
-  HOST: "us-cdbr-east-05.cleardb.net",
-  USER: "b224612bae8615",
-  PASSWORD: "09995ada",
-  DB: "heroku_0195399e74303c0"
-};
-
 //Root route//
 app.get("/", function (req, res) {
     if (req.session.loggedIn) {
@@ -78,17 +70,11 @@ app.get("/tryLogin", function (req, res){
 app.post("/tryInsert", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
 
-    // let connection = mysql.createConnection({
-    //     host: 'localhost',
-    //     user: 'root',
-    //     password: '',
-    //     database: 'COMP2800'
-    // });
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-05.cleardb.net',
-        user: 'b224612bae8615',
-        password: '09995ada',
-        database: 'heroku_0195399e74303c0'
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'COMP2800'
     });
     connection.connect();
     // Checking for email or display name in existing accounts
