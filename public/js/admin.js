@@ -69,14 +69,13 @@ function loadUserList() {
                             console.log(e.currentTarget.value);
                             toggleEditUserMenu(1);
 
-                            /*
                             fetch("/loadUserData", {
                                 method: 'POST',
                                 headers: {
                                     "Accept": 'application/json',
                                     "Content-Type": 'application/json'
                                   },
-                                body: JSON.stringify(e.currentTarget.value) 
+                                body: JSON.stringify({userID: e.currentTarget.value}) 
                             }).then(
                                 function (res) {
                                     const userData = res.json().then(
@@ -86,7 +85,6 @@ function loadUserList() {
                                     )
                                 }
                             )
-                            */
                         });
                     }
                 });

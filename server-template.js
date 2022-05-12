@@ -245,6 +245,41 @@ app.get("/getGreetingName", function (req, res) {
     res.send(JSON.stringify(greetingName));
 });
 
+//returns the selected user data in the admin console
+app.post("/loadUserData", function (req, res) {
+    console.log(req.body.userID);
+    let displayPic;
+    const avatarPath = "/img/userAvatars/avatar-user" + req.body.userID + ".png";
+    if (fs.existsSync(avatarPath)) {
+        displayPic = avatarPath;
+    } else {
+        displayPic = "/img/userAvatars/default.png"
+    }
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
+        if (error) {
+            throw error;
+        }
+        let user = results[0];
+        const userData = {
+            "userID": user.userID,
+            "fname": user.fname,
+            "lname": user.lname,
+            "displayName": user.displayName,
+            "email": user.email,
+            "admin": user.admin,
+            "avatar": displayPic
+        };
+        connection.end();
+        res.send(JSON.stringify(userData));
+    });
+});
+
 //retruns the admin dashboard page//
 app.get("/admin_dashboard", function (req, res) {
     if (req.session.loggedIn && req.session.admin > 0){
