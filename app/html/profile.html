@@ -5,37 +5,41 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/profile.css">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
   <title>Profile</title>
 </head>
 
 <body>
   <div id="navbar"></div>
-  <div id="profile-info">
-    <div id="avatar"></div>
-    <h4><span id="fnameDisplay"></span> <span id="lnameDisplay"></span></h4>
-    <h4 id="displayNameDisplay"></h4>
-  </div>
-  <div id="profile-form">
-    <input type="text" id="fname" name="fname" placeholder="First Name" />
-    <input type="text" id="lname" name="lname" placeholder="Last Name" />
-    <br />
-    <input type="text" id="displayName" name="displayName" placeholder="Display Name" />
-    <br />
-    <input type="email" id="email" name="email" placeholder="Email" />
-    <br />
-    <input type="password" id="newPassword" name="password" placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}"/>
-    <input id="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" placeholder=""/>
-    <div id="errorMessage"></div>
-    <p>For security purposes, please confirm your current password to confirm changes:</p>
-    <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
-      required="required" />
-    <br />
-    <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
-      pattern="[A-Z0-9a-z]{8,20}" required="required" />
-    <div id="pwMessage"></div>
-    <button type="button" id="cancelButton">Cancel</button>
-    <button type="button" id="saveButton">Save</button>
+  <div id="content">
+    <div id="profile-info">
+      <div id="avatar"></div>
+      <h4><span id="fnameDisplay"></span> <span id="lnameDisplay"></span></h4>
+      <h4 id="displayNameDisplay"></h4>
+    </div>
+    <div id="profile-form">
+      <input type="text" id="fname" name="fname" placeholder="First Name" />
+      <input type="text" id="lname" name="lname" placeholder="Last Name" />
+      <br />
+      <input type="text" id="displayName" name="displayName" placeholder="Display Name" />
+      <br />
+      <input type="email" id="email" name="email" placeholder="Email" />
+      <br />
+      <input type="password" id="newPassword" name="password" placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}" />
+      <input id="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+        placeholder="" />
+      <div id="errorMessage"></div>
+      <p>For security purposes, please confirm your current password to confirm changes:</p>
+      <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
+        required="required" />
+      <br />
+      <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
+        pattern="[A-Z0-9a-z]{8,20}" required="required" />
+      <div id="pwMessage"></div>
+      <button type="button" id="cancelButton">Cancel</button>
+      <button type="button" id="saveButton">Save</button>
+    </div>
   </div>
   <div id="footer"></div>
 
