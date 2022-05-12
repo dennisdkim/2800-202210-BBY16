@@ -107,6 +107,28 @@ app.post("/tryInsert", function (req, res) {
         });
 });
 
+//inputs into the coolzone database table//
+app.post("/tryCoolzone", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    let connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'COMP2800'
+    });
+    connection.connect();
+    // Checking for coolzone exists
+    connection.query('INSERT INTO BBY_16_coolzone(czname, location, starttime, endtime, startdate, enddate, streetNumber, streetName, city, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [req.body.CoolzoneName, req.body.location, req.body.timeTag, req.body.endtimeTag, req.body.dateTag, req.body.enddateTag, req.body.streetNumberTag, req.body.streetNameTag, req.body.cityTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag,],
+    function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        res.send({ status: "success", msg: "Coolzone created."});
+    });
+    connection.end();
+;
+
 //loads the profile page//
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
@@ -287,4 +309,5 @@ let port = 8000;
 app.listen(process.env.PORT || port, function (err) {
     if (err)
         console.log(err);
+})
 })

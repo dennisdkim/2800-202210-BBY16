@@ -45,9 +45,9 @@
           <label class="city">City: </label>
         </div>
         <div class="inputContainer">
-          <input type="text" class="streetNumber" name="Street Num">
-          <input type="text" class="streetName" name="Street Name">
-          <input type="text" class="city" name="City">
+          <input type="text" class="streetNumber" id="streetNumberTag" name="Street Num">
+          <input type="text" class="streetName" id="streetNameTag" name="Street Name">
+          <input type="text" class="city" id="cityTag" name="City">
         </div>
       </div>
     </form>
@@ -68,16 +68,19 @@
         <span>Amenities</span>
       </div>
       <div class="amenities">
-        <button>Air Conditioned </button>
-        <button>Free Drinks </button>
-        <button>Water Park </button>
-        <button>Swimming Pools </button>
-        <button>Outdoors </button>
-        <button>Free Wifi </button>
+        <input type="checkbox" name="Air Conditioned" id="acTag">Air Conditioned
+        <input type="checkbox" name="Free Drinks" id="fdTag">Free Drinks
+        <input type="checkbox" name="Water Park" id="wpTag">Water Park
+        <input type="checkbox" name="Swimming Pools" id="poolTag">Swimming Pools
+        <input type="checkbox" name="Outdoors" id="outdoorTag">Outdoors
+        <input type="checkbox" name="Free Wifi" id="wifiTag">Free Wifi
       </div>
     </div>
     <div class="picContainer">
       <button id="picButton"> Change Picture </button>
+    </div>
+    <div>
+      <span id="errorMsg" class="errors"></span>
     </div>
     <div class="botContainer">
       <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
@@ -87,6 +90,7 @@
   <div id="footer"></div>
 
   <script src="/js/nav_footer_loader.js"></script>
+  <script src="/js/coolzone.js"></script>
 </body>
 
 </html>
