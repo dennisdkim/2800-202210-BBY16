@@ -15,7 +15,7 @@ async function submitCoolzone(data){
     let parsedJSON = await response.json();
     document.getElementById("errorMsg").innerHTML = "";
     if (parsedJSON.status == "success") {
-      document.getElementById("errorMsg").innerHTML = parsedJSON.msg + "<br/>";
+      document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
     }
   } catch (error) {
     console.log(error);
@@ -25,21 +25,16 @@ async function submitCoolzone(data){
 //event listener to call submitCoolzone method upon button click.
 document.getElementById("createCoolzone").addEventListener("click", function (e) {
   submitCoolzone({
-    coolzoneName: document.getElementById("CoolzoneName").value,
+    coolzoneName: document.getElementById("coolzoneName").value,
     location: document.getElementById("location").value,
-    startTime: document.getElementById("timeTag").value,
-    endTime: document.getElementById("endtimeTag").value,
-    startDate: document.getElementById("dateTag").value,
-    endDate: document.getElementById("enddateTag").value,
-    streetNumber: document.getElementById("streetNumberTag").value,
-    streetName: document.getElementById("streetNameTag").value,
-    city: document.getElementById("cityTag").value,
+    dateTag: document.getElementById("dateTag").value,
+    enddateTag: document.getElementById("enddateTag").value,
     description: document.getElementById("description").value,
-    aircon: document.getElementById("acTag").value,
-    drinks: document.getElementById("fdTag").value,
-    waterPark: document.getElementById("wpTag").value,
-    pool: document.getElementById("poolTag").value,
-    outdoor: document.getElementById("outdoorTag").value,
-    wifi: document.getElementById("wifiTag").value
+    acTag: document.getElementById("acTag").value,
+    fdTag: document.getElementById("fdTag").value,
+    wpTag: document.getElementById("wpTag").value,
+    poolTag: document.getElementById("poolTag").value,
+    outdoorTag: document.getElementById("outdoorTag").value,
+    wifiTag: document.getElementById("wifiTag").value
   });
 });

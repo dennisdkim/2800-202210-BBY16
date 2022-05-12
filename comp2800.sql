@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `comp2800`
 --
+CREATE DATABASE IF NOT EXISTS comp2800;
+
+USE comp2800;
 
 -- --------------------------------------------------------
 
@@ -31,15 +34,10 @@ CREATE TABLE `bby_16_coolzones` (
   `eventid` int(11) NOT NULL,
   `hostid` int(11) NOT NULL,
   `czname` varchar(30) NOT NULL,
-  `location` varchar(30) NOT NULL,
-  `starttime` datetime NOT NULL,
-  `endtime` datetime NOT NULL,
-  `startdate` date NOT NULL,
-  `enddate` date NOT NULL,
-  `streetNumber` varchar(30) NOT NULL,
-  `streetName` varchar(50) NOT NULL,
-  `city` varchar(30) NOT NULL,
-  `description` varchar(200) DEFAULT NULL,
+  `location` varchar(100) NOT NULL,
+  `startdate` datetime NOT NULL,
+  `enddate` datetime NOT NULL,
+  `description` varchar(200),
   `aircon` tinyint(4) DEFAULT 0,
   `freedrinks` tinyint(4) DEFAULT 0,
   `waterpark` tinyint(4) DEFAULT 0,
@@ -51,11 +49,6 @@ CREATE TABLE `bby_16_coolzones` (
 --
 -- Dumping data for table `bby_16_coolzones`
 --
-
-INSERT INTO `bby_16_coolzones` (`eventid`, `hostid`, `czname`, `location`, `starttime`, `endtime`, `startdate`, `enddate`, `streetNumber`, `streetName`, `city`, `description`, `aircon`, `freedrinks`, `waterpark`, `pool`, `outdoors`, `wifi`) VALUES
-(1, 1, 'myhouse', 'mylocation', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2022-05-12', '2022-05-13', '123', 'street st', 'abbotsford', 'its a damn mansion', 0, 0, 0, 0, 0, 0),
-(2, 1, 'myhouse', 'mylocation', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2022-05-12', '2022-05-13', '3700', 'Willingdon avenue', 'Burnaby', 'its a damn mansion', 0, 0, 0, 0, 0, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -109,13 +102,13 @@ ALTER TABLE `bby_16_user`
 -- AUTO_INCREMENT for table `bby_16_coolzones`
 --
 ALTER TABLE `bby_16_coolzones`
-  MODIFY `eventid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `eventid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bby_16_user`
 --
 ALTER TABLE `bby_16_user`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

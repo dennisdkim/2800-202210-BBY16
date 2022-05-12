@@ -118,8 +118,8 @@ app.post("/tryCoolzone", function (req, res) {
     });
     connection.connect();
     // Checking for coolzone exists
-    connection.query('INSERT INTO BBY_16_coolzone(czname, location, starttime, endtime, startdate, enddate, streetNumber, streetName, city, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [req.body.CoolzoneName, req.body.location, req.body.timeTag, req.body.endtimeTag, req.body.dateTag, req.body.enddateTag, req.body.streetNumberTag, req.body.streetNameTag, req.body.cityTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag,],
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
     function (error, results, fields) {
         if (error) {
             console.log(error);
@@ -127,7 +127,7 @@ app.post("/tryCoolzone", function (req, res) {
         res.send({ status: "success", msg: "Coolzone created."});
     });
     connection.end();
-;
+});
 
 //loads the profile page//
 app.get("/profile", function (req, res) {
@@ -229,6 +229,7 @@ app.post("/login", function (req, res) {
             req.session.email = results[0].email;
             req.session.name = results[0].fname + " " + results[0].lname;
             req.session.admin = results[0].admin;
+            req.session.userID = results[0].userID;
             res.send({
                 status: "success",
                 msg: "Logged in.",
@@ -304,10 +305,12 @@ app.get("/getUserTable", function (req, res) {
 
 });
 
+
 let port = 8000;
-// app.listen(port, console.log("Server is running!"));
 app.listen(process.env.PORT || port, function (err) {
     if (err)
         console.log(err);
-})
+    else {
+        console.log("Server is running!")
+    }
 })
