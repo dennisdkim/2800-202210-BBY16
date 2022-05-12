@@ -123,20 +123,20 @@ saveUserInfoButton.addEventListener("click", (e) => {
             "Content-Type": 'application/json'
           },
         body: JSON.stringify({
-            userID: document.getElementById("profie-id").innerHTML,
-            displayName: document.getElementById("newUser-DisplayName").value.trim(),
-            fname: document.getElementById("newUser-fname").value.trim(),
-            lName: document.getElementById("newUser-lname").value.trim(),
-            email: document.getElementById("newUser-Email").value.trim(),
-            password: document.getElementById("newUser-Password").value.trim(),
-            admin: document.getElementById("").checked ? 1 : 0,
+            userID: e.currentTarget.value,
+            displayName: document.getElementById("displayName").value.trim(),
+            fname: document.getElementById("fname").value.trim(),
+            lname: document.getElementById("lname").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            password: document.getElementById("newPassword").value.trim(),
+            admin: document.getElementById("adminStatus").checked ? 1 : 0,
             
         }) 
     }).then(
         function (res) {
             const userData = res.json().then(
                 data => {
-                    console.log(data);
+                    console.log(data.msg);
                 }
             )
         }
@@ -197,3 +197,4 @@ function addUser() {
     )
     
 }
+*/

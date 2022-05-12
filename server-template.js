@@ -293,11 +293,12 @@ app.post("/editUserData", function(req, res) {
             if (error) {
                 console.log(error); 
             }
+            console.log(req.body);
             let users = results;
             if(users.length > 0) {
                 let displayNameTaken = false;
                 let emailTaken = false;
-                for(i=0; i < users.length; i++) {
+                for(let i=0; i < users.length; i++) {
                     if(users[i].displayName == req.body.displayName) {
                         displayNameTaken = true;
                     }
@@ -323,18 +324,20 @@ app.post("/editUserData", function(req, res) {
 
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
-    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.userID],
+
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ?, WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
             }
+            
             if (req.session.admin == 0) {
                 req.session.fname = req.body.fname;
                 req.session.lname = req.body.lname;
                 req.session.displayName = req.body.displayName;
                 req.session.email = req.body.email;
             }
-            if (req.body.admin) {
+            if (("admin" in req.body) == true) {
                 connection.query('UPDATE BBY_16_user SET admin = ? WHERE userID = ?;', [req.body.admin, req.body.userID],
                     function (error, results, fields) {
                         if (error) {
@@ -342,7 +345,8 @@ function updateChanges(req, res, connection) {
                         }
                         res.send({status: "success", msg: "Changes saved"});
                     });
-            } else {
+            } 
+            else {
                 res.send({status: "success", msg: "Changes saved"});
             }
         });
