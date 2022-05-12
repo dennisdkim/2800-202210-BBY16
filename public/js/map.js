@@ -49,13 +49,15 @@ function initMap() {
         strokeColor: '#ffffff',
       },
     });
+    getCoolzones(pos);
   }, error, options);
 }
 
 window.onload = initMap;
 
 
-// displays all coolzones within radius provided in ascending distance order
-function displayCoolzones(){
-
-}
+function getCoolzones(location){
+  var distanceFromCurrent = document.getElementById("radius").value;
+  var thousand = 1000;
+  var currentLocation = new google.maps.LatLng(location.lat, location.long);
+} 

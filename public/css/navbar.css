@@ -68,6 +68,7 @@
     top: 100px;
     right: 0;
     transition: 0.5s;
+    z-index: 1000;
 }
 
 #profile-menu.hidden {
