@@ -29,6 +29,7 @@ body {
     align-items: flex-start;
     position: relative;
 
+
 }
 
 #search-container {
@@ -52,9 +53,26 @@ body {
 
 #user-list-header {
     width: 100%;
-    text-align: left;
     height: 10%;
     padding: 10px 10%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#users-displayed-indicator {
+    max-width: 300px;
+    min-width: 300px;
+    overflow-wrap: break-word;
+}
+
+#new-user-button {
+    border: #69869D 2px solid;
+    border-radius: 10px;
+    height: 50px;
+    min-width: 80px;
+    max-width: 80px;
+    background-color: white;
+    margin-right: 20px;
 }
 
 #user-list-container {
@@ -73,16 +91,16 @@ body {
     height: 80px;
     border: #69869D 2px solid;
     border-radius: 10px;
-    padding: 10px 20px;
+    padding: 5px 20px;
     display: flex;
     background-color: white;
-
+    font-size: 1.1em;
 
 }
 
 .user img {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
 
 }
 
@@ -95,7 +113,7 @@ body {
 
 /* ----Edit Profile Menu----*/
 
-#userEditMenu {
+#userEditMenu, #newUserMenu {
     width: 100%;
     height: 100%;
     z-index: 15;
@@ -106,21 +124,29 @@ body {
 
 }
 
-#profile-form {
+.profile-form {
     width: 100%;
-    height: min(800px, 100%);
+    height: 100%;
+    min-height: 800px;
     background-color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
 
+}
+
+.form-title {
+    margin-bottom: 20px;
+    font-size: 1.4em;
 }
 
 #profile-form-pic {
 
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
 }
 
 .input-field {
@@ -141,11 +167,11 @@ body {
 #profile-title {
     flex-direction: column;
     padding: 0 80px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
-#avatar-upload {
-    border: black 1px solid;
+.avatar-upload {
+    border: #69869D 2px solid;
     height: 40px;
     margin-bottom: 20px;
     margin-top: 20px;
@@ -170,9 +196,11 @@ body {
 /* ---- Media Query ---- */
 @media screen and (min-width: 600px) {
 
-    #userEditMenu {
+    #userEditMenu, #newUserMenu {
         width: 400px;
         left: calc(100% - 400px);
+        border-left: lightgrey 2px solid;
+
     }
 
     .user {
@@ -184,6 +212,7 @@ body {
         border-radius: 10px;
         padding: 10px 20px;
         background-color: white;
+        font-size: 0.8em;
 
     }
 
@@ -193,12 +222,18 @@ body {
 
     }
 
+    #user-list-header {
+        width: calc(100% - 400px);
+    }
+
     #user-list-container {
         min-width: 500px;
         width: calc(100% - 400px);
         min-height: 90%;
         max-height: 90%;
-        padding: 0 5%;
+        
+        padding-left: 5%;
+        padding-right: 0%;
         display: block;
     }
 
@@ -224,7 +259,7 @@ body {
         padding: 10px 5%;
     }
 
-    #userEditMenu {
-        border-left: lightgrey 2px solid;
+    .profile-form  p {
+        font-size: 0.8em;
     }
 }

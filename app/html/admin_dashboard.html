@@ -13,7 +13,7 @@
 <body>
     <div id="navbar"></div>
     <div id="content">
-        <h4 id="user-list-header">Showing all users</h4>
+        <div id="user-list-header"><h4 id="users-displayed-indicator">Showing all users</h4><button id="new-user-button">Add New User</button></div>
         <div id="search-container">
             <input type="text" id="search-user-bar" placeholder="Search User">
         </div>
@@ -21,7 +21,8 @@
 
         </div>
         <div id="userEditMenu">
-            <div id="profile-form">
+            <div class="profile-form">
+                <h4 class="form-title">Edit Existing User</h4>
                 <img id="profile-form-pic" src="img/userAvatars/default.png" alt="profile">
                 <div id="profile-title">
                     <h4 id="profie-id">User ID: 1</h4>
@@ -50,14 +51,52 @@
                         pattern="[A-Z0-9a-z]{8,20}" />
                 </div>
 
-                <input id="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+                <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
                     placeholder="" />
-                <div id="errorMessage"></div>
+                
 
                 <button type="button" class="profile-button" id="cancelButton"
-                    onclick=toggleEditUserMenu()>Close</button>
+                    onclick=toggleEditUserMenu(0)>Close</button>
                 <button type="button" class="profile-button" id="deleteButton">Delete User</button>
                 <button type="button" class="profile-button" id="saveButton">Save Changes</button>
+                <div id="errorMessage"></div>
+            </div>
+
+        </div>
+        <div id="newUserMenu">
+            <div class="profile-form">
+                <h4 class="form-title">Add New User</h4>
+                <div class="input-field">
+                    <p>Username</p>
+                    <input type="text" id="newUser-DisplayName" name="displayName" />
+                </div>
+                <div class="input-field">
+                    <p>First Name</p>
+                    <input type="text" id="newUser-fname" name="fname" />
+                </div>
+                <div class="input-field">
+                    <p>Last Name</p>
+                    <input type="text" id="newUser-lname" name="lname" />
+                </div>
+                <div class="input-field">
+                    <p>Email</p>
+                    <input type="email" id="newUser-Email" name="email" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <p>Password</p>
+                    <input type="password" id="newUser-Password" name="password" placeholder="New Password"
+                        pattern="[A-Z0-9a-z]{8,20}" />
+                </div>
+
+                <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+                    placeholder="" />
+                <div id="newUser-errorMessage"></div>
+
+                <button type="button" class="profile-button" id="closeButton"
+                    onclick=toggleNewUserMenu(0)>Close</button>
+                <button type="button" class="profile-button" id="clearButton">Clear Fields</button>
+                <button type="button" class="profile-button" id="addUserButton">Add User</button>
+                <div id="newUser-errorMessage"></div>
             </div>
 
         </div>

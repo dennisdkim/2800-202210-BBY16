@@ -2,12 +2,32 @@
 'use strict';
 window.addEventListener("load", loadUserList);
 
-let userMenu = document.getElementById("userEditMenu");
+let userEditMenu = document.getElementById("userEditMenu");
+let newUserMenu = document.getElementById("newUserMenu");
+userEditMenu.hidden = true;
+newUserMenu.hidden = true;
+let newUserButton = document.getElementById("new-user-button");
+newUserButton.addEventListener('click', () => {
+    toggleNewUserMenu(1);
+} );
 
-function toggleEditUserMenu() {
-    if (userMenu.hidden) {
-        userMenu.hidden = false;
-    } else {userMenu.hidden = true;}
+
+function toggleEditUserMenu(input) {
+    if (input == 1) {
+        userEditMenu.hidden = false;
+        newUserMenu.hidden = true;
+    } else if (input == 0) {
+        userEditMenu.hidden = true;
+    }
+};
+
+function toggleNewUserMenu(input) {
+    if (input == 1) {
+        newUserMenu.hidden = false;
+        userEditMenu.hidden = true;
+    } else if (input == 0) {
+        newUserMenu.hidden = true;
+    }
 };
 
 // loads a list of all users//
@@ -44,9 +64,10 @@ function loadUserList () {
                 for( let i=0; i < user.length; i++ ) {
                     user[i].addEventListener("click", (e) => {
                         console.log(e.currentTarget.value);
-                        userMenu.hidden = false;
-
-                        fetch(/loadUserData, {
+                        toggleEditUserMenu(1);
+                        
+                        /*
+                        fetch("/loadUserData", {
                             method: 'POST',
                             headers: {
                                 "Accept": 'application/json',
@@ -62,7 +83,7 @@ function loadUserList () {
                                 )
                             }
                         )
-
+                        */
                     });
                 }
             });
