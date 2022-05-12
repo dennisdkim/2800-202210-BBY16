@@ -12,6 +12,9 @@ let newUserButton = document.getElementById("new-user-button");
 newUserButton.addEventListener('click', () => {
     toggleNewUserMenu(1);
 });
+let saveUserInfoButton = document.getElementById("saveButton");
+let deleteUserButton = document.getElementById("deleteButton");
+
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -82,6 +85,20 @@ function loadUserList() {
                                     const userData = res.json().then(
                                         data => {
                                             console.log(data);
+                                            document.getElementById("profile-id").innerHTML = data.userID;
+                                            document.getElementById("profile-name").innerHTML = data.fname + " " + data.lname;
+                                            document.getElementById("displayName").value = data.displayName;
+                                            document.getElementById("fname").value = data.fname;
+                                            document.getElementById("lname").value = data.lname;
+                                            document.getElementById("email").value = data.email;
+                                            //document.getElementById("newPassword").value = data.password;
+                                            if(data.admin) {
+                                                document.getElementById("adminStatus").checked = true;
+                                            } else {
+                                                document.getElementById("adminStatus").checked = false;
+                                            }
+                                            saveUserInfoButton.value = data.userID;
+                                            deleteUserButton.value = data.userID;
                                         }
                                     )
                                 }
@@ -94,11 +111,11 @@ function loadUserList() {
     )
 }
 
-/*
-//function to edit user data //
 
-function editUser() {
-    
+//function to edit user data //
+saveUserInfoButton.addEventListener("click", (e) => {
+    console.log(e.currentTarget.value);
+
     fetch("/editUserData", {
         method: 'POST',
         headers: {
@@ -112,7 +129,8 @@ function editUser() {
             lName: document.getElementById("newUser-lname").value.trim(),
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
-            admin: document.getElementById("").value,
+            admin: document.getElementById("").checked ? 1 : 0,
+            
         }) 
     }).then(
         function (res) {
@@ -123,14 +141,14 @@ function editUser() {
             )
         }
     )
-    
-}
 
+});
 
 //function for deleting a user//
-let deleteUserButton = document.getElementById("deleteButton");
 deleteUserButton.addEventListener("click", (e)=> {
-    fetch("/loadUserData", {
+    console.log(e.currentTarget.value);
+    /*
+    fetch("/deleteUser", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
@@ -146,8 +164,11 @@ deleteUserButton.addEventListener("click", (e)=> {
             )
         }
     )
+    */
 })
 
+
+/*
 //function for adding a new user//
 function addUser() {
     

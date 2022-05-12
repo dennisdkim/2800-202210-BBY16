@@ -25,9 +25,8 @@
                 <h4 class="form-title">Edit Existing User</h4>
                 <img id="profile-form-pic" src="img/userAvatars/default.png" alt="profile">
                 <div id="profile-title">
-                    <h4>User ID: <span id="profie-id">1</span></h4>
-                    <h4 id="profie-name">Dennis Kim</h4>
-                    <h4 id="profie-email">dkim@my.bcit.ca</h4>
+                    <h4>User ID: <span id="profile-id">1</span></h4>
+                    <h4 id="profile-name">Dennis Kim</h4>
                 </div>
                 <div class="input-field">
                     <p>Username</p>
@@ -56,8 +55,11 @@
                         />
                 </div>
 
-                <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+                <div class="input-field">
+                    <p>Picture</p><br>
+                    <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
                     placeholder="" />
+                </div>
                 
 
                 <button type="button" class="profile-button" id="cancelButton"
@@ -97,9 +99,12 @@
                     <input type="checkbox" id="newUser-adminStatus" name="isAdmin" 
                         />
                 </div>
-
-                <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+                <div class="input-field">
+                    <p>Picture</p><br>
+                    <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
                     placeholder="" />
+                </div>
+
                 <div id="newUser-errorMessage"></div>
 
                 <button type="button" class="profile-button" id="closeButton"
@@ -114,7 +119,6 @@
     <div id="footer"></div>
     <script src="/js/nav_footer_loader.js"></script>
     <script src="/js/admin.js"></script>
-
 
 </body>
 
