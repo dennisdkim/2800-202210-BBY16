@@ -139,14 +139,14 @@ body {
 }
 
 .form-title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 1.4em;
 }
 
 #profile-form-pic {
 
-    height: 150px;
-    width: 150px;
+    height: 140px;
+    width: 140px;
 }
 
 .input-field {
@@ -167,7 +167,7 @@ body {
 #profile-title {
     flex-direction: column;
     padding: 0 80px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .avatar-upload {
@@ -189,6 +189,23 @@ body {
     border: none;
     margin-bottom: 20px;
     cursor: pointer;
+}
+
+#delete-user-inputs {
+    margin-bottom: 20px;
+}
+
+#confirm-delete-code {
+    height: 30px;
+    border-radius: 5px;
+
+}
+
+#deleteButton {
+    height: 30px;
+    border-radius: 5px;
+    background-color: white;
+    
 }
 
 

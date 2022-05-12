@@ -61,10 +61,13 @@
                     placeholder="" />
                 </div>
                 
-
+                <div id="delete-user-inputs">
+                    <input type="text" id="confirm-delete-code" placeholder="Enter Username to Delete">
+                    <button type="button" id="deleteButton" disabled>Delete User</button>
+                
+                </div>
                 <button type="button" class="profile-button" id="cancelButton"
-                    onclick=toggleEditUserMenu(0)>Close</button>
-                <button type="button" class="profile-button" id="deleteButton">Delete User</button>
+                onclick=toggleEditUserMenu(0)>Close</button>
                 <button type="button" class="profile-button" id="saveButton">Save Changes</button>
                 <div id="errorMessage"></div>
             </div>

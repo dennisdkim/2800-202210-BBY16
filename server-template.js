@@ -325,7 +325,7 @@ app.post("/editUserData", function(req, res) {
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
 
-    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ?, WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
         function (error, results, fields) {
             if (error) {
                 console.log(error);

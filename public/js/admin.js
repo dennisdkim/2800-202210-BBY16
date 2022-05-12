@@ -14,6 +14,7 @@ newUserButton.addEventListener('click', () => {
 });
 let saveUserInfoButton = document.getElementById("saveButton");
 let deleteUserButton = document.getElementById("deleteButton");
+let deleteUserCode = document.getElementById("confirm-delete-code");
 
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
@@ -137,6 +138,7 @@ saveUserInfoButton.addEventListener("click", (e) => {
             const userData = res.json().then(
                 data => {
                     console.log(data.msg);
+                    document.getElementById("errorMessage").innerHTML = data.msg;
                 }
             )
         }
@@ -145,26 +147,35 @@ saveUserInfoButton.addEventListener("click", (e) => {
 });
 
 //function for deleting a user//
+deleteUserCode.addEventListener("input", () => {
+    if(deleteUserCode.value == document.getElementById("displayName").value) {
+        deleteUserButton.disabled = false;
+    } else {
+        deleteUserButton.disabled = true;
+    }
+})
+
 deleteUserButton.addEventListener("click", (e)=> {
     console.log(e.currentTarget.value);
-    /*
+    console.log(document.getElementById("confirm-delete-code").value);
+    
     fetch("/deleteUser", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify({userID: e.currentTarget.value})
+        body: JSON.stringify({userID: e.currentTarget.value, displayName: document.getElementById("confirm-delete-code").value})
     }).then(
         function (res) {
             const userData = res.json().then(
                 data => {
-                    console.log(data);
+                    console.log(data.msg);
+                    document.getElementById("errorMessage").innerHTML = data.msg;
                 }
             )
         }
     )
-    */
 })
 
 
