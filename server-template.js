@@ -297,4 +297,8 @@ app.get("/getUserTable", function (req, res) {
 });
 
 let port = 8000;
-app.listen(port, console.log("Server is running!"));
+// app.listen(port, console.log("Server is running!"));
+app.listen(process.env.PORT || port, function (err) {
+    if (err)
+        console.log(err);
+})
