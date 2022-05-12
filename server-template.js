@@ -280,6 +280,7 @@ app.get("/getUserInfo", function (req, res) {
         "lname": req.session.lname,
         "displayName": req.session.displayName,
         "email": req.session.email,
+        "admin": req.session.admin,
         "avatarExists": fs.existsSync(avatarPath)
     };
     res.send(JSON.stringify(userData));
