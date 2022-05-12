@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 const fs = require("fs");
 const mysql = require("mysql2");
+const { connect } = require("tls");
 
 //Mapping system paths to app's virtual paths
 app.use("/js", express.static("./public/js"));
@@ -247,7 +248,6 @@ app.get("/getGreetingName", function (req, res) {
 
 //returns the selected user data in the admin console
 app.post("/loadUserData", function (req, res) {
-    console.log(req.body.userID);
     let displayPic;
     const avatarPath = "/img/userAvatars/avatar-user" + req.body.userID + ".png";
     if (fs.existsSync(avatarPath)) {
@@ -263,7 +263,7 @@ app.post("/loadUserData", function (req, res) {
     });
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
         if (error) {
-            throw error;
+            console.log(error);
         }
         let user = results[0];
         const userData = {
@@ -272,12 +272,53 @@ app.post("/loadUserData", function (req, res) {
             "lname": user.lname,
             "displayName": user.displayName,
             "email": user.email,
+            "password": user.password,
             "admin": user.admin,
             "avatar": displayPic
         };
         connection.end();
         res.send(JSON.stringify(userData));
     });
+});
+
+app.post("/editUserData", function(req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE userID <> ? AND (displayName = ? OR email = ?);', [req.body.userID, req.body.displayName, req.body.email],
+        function(error, results, fields) {
+            if (error) {
+                console.log(error); 
+            }
+            let users = results;
+            if(users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for(i=0; i < users.length; i++) {
+                    if(users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if(users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
+                }
+                if (displayNameTaken && emailTaken) {
+                    res.send({status:"fail", msg: "The display name and email is taken"});
+                } else {
+                    if (displayNameTaken) {
+                        res.send({status:"fail", msg: "The display name is taken"});
+                    }
+                    if (emailTaken) {
+                        res.send({status:"fail", msg: "The email is taken"});
+                    }
+                }
+            } else {
+                updateDB(connection, req);
+            }
+        });
 });
 
 //retruns the admin dashboard page//

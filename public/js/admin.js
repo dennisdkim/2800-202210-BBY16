@@ -94,7 +94,7 @@ function loadUserList() {
     )
 }
 
-/*
+
 //function to edit user data //
 
 function editUser() {
@@ -176,7 +176,3 @@ function addUser() {
     )
     
 }
-
-
-
-*/
