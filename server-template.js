@@ -36,6 +36,16 @@ app.use(session({
     saveUninitialized: true
 }));
 
+//heroku db configuration
+const dbConfigHeroku = {
+    host: "us-cdbr-east-05.cleardb.net",
+    user: "b3823a53995411",
+    password: "762e1d0a",
+    database:"heroku_c99a07a4f72e738"
+}
+
+let connection = mysql.createPool(dbConfigHeroku);
+
 //Root route//
 app.get("/", function (req, res) {
     if (req.session.loggedIn) {
@@ -51,13 +61,6 @@ app.get("/", function (req, res) {
 //creates a user table for database//
 app.get("/tryLogin", function (req, res) {
     // Let's build the DB if it doesn't exist
-    const connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        multipleStatements: true
-    });
-
     const createDBAndTables = `CREATE DATABASE IF NOT EXISTS COMP2800;
         use COMP2800;
         CREATE TABLE IF NOT EXISTS BBY_16_user (
@@ -69,26 +72,16 @@ app.get("/tryLogin", function (req, res) {
         password VARCHAR(30) NOT NULL,
         admin TINYINT NOT NULL DEFAULT 0,
         PRIMARY KEY (userID));`;
-    connection.connect();
     connection.query(createDBAndTables, function (error, results, fields) {
         if (error) {
             console.log(error);
         }
     });
-    connection.end();
 });
 
 //inputs into the user database table//
 app.post("/tryInsert", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-
-    let connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'COMP2800'
-    });
-    connection.connect();
     // Checking for email or display name in existing accounts
     connection.query('SELECT * FROM BBY_16_user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
         function (error, results, fields) {
@@ -108,7 +101,6 @@ app.post("/tryInsert", function (req, res) {
                         msg: "Display name is in use"
                     });
                 }
-                connection.end();
             }
             // If account with email does not exist, create new account with email
             else {
@@ -123,7 +115,6 @@ app.post("/tryInsert", function (req, res) {
                             msg: "Account created."
                         });
                     });
-                connection.end();
             }
         });
 });
@@ -137,7 +128,6 @@ app.post("/tryCoolzone", function (req, res) {
         password: '',
         database: 'COMP2800'
     });
-    connection.connect();
     // Checking for coolzone exists
     connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
@@ -147,7 +137,6 @@ app.post("/tryCoolzone", function (req, res) {
         }
         res.send({ status: "success", msg: "Coolzone created."});
     });
-    connection.end();
 });
 
 //loads the profile page//
@@ -235,13 +224,6 @@ app.use(express.urlencoded({
 //Verifies user credentials exist within db. 
 //If credentials are correct, user is logged in.
 app.post("/login", function (req, res) {
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "COMP2800"
-    });
-
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
@@ -343,12 +325,6 @@ app.post("/loadUserData", function (req, res) {
     } else {
         displayPic = "/img/userAvatars/default.png"
     }
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "COMP2800"
-    });
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
         if (error) {
             console.log(error);
@@ -371,12 +347,6 @@ app.post("/loadUserData", function (req, res) {
 
 //returns the info for all users to be sent to admin//
 app.get("/getUserTable", function (req, res) {
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "COMP2800"
-    });
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
         if (error) {
             console.log(error);
@@ -392,7 +362,6 @@ app.get("/getUserTable", function (req, res) {
             "admin": user.admin,
             "avatar": displayPic
         };
-        connection.end();
         res.send(JSON.stringify(userData));
     });
 });
@@ -403,12 +372,6 @@ app.get("/getUserTable", function (req, res) {
 // themselves anyway if they're the last admin in the database)
 app.post("/deleteUser", function (req, res) {
     console.log(req.body);
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "COMP2800"
-    });
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ? AND displayName = ?;', [req.body.userID, req.body.displayName],
         function (error, results, fields) {
 
@@ -434,12 +397,6 @@ app.post("/deleteUser", function (req, res) {
 
 // Adds new user from admin dashboard and checks if display name and email is already in use, before inserting values
 app.post("/addNewUser", function (req, res) {
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "COMP2800"
-    });
     connection.query('SELECT * FROM BBY_16_user WHERE displayName = ? OR email = ?;', [req.body.displayName, req.body.email],
         function (error, results, fields) {
             if (error) {
@@ -483,7 +440,6 @@ function addUser(req, res, connection) {
             if (error) {
                 console.log(error);
             }
-            connection.end();
             res.send({ status: "success", msg: "New user added." });
         });
 }
@@ -500,23 +456,11 @@ app.get("/admin_dashboard", function (req, res) {
 //returns a list of users to the admin dashboard//
 app.post("/getUserList", function (req, res) {
     if (req.session.loggedIn && req.session.admin > 0) {
-
-        const connection = mysql.createConnection(
-            {
-                host: "localhost",
-                user: "root",
-                password: "",
-                database: "COMP2800"
-            }
-        );
-
         let queryFilter = "";
         if (req.body.query.length > 0) {
             queryFilter = `WHERE (fname LIKE "%${req.body.query}%" OR lname LIKE "%${req.body.query}%" OR displayName LIKE "%${req.body.query}%")`;
 }
-
 connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${queryFilter};`, function (error, results, fields) {
-
     if (results.length > 0) {
         let resultsWithDisplayImages = results.map(user => {
             let displayPic;
@@ -549,13 +493,6 @@ app.post("/verifyPw", function (req, res) {
             msg: "Passwords do not match"
         });
     } else {
-        let connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'COMP2800'
-        });
-        connection.connect();
         connection.query('SELECT * FROM BBY_16_user WHERE password = ? AND userID = ?;', [req.body.password1, req.session.userID],
             function (error, results, fields) {
                 if (error) {
@@ -573,18 +510,11 @@ app.post("/verifyPw", function (req, res) {
                     });
                 }
             });
-        connection.end();
     }
 });
 
 // Updates the user info and checks if display name and email is already in use, before setting values 
 app.post("/editUserData", function (req, res) {
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "COMP2800"
-    });
     if (req.body.fname == "" || req.body.lname == "" || req.body.displayName == "" || req.body.email == "" || req.body.password == "") {
         res.send({ status: "fail", msg: "Fields must not be empty!" });
     } else {
@@ -627,7 +557,6 @@ app.post("/editUserData", function (req, res) {
 
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
-
     connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.userID],
         function (error, results, fields) {
             if (error) {
@@ -648,12 +577,10 @@ function updateChanges(req, res, connection) {
                         if (error) {
                             console.log(error);
                         }
-                        connection.end();
                         res.send({ status: "success", msg: "Changes saved" });
                     });
             }
             else {
-                connection.end();
                 res.send({ status: "success", msg: "Changes saved" });
             }
         });
@@ -666,7 +593,6 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
 
 //Run server on port 8000
 let port = 8000;
-// app.listen(port, console.log("Server is running!"));
 app.listen(process.env.PORT || port, function (err) {
     console.log("Server is running on port " + port);
     if (err)
