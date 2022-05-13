@@ -662,6 +662,7 @@ function updateChanges(req, res, connection) {
 // Uploads avatar image to file system
 app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     req.file.filename = req.file.originalname;
+    res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
 });
 
 //Run server on port 8000

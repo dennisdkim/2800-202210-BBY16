@@ -81,6 +81,11 @@ async function submitChanges(newInfo) {
     });
     let parsedResponse = await submitStatus.json();
     document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
+    if (parsedResponse.status == "success") {
+      document.getElementById("fnameDisplay").innerHTML = newInfo.fname;
+      document.getElementById("lnameDisplay").innerHTML = newInfo.lname;
+      document.getElementById("displayNameDisplay").innerHTML = newInfo.displayName;
+    }
   } catch (error) {
     console.log(error);
   }
@@ -96,7 +101,18 @@ function uploadAvatar(e) {
   fetch("/upload-avatar", {
     method: 'POST',
     body: formData
-  }).catch((error) => { console.log(error); });
+  }).then(function (res) {
+    let parsedResponse = res.json().then(response => {
+      //Dynamically reloads the user avatar with each successful upload on the profile.html page
+      if (response.status == "success") {
+        var timestamp = new Date().getTime();
+        var avatar = document.getElementById("avatar");
+        avatar.src = response.path + "?t=" + timestamp;
+      }
+    });
+  }).catch((error) => {
+    console.log(error);
+  });
 }
 
 // Calling loadProfileData
@@ -123,7 +139,6 @@ saveButton.addEventListener("click", function (e) {
       }
       document.getElementById("password").value = "";
       document.getElementById("passwordVerify").value = "";
-      // loadProfileData;
     }
   });
 });
