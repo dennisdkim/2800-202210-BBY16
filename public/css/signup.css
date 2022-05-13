@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 400px;
+  min-height: 700px;
+  height: 98vh;
+  background-image: url("/img/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255,255,255,0.5);
+}
+
+.logoContainer {
+  height: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logoImg{
+  width: 300px;
+}
+
+.login-form {
+  height: 70%;
+  background-color: rgba(185, 200, 223, 0.288);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 5vh;
+}
+
+.login-form input {
+  width: 350px;
+  height: 50px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 1.3em;
+  padding-left: 50px;
+  border: none;
+}
+
+#signUpButton {
+  width: 350px;
+  height: 50px;
+  font-size: 1.3em;
+  border: none;
+  cursor: pointer;
+  background-color: rgb(105,134,157);
+  border-radius: 10px;
+  color: white;
+}
+
+#noacc {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  margin-top: 80px;
+  font-size: 1.3em;
+
+
+}
+
+@media only screen and (min-width: 600px) {
+
+  .login-form input,  #noacc, #signUpButton {
+    font-size: 1.0em;
+
+  }
+
+}

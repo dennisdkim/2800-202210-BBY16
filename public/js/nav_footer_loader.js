@@ -15,11 +15,8 @@ loadNavbarFooter();
               document.getElementById("footer").innerHTML = components.footer;
               let profileMenu = document.getElementById("profile-menu");
               profileMenu.classList.add("hidden");
-
-              
-
               document.getElementById("user-avatar").addEventListener("click", function (k) {
-                profileMenu.classList.toggle("hidden");
+              profileMenu.classList.toggle("hidden");
               });
             }
           )

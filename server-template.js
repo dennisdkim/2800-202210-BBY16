@@ -8,6 +8,7 @@ app.use(express.json());
 const fs = require("fs");
 const mysql = require("mysql2");
 const multer = require("multer");
+const { connect } = require("tls");
 
 //Mapping system paths to app's virtual paths
 app.use("/js", express.static("./public/js"));
@@ -140,7 +141,7 @@ app.get("/profile", function (req, res) {
 //loads the admin page//
 app.get("/admin", function (req, res) {
     if (req.session.loggedIn) {
-        let admin = fs.readFileSync("./app/html/admin.html", "utf8");
+        let admin = fs.readFileSync("./app/html/admin_dashboard.html", "utf8");
         res.send(admin);
     } else {
         res.redirect("/");
@@ -249,7 +250,12 @@ app.get("/logout", function (req, res) {
 
 //returns a navbar and footer to the page//
 app.get("/getNavbarFooter", function (req, res) {
-    const navbar = fs.readFileSync("./app/html/components/navbar.html", "utf8");
+    let navbar;
+    if (req.session.admin > 0) {
+        navbar = fs.readFileSync("./app/html/components/navbar_admin.html", "utf8");
+    } else {
+        navbar = fs.readFileSync("./app/html/components/navbar.html", "utf8");
+    }
     const footer = fs.readFileSync("./app/html/components/footer.html", "utf8");
     const components = {
         "navbar": navbar,
@@ -278,7 +284,7 @@ app.get("/getUserInfo", function (req, res) {
     if (fs.existsSync("./public/" + avatarPath)) {
         displayPic = avatarPath;
     } else {
-        displayPic = "/img/userAvatars/default.png"
+        displayPic = "/img/userAvatars/default.png";
     }
     const userData = {
         "userID": req.session.userID,
@@ -293,35 +299,214 @@ app.get("/getUserInfo", function (req, res) {
     res.send(JSON.stringify(userData));
 });
 
-//returns the info for all users to be sent to admin//
-app.get("/getUserTable", function (req, res) {
 
-    //should have a check to make sure user is admin before executing the next code//
-
+//returns the selected user data in the admin console
+app.post("/loadUserData", function (req, res) {
+    let displayPic;
+    const avatarPath = "/img/userAvatars/avatar-user" + req.body.userID + ".png";
+    if (fs.existsSync("./public" + avatarPath)) {
+        displayPic = avatarPath;
+    } else {
+        displayPic = "/img/userAvatars/default.png"
+    }
     const connection = mysql.createConnection({
         host: "localhost",
         user: "root",
         password: "",
         database: "COMP2800"
     });
-
-
-    connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
-
-        if (results.length > 0) {
-            res.send(JSON.stringify(results));
-        } else {
-            res.send({
-                status: "fail",
-                msg: "User account not found."
-            });
+    connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
+        if (error) {
+            console.log(error);
         }
-    })
+        let user = results[0];
+        const userData = {
+            "userID": user.userID,
+            "fname": user.fname,
+            "lname": user.lname,
+            "displayName": user.displayName,
+            "email": user.email,
+            "password": user.password,
+            "admin": user.admin,
+            "avatar": displayPic
+        };
+        connection.end();
+        res.send(JSON.stringify(userData));
+    });
+});
 
+//returns the info for all users to be sent to admin//
+app.get("/getUserTable", function (req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        let user = results[0];
+        const userData = {
+            "userID": user.userID,
+            "fname": user.fname,
+            "lname": user.lname,
+            "displayName": user.displayName,
+            "email": user.email,
+            "password": user.password,
+            "admin": user.admin,
+            "avatar": displayPic
+        };
+        connection.end();
+        res.send(JSON.stringify(userData));
+    });
+});
+
+
+// Delete user from database on admin dashboard - the user must enter the correct display name to confirm the deletion,
+// they also cannot delete themselves which will also protect against deleting the last admin as well (as they can't delete
+// themselves anyway if they're the last admin in the database)
+app.post("/deleteUser", function (req, res) {
+    console.log(req.body);
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE userID = ? AND displayName = ?;', [req.body.userID, req.body.displayName],
+        function (error, results, fields) {
+
+            if (error) {
+                console.log(error);
+            }
+            if (results.length == 0) {
+                connection.end();
+                res.send({ status: "fail", msg: "Incorrect display name" });
+            } else {
+                if (req.session.userID == req.body.userID) {
+                    connection.end();
+                    res.send({ status: "fail", msg: "Cannot delete yourself" });
+                } else {
+                    connection.query('DELETE FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
+                        connection.end();
+                        res.send({ status: "success", msg: "User deleted" });
+                    });
+                }
+            }
+        });
+});
+
+// Adds new user from admin dashboard and checks if display name and email is already in use, before inserting values
+app.post("/addNewUser", function (req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE displayName = ? OR email = ?;', [req.body.displayName, req.body.email],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            let users = results;
+            if (users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if (users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
+                }
+                if (displayNameTaken && emailTaken) {
+                    connection.end();
+                    res.send({ status: "fail", msg: "The display name and email is taken" });
+                } else {
+                    if (displayNameTaken) {
+                        connection.end();
+                        res.send({ status: "fail", msg: "The display name is taken" });
+                    }
+                    if (emailTaken) {
+                        connection.end();
+                        res.send({ status: "fail", msg: "The email is taken" });
+                    }
+                }
+            } else {
+                addUser(req, res, connection);
+            }
+        });
+});
+
+//Adds new user into user table with inputs after checks have been done
+function addUser(req, res, connection) {
+    connection.query('INSERT INTO BBY_16_user(fname, lname, displayName, email, password, admin) VALUES (?, ?, ?, ?, ?, ?);', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.admin],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            connection.end();
+            res.send({ status: "success", msg: "New user added." });
+        });
+}
+
+//retruns the admin dashboard page//
+app.get("/admin_dashboard", function (req, res) {
+    if (req.session.loggedIn && req.session.admin > 0) {
+        res.send(fs.readFileSync("./app/html/admin_dashboard.html", "utf8"));
+    } else {
+        res.redirect("/");
+    }
+});
+
+//returns a list of users to the admin dashboard//
+app.post("/getUserList", function (req, res) {
+    if (req.session.loggedIn && req.session.admin > 0) {
+
+        const connection = mysql.createConnection(
+            {
+                host: "localhost",
+                user: "root",
+                password: "",
+                database: "COMP2800"
+            }
+        );
+
+        let queryFilter = "";
+        if (req.body.query.length > 0) {
+            queryFilter = `WHERE (fname LIKE "%${req.body.query}%" OR lname LIKE "%${req.body.query}%" OR displayName LIKE "%${req.body.query}%")`;
+}
+
+connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${queryFilter};`, function (error, results, fields) {
+
+    if (results.length > 0) {
+        let resultsWithDisplayImages = results.map(user => {
+            let displayPic;
+            const avatarPath = "/img/userAvatars/avatar-user" + user.userID + ".png";
+            if (fs.existsSync("./public" + avatarPath)) {
+                displayPic = avatarPath;
+            } else {
+                displayPic = "/img/userAvatars/default.png"
+            }
+            user.avatar = displayPic;
+            return user;
+        })
+        res.send(JSON.stringify(resultsWithDisplayImages));
+    } else {
+        res.send({ status: "fail", msg: "No user accounts found." });
+    }
+});
+
+    } else {
+    res.send("Admin status required for access.");
+}
 });
 
 // Checks the database for the current user's password to verify identity before making changes
-
 app.post("/verifyPw", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     if (req.body.password1 != req.body.password2) {
@@ -359,7 +544,7 @@ app.post("/verifyPw", function (req, res) {
 });
 
 // Updates the user info and checks if display name and email is already in use, before setting values 
-app.post("/editUserData", function(req, res) {
+app.post("/editUserData", function (req, res) {
     const connection = mysql.createConnection({
         host: "localhost",
         user: "root",
@@ -367,49 +552,49 @@ app.post("/editUserData", function(req, res) {
         database: "COMP2800"
     });
     if (req.body.fname == "" || req.body.lname == "" || req.body.displayName == "" || req.body.email == "" || req.body.password == "") {
-        res.send({status: "fail", msg: "Fields must not be empty!"});
+        res.send({ status: "fail", msg: "Fields must not be empty!" });
     } else {
         connection.query('SELECT * FROM BBY_16_user WHERE userID <> ? AND (displayName = ? OR email = ?);', [req.body.userID, req.body.displayName, req.body.email],
-        function(error, results, fields) {
-            if (error) {
-                console.log(error); 
-            }
-            let users = results;
-            if(users.length > 0) {
-                let displayNameTaken = false;
-                let emailTaken = false;
-                for(let i=0; i < users.length; i++) {
-                    if(users[i].displayName == req.body.displayName) {
-                        displayNameTaken = true;
-                    }
-                    if(users[i].email == req.body.email) {
-                        emailTaken = true;
-                    }
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
                 }
-                if (displayNameTaken && emailTaken) {
-                    connection.end();
-                    res.send({status:"fail", msg: "The display name and email is taken"});
+                let users = results;
+                if (users.length > 0) {
+                    let displayNameTaken = false;
+                    let emailTaken = false;
+                    for (let i = 0; i < users.length; i++) {
+                        if (users[i].displayName == req.body.displayName) {
+                            displayNameTaken = true;
+                        }
+                        if (users[i].email == req.body.email) {
+                            emailTaken = true;
+                        }
+                    }
+                    if (displayNameTaken && emailTaken) {
+                        connection.end();
+                        res.send({ status: "fail", msg: "The display name and email is taken" });
+                    } else {
+                        if (displayNameTaken) {
+                            connection.end();
+                            res.send({ status: "fail", msg: "The display name is taken" });
+                        }
+                        if (emailTaken) {
+                            connection.end();
+                            res.send({ status: "fail", msg: "The email is taken" });
+                        }
+                    }
                 } else {
-                    if (displayNameTaken) {
-                        connection.end();
-                        res.send({status:"fail", msg: "The display name is taken"});
-                    }
-                    if (emailTaken) {
-                        connection.end();
-                        res.send({status:"fail", msg: "The email is taken"});
-                    }
+                    updateChanges(req, res, connection);
                 }
-            } else {
-                updateChanges(req,res,connection);
-            }
-        });
+            });
     }
 });
 
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
 
-    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.userID],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
@@ -430,12 +615,12 @@ function updateChanges(req, res, connection) {
                             console.log(error);
                         }
                         connection.end();
-                        res.send({status: "success", msg: "Changes saved"});
+                        res.send({ status: "success", msg: "Changes saved" });
                     });
-            } 
+            }
             else {
                 connection.end();
-                res.send({status: "success", msg: "Changes saved"});
+                res.send({ status: "success", msg: "Changes saved" });
             }
         });
 }
@@ -449,6 +634,8 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
 let port = 8000;
 // app.listen(port, console.log("Server is running!"));
 app.listen(process.env.PORT || port, function (err) {
+    console.log("Server is running on port" + port);
     if (err)
         console.log(err);
 })
+
