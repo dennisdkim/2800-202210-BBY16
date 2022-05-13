@@ -276,7 +276,7 @@ app.get("/getGreetingName", function (req, res) {
 app.get("/getUserInfo", function (req, res) {
     let displayPic;
     const avatarPath = "/img/userAvatars/avatar-user" + req.session.userID + ".png";
-    if (fs.existsSync(avatarPath)) {
+    if (fs.existsSync("./public/" + avatarPath)) {
         displayPic = avatarPath;
     } else {
         displayPic = "/img/userAvatars/default.png"
