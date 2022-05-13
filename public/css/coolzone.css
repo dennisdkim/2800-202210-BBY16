@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* ----universal selectors---- */
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+}
+
+body{
+  background-color: lightgrey;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.topContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.addyContainer, .descriptionContainer, .amenitiesContainer {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
+}
+
+.amenities{
+  display: flex;
+  flex-direction: column;
+}
+
+.infoContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputContainer, .labelContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-content: stretch;
+  flex-wrap: wrap;
+}
+
+.descInputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+
+.botContainer, .picContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input {
+  display: block;
+  text-align: center;
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: rgb(105,134,157);
+}
+
+#CoolzoneName, #location, #timeTag, #dateTag, #endtimeTag, #enddateTag{
+  width: 80%;
+  margin-bottom: 10px;
+}
+  
+  
+.streetName, .streetNumber, .city {
+  margin: 0px 5px 10px;
+  width: 85%;
+}
+
+#createCoolzone {
+  background-color: rgb(105,134,157);
+  color: rgb(213,220,227);
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: 26px;
+}
+
+#picButton{
+  border-radius: 10px;
+}
+
+span {
+  background-color: rgb(105,134,157);
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+#description {
+  width: 90%;
+  height: 100px;
+}
+
+@media only screen and (min-width: 615px) {
+* {
+  font-size: 24px;
+}
+.container {
+  display: grid;
+  grid-template-columns: 15% 35% 35% 15%;
+  grid-template-rows:50% 50% 20% 20%;
+}
+
+.topContainer {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.addyContainer {
+  grid-column: 2 / 3;
+  grid-row: 2 / 4;
+}
+
+.topContainer {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.descriptionContainer{
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.amenitiesContainer {
+  grid-column: 3 / 4;
+  grid-row: 2 / 4;
+}
+
+.picContainer{
+  grid-column: 3 / 4;
+  grid-row: 4 / 5;
+  align-self: center;
+}
+
+.botContainer{
+  grid-column: 1 / end;
+  grid-row: 5 / end;
+}
+
+}

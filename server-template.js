@@ -128,11 +128,43 @@ app.post("/tryInsert", function (req, res) {
         });
 });
 
+//inputs into the coolzone database table//
+app.post("/tryCoolzone", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    let connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        database: 'COMP2800'
+    });
+    connection.connect();
+    // Checking for coolzone exists
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
+    function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        res.send({ status: "success", msg: "Coolzone created."});
+    });
+    connection.end();
+});
+
 //loads the profile page//
 app.get("/profile", function (req, res) {
     if (req.session.loggedIn) {
         let profile = fs.readFileSync("./app/html/profile.html", "utf8");
         res.send(profile);
+    } else {
+        res.redirect("/");
+    }
+});
+
+//loads the coolzone page//
+app.get("/coolzone", function (req, res) {
+    if (req.session.loggedIn) {
+        let coolzone = fs.readFileSync("./app/html/coolzone.html", "utf8");
+        res.send(coolzone);
     } else {
         res.redirect("/");
     }
@@ -221,6 +253,7 @@ app.post("/login", function (req, res) {
             req.session.fname = results[0].fname;
             req.session.lname = results[0].lname;
             req.session.admin = results[0].admin;
+            req.session.userID = results[0].userID;
             res.send({
                 status: "success",
                 msg: "Logged in.",
@@ -264,6 +297,7 @@ app.get("/getNavbarFooter", function (req, res) {
         "email": req.session.email,
         "name": req.session.fname + " " + req.session.lname
     };
+    res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(components));
 });
 
@@ -634,7 +668,7 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
 let port = 8000;
 // app.listen(port, console.log("Server is running!"));
 app.listen(process.env.PORT || port, function (err) {
-    console.log("Server is running on port" + port);
+    console.log("Server is running on port " + port);
     if (err)
         console.log(err);
 })
