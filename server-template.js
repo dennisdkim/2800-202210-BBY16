@@ -22,7 +22,7 @@ const avatarStorage = multer.diskStorage({
         callback(null, "./public/img/userAvatars/");
     },
     filename: function (req, file, callback) {
-        callback(null, "avatar-user" + req.session.uid + ".png");
+        callback(null, "avatar-user" + req.session.userID + ".png");
     }
 });
 const avatarUpload = multer({
@@ -214,9 +214,10 @@ app.post("/login", function (req, res) {
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             req.session.loggedIn = true;
-            req.session.uid = results[0].userID;
+            req.session.userID = results[0].userID;
             req.session.displayName = results[0].displayName;
             req.session.email = results[0].email;
+            req.session.password = results[0].password;
             req.session.fname = results[0].fname;
             req.session.lname = results[0].lname;
             req.session.admin = results[0].admin;
@@ -271,17 +272,24 @@ app.get("/getGreetingName", function (req, res) {
     res.send(JSON.stringify(greetingName));
 });
 
-//returns any user info that may be of use
+//returns the info of the currently active user in the session
 app.get("/getUserInfo", function (req, res) {
-    const avatarPath = "./public/img/userAvatars/avatar-user" + req.session.uid + ".png";
+    let displayPic;
+    const avatarPath = "/img/userAvatars/avatar-user" + req.session.userID + ".png";
+    if (fs.existsSync(avatarPath)) {
+        displayPic = avatarPath;
+    } else {
+        displayPic = "/img/userAvatars/default.png"
+    }
     const userData = {
-        "userID": req.session.uid,
+        "userID": req.session.userID,
         "fname": req.session.fname,
         "lname": req.session.lname,
         "displayName": req.session.displayName,
         "email": req.session.email,
+        "password": req.session.password,
         "admin": req.session.admin,
-        "avatarExists": fs.existsSync(avatarPath)
+        "avatar": displayPic
     };
     res.send(JSON.stringify(userData));
 });
@@ -330,10 +338,10 @@ app.post("/verifyPw", function (req, res) {
             database: 'COMP2800'
         });
         connection.connect();
-        connection.query('SELECT * FROM BBY_16_user WHERE password = ? AND userID = ?;', [req.body.password1, req.session.uid],
+        connection.query('SELECT * FROM BBY_16_user WHERE password = ? AND userID = ?;', [req.body.password1, req.session.userID],
             function (error, results, fields) {
                 if (error) {
-                    throw error;
+                    console.log(error);
                 }
                 if (results.length == 1) {
                     res.send({
@@ -351,79 +359,84 @@ app.post("/verifyPw", function (req, res) {
     }
 });
 
-// Submit new information to the current user's profile in the database
-app.post("/submit-changes", function (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    let connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'COMP2800'
+// Updates the user info and checks if display name and email is already in use, before setting values 
+app.post("/editUserData", function(req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
     });
-    connection.connect();
-    //Checking to see if new display name is already in use
-    connection.query('SELECT * FROM bby_16_user WHERE displayName = ? AND userID <> ?;', [req.body.displayName, req.session.uid],
-        function (error, results, fields) {
+    if (req.body.fname == "" || req.body.lname == "" || req.body.displayName == "" || req.body.email == "" || req.body.password == "") {
+        res.send({status: "fail", msg: "Fields must not be empty!"});
+    } else {
+        connection.query('SELECT * FROM BBY_16_user WHERE userID <> ? AND (displayName = ? OR email = ?);', [req.body.userID, req.body.displayName, req.body.email],
+        function(error, results, fields) {
             if (error) {
-                throw error;
+                console.log(error); 
             }
-            if (results.length > 0) {
-                connection.end();
-                res.send({
-                    status: "displayFail",
-                    msg: "This display name is taken"
-                });
+            let users = results;
+            if(users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for(let i=0; i < users.length; i++) {
+                    if(users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if(users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
+                }
+                if (displayNameTaken && emailTaken) {
+                    connection.end();
+                    res.send({status:"fail", msg: "The display name and email is taken"});
+                } else {
+                    if (displayNameTaken) {
+                        connection.end();
+                        res.send({status:"fail", msg: "The display name is taken"});
+                    }
+                    if (emailTaken) {
+                        connection.end();
+                        res.send({status:"fail", msg: "The email is taken"});
+                    }
+                }
             } else {
-                //Checking to see if new email is already in use
-                connection.query('SELECT * FROM bby_16_user WHERE email = ? AND userID <> ?;', [req.body.email, req.session.uid],
-                    function (error, results, fields) {
-                        if (error) {
-                            throw error;
-                        }
-                        if (results.length > 0) {
-                            connection.end();
-                            res.send({
-                                status: "emailFail",
-                                msg: "This email is already in use"
-                            });
-                        } else {
-                            updateChanges(req, res, connection);
-                        }
-                    });
+                updateChanges(req,res,connection);
             }
         });
+    }
 });
 
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
-    connection.query('UPDATE bby_16_user SET fname = ?, lname = ?, displayName = ?, email = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.session.uid],
+
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
         function (error, results, fields) {
             if (error) {
-                throw error;
+                console.log(error);
             }
-            req.session.fname = req.body.fname;
-            req.session.lname = req.body.lname;
-            req.session.displayName = req.body.displayName;
-            req.session.email = req.body.email;
-            //Checking to see if the new password field is empty (empty string) - if its empty, don't update, if there is a new pw then update
-            if (req.body.newPw != "") {
-                connection.query('UPDATE BBY_16_user SET password = ? WHERE userID = ?;', [req.body.newPw, req.session.uid],
+            // If the user is editing their own info -> need to update current session info as well
+            if (req.session.userID == req.body.userID) {
+                req.session.fname = req.body.fname;
+                req.session.lname = req.body.lname;
+                req.session.displayName = req.body.displayName;
+                req.session.email = req.body.email;
+                req.session.password = req.body.password;
+            }
+            // This edit can only be done through admin dashboard, and when they submit a change through that the request body will have an additional "admin" key
+            if (("admin" in req.body) == true) {
+                connection.query('UPDATE BBY_16_user SET admin = ? WHERE userID = ?;', [req.body.admin, req.body.userID],
                     function (error, results, fields) {
                         if (error) {
-                            throw error;
+                            console.log(error);
                         }
                         connection.end();
-                        res.send({
-                            status: "success",
-                            msg: "Changes saved"
-                        });
+                        res.send({status: "success", msg: "Changes saved"});
                     });
-            } else {
+            } 
+            else {
                 connection.end();
-                res.send({
-                    status: "success",
-                    msg: "Changes saved"
-                });
+                res.send({status: "success", msg: "Changes saved"});
             }
         });
 }

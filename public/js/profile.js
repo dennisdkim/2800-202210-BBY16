@@ -1,9 +1,11 @@
 'use strict';
 // Fields //
+var currentUID;
 var oldFirstName;
 var oldLastName;
 var oldDisplayName;
 var oldEmail;
+var oldPassword;
 
 // Buttons // 
 let cancelButton = document.getElementById("cancelButton");
@@ -16,6 +18,7 @@ async function loadProfileData() {
       method: 'GET',
     });
     let infoParsed = await profileInfo.json();
+    currentUID = infoParsed.userID;
     document.getElementById("fnameDisplay").innerHTML = infoParsed.fname;
     document.getElementById("fname").value = infoParsed.fname;
     document.getElementById("lnameDisplay").innerHTML = infoParsed.lname;
@@ -23,20 +26,20 @@ async function loadProfileData() {
     document.getElementById("displayNameDisplay").innerHTML = infoParsed.displayName;
     document.getElementById("displayName").value = infoParsed.displayName;
     document.getElementById("email").value = infoParsed.email;
+    document.getElementById("newPassword").value = infoParsed.password;
     //Saving initial values in case changes need to be reverted 
     oldFirstName = infoParsed.fname;
     oldLastName = infoParsed.lname;
     oldDisplayName = infoParsed.displayName;
     oldEmail = infoParsed.email;
+    oldPassword = infoParsed.password;
     //DOM calls to insert display pic into div #avatar if it exists
-    if (infoParsed.avatarExists) {
-      var avatar = document.createElement("img");
-      avatar.src = "/img/userAvatars/avatar-user" + infoParsed.userID + ".png";
-      avatar.setAttribute("alt", "user " + infoParsed.userID +"'s avatar");
-      document.getElementById("profile-info").replaceChild(avatar, document.getElementById("avatar"));
-    }
+    var avatar = document.createElement("img");
+    avatar.src = infoParsed.avatar;
+    avatar.setAttribute("alt", "user " + infoParsed.userID +"'s avatar");
+    document.getElementById("profile-info").replaceChild(avatar, document.getElementById("avatar"));
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 }
 
@@ -61,14 +64,14 @@ async function verifyPassword(passwords) {
     }
     return verified;
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 }
 
 // Submits the new values in the inputs to the database given the display name is unique
 async function submitChanges(newInfo) {
   try {
-    let submitStatus = await fetch("/submit-changes", {
+    let submitStatus = await fetch("/editUserData", {
       method: 'POST',
       headers: {
         "Accept": 'application/json',
@@ -79,7 +82,7 @@ async function submitChanges(newInfo) {
     let parsedResponse = await submitStatus.json();
     document.getElementById("errorMessage").innerHTML = parsedResponse.msg;
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 }
 
@@ -93,11 +96,11 @@ function uploadAvatar(e) {
   fetch("/upload-avatar", {
     method: 'POST',
     body: formData
-  }).catch((err) => { ("Error:", err); });
+  }).catch((error) => { console.log(error); });
 }
 
 // Calling loadProfileData
-loadProfileData();
+window.addEventListener("load", loadProfileData);
 
 // Saves new data onto the database when the "save button" is clicked and passwords match 
 saveButton.addEventListener("click", function (e) {
@@ -107,20 +110,20 @@ saveButton.addEventListener("click", function (e) {
   }).then((verified) => {
     if (verified) {
       let changes = {
+        userID: currentUID,
         fname: document.getElementById("fname").value,
         lname: document.getElementById("lname").value,
         displayName: document.getElementById("displayName").value,
         email: document.getElementById("email").value,
-        newPw: document.getElementById("newPassword").value
+        password: document.getElementById("newPassword").value
       };
       submitChanges(changes);
       if (document.getElementById("avatar-upload").files.length == 1) {
         uploadAvatar(e);
       }
-      document.getElementById("newPassword").value = "";
       document.getElementById("password").value = "";
       document.getElementById("passwordVerify").value = "";
-      loadProfileData;
+      // loadProfileData;
     }
   });
 });
@@ -131,7 +134,7 @@ cancelButton.addEventListener("click", function (e) {
   document.getElementById("lname").value = oldLastName;
   document.getElementById("displayName").value = oldDisplayName;
   document.getElementById("email").value = oldEmail;
-  document.getElementById("newPassword").value = "";
+  document.getElementById("newPassword").value = oldPassword;
   document.getElementById("password").value = "";
   document.getElementById("passwordVerify").value = "";
 });
