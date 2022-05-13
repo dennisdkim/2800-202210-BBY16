@@ -17,6 +17,8 @@ let deleteUserCode = document.getElementById("confirm-delete-code");
 let addUserButton = document.getElementById("addUserButton");
 let editUserResponseMsg = document.getElementById("errorMessage");
 let newUserResponseMsg = document.getElementById("newUser-errorMessage");
+let searchHeader = document.getElementById("users-displayed-indicator");
+let userSearchBar = document.getElementById("search-user-bar");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -40,10 +42,33 @@ function toggleNewUserMenu(input) {
     }
 };
 
+// loads the user list when there is input in the user search bar//
+userSearchBar.addEventListener("input", (e) => {
+loadUserList();
+if(e.currentTarget.value.length == 0) {
+    searchHeader.innerHTML = "Showing all users";
+} else {
+    searchHeader.innerHTML = `Searching users with "${e.currentTarget.value}"`; 
+}
+});
+
 // loads a list of all users//
 function loadUserList() {
+
+    let userList = document.getElementById("user-list-container");
+    while(userList.firstChild) {
+        userList.removeChild(userList.firstChild);
+    };
+
     const option = {
-        method: 'GET',
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+          },
+        body: JSON.stringify({
+            query: document.getElementById("search-user-bar").value,            
+        }) 
     }
 
     fetch("/getUserList", option).then(
@@ -51,7 +76,7 @@ function loadUserList() {
             const result = res.json().then(
                 users => {
 
-                    let userList = document.getElementById("user-list-container");
+                    
 
                     for (let i = 0; i < users.length; i++) {
 
@@ -88,14 +113,14 @@ function loadUserList() {
                                 function (res) {
                                     const userData = res.json().then(
                                         data => {
-                                            console.log(data);
+                                            console.log(data)
                                             document.getElementById("profile-id").innerHTML = data.userID;
                                             document.getElementById("profile-name").innerHTML = data.fname + " " + data.lname;
                                             document.getElementById("displayName").value = data.displayName;
                                             document.getElementById("fname").value = data.fname;
                                             document.getElementById("lname").value = data.lname;
                                             document.getElementById("email").value = data.email;
-                                            //document.getElementById("newPassword").value = data.password;
+                                            document.getElementById("newPassword").value = data.password;
                                             if(data.admin) {
                                                 document.getElementById("adminStatus").checked = true;
                                             } else {
@@ -141,6 +166,7 @@ saveUserInfoButton.addEventListener("click", (e) => {
                 data => {
                     console.log(data.msg);
                     editUserResponseMsg.innerHTML = data.msg;
+                    loadUserList();
                 }
             )
         }
@@ -148,7 +174,7 @@ saveUserInfoButton.addEventListener("click", (e) => {
 
 });
 
-//function for deleting a user//
+//enables the delete user button when the user types in the specific user's username//
 deleteUserCode.addEventListener("input", () => {
     if(deleteUserCode.value == document.getElementById("displayName").value) {
         deleteUserButton.disabled = false;
@@ -180,12 +206,11 @@ deleteUserButton.addEventListener("click", (e)=> {
                 data => {
                     console.log(data.msg);
                     editUserResponseMsg.innerHTML = data.msg;
+                    loadUserList();
                 }
             )
         }
     )
-
-
 })
 
 //function for adding a new user//
@@ -202,10 +227,10 @@ function addUser() {
         body: JSON.stringify({
             displayName: document.getElementById("newUser-DisplayName").value.trim(),
             fname: document.getElementById("newUser-fname").value.trim(),
-            lName: document.getElementById("newUser-lname").value.trim(),
+            lname: document.getElementById("newUser-lname").value.trim(),
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
-            admin: document.getElementById("adminStatus").checked ? 1 : 0,
+            admin: document.getElementById("newUser-adminStatus").checked ? 1 : 0,
         }) 
     }).then(
         function (res) {
@@ -213,6 +238,7 @@ function addUser() {
                 data => {
                     console.log(data);
                     document.getElementById("newUser-errorMessage").innerHTML = data.msg;
+                    loadUserList();
                 }
             )
         }
