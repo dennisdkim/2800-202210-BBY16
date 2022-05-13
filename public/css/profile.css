@@ -24,7 +24,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
 }
@@ -37,12 +37,30 @@ body {
 #profile-info {
   text-align: center;
   font-size: 1.0em;
+  height: 30%;
+}
+
+#profile-form {
+  height: 70%;
+  width: 80%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#profile-form > div {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
 }
 
 .input-field {
   display: flex;
   justify-content: space-around;
-  margin: 8px auto auto auto;
+
   line-height: 30px;
   font-size: 10pt;
 }
@@ -52,6 +70,7 @@ input {
   border-radius: 5px;
   border: #69869D 1px solid;
 }
+
 
 #avatar-upload {
   border: #69869D 2px solid;
@@ -65,16 +84,18 @@ input {
 #buttons {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  margin-top: 10px;
+  justify-content: space-between;
+  margin-top: 40px;
 }
 
 .button {
-  height: 30px;
+  height: 35px;
+  width: 100px;
   border-radius: 5px;
   background-color: #728EA5;
   border-width: 0;
   color: white;
+  margin: 20px 30px;
 }
 
 .button:hover {
@@ -83,7 +104,7 @@ input {
 
 #pwAuth {
   margin-top: 10px;
-  width: 30em;
+  width: 350px;
   font-size: 9pt;
   display: flex;
   flex-direction: column;

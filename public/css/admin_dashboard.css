@@ -69,13 +69,19 @@ body {
     height: 50px;
     min-width: 80px;
     max-width: 80px;
-    background-color: white;
+    background-color: #69869D;
     margin-right: 20px;
     cursor: pointer;
+    color: white;
+}
+
+.active {
+    background-color: white;
+    color: #69869D;
 }
 
 #new-user-button:hover {
-    background-color: #e4eaf0;
+    background-color: #69869d94;
 }
 
 #user-list-container {
@@ -130,6 +136,7 @@ body {
     left: 0;
     background-color: white;
 
+
 }
 
 .profile-form {
@@ -144,6 +151,20 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 15;
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 40px;
+    width: 40px;
+    background-color: #69869D;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 15px;
+    cursor: pointer;
 }
 
 .form-title {
