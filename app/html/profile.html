@@ -1,45 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
+  <link rel="stylesheet" href="/css/profile.css">
+  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
   <title>Profile</title>
 </head>
+
 <body>
-  <div>
-    <h1>Profile page!</h1>
+  <div id="navbar"></div>
+  <div id="content">
+    <div id="profile-info">
+      <div id="avatar"></div>
+      <h4><span id="fnameDisplay"></span> <span id="lnameDisplay"></span></h4>
+      <h4 id="displayNameDisplay"></h4>
+    </div>
+    <div id="profile-form">
+      <div class="input-field">
+        <p>Username</p>
+        <input type="text" id="displayName" name="displayName" placeholder="Username" />
+      </div>
+      <div class="input-field">
+        <p>First Name</p>
+        <input type="text" id="fname" name="fname" placeholder="First Name" />
+      </div>
+      <div class="input-field">
+        <p>Last Name</p>
+        <input type="text" id="lname" name="lname" placeholder="Last Name" />
+      </div>
+      <div class="input-field">
+        <p>Email</p>
+        <input type="email" id="email" name="email" placeholder="Email" />
+      </div>
+      <div class="input-field">
+        <p>Password</p>
+        <input type="password" id="newPassword" name="password" placeholder="New Password"
+          pattern="[A-Z0-9a-z]{8,20}" />
+      </div>
+      <input id="avatar-upload" type="file" class="input-field" value="Upload Image"
+        accept="image/png, image/gif, image/jpeg" placeholder="" />
+      <div id="errorMessage"></div>
+      <div id="pwAuth">
+        <p>For security purposes, please confirm your current password to confirm changes:</p>
+        <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
+          required="required" class="input-field"/>
+        <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
+          pattern="[A-Z0-9a-z]{8,20}" required="required" class="input-field"/>
+        <div id="pwMessage"></div>
+      </div>
+      <div id="buttons">
+        <button type="button" id="cancelButton" class="button">Cancel</button>
+        <button type="button" id="saveButton" class="button">Save</button>
+      </div>
+    </div>
   </div>
-  <div>
-    <ul>
-      <li>
-        <label for="name">Name: </label>
-        <input type="text">
-      </li>
-      <li>
-        <label for="username">Username: </label>
-        <input type="text" id="username">
-      </li>
-      <li>
-        <label for="password">Password: </label>
-        <input type="password" id="password">
-      </li>
-    </ul>
-  </div>
-  <div>
-    <button type="reset"> Cancel </button>
-    <button type="submit"> Save </button>
-  </div>
-  <div>
-    <button type="button" id="logout">Logout</button>
-  </div>
-    <div class="navbar">
-    <a class="navButton" href="./home.html">Home</a>
-    <a class="navButton" href="./settings.html">Settings</a>
-    <a class="navButton" href="./profile.html">Profile</a>
-    <a class="navButton" href="./timeline.html">Timeline</a>
-    <a class="navButton" href="./map.html">Map</a>
-  </div>
+  <div id="footer"></div>
+
+  <script src="/js/profile.js"></script>
+  <script src="/js/nav_footer_loader.js"></script>
 </body>
+
 </html>

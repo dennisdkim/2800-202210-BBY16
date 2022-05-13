@@ -1,4 +1,3 @@
-
 'use strict';
 
 //Requires
@@ -8,6 +7,7 @@ const app = express();
 app.use(express.json());
 const fs = require("fs");
 const mysql = require("mysql2");
+const multer = require("multer");
 
 //Mapping system paths to app's virtual paths
 app.use("/js", express.static("./public/js"));
@@ -15,14 +15,25 @@ app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
 
-app.use(session(
-    {
-        secret: "abc123bby16project",
-        name: "weCoolSessionID",
-        resave: false,
-        saveUninitialized: true
-    })
-);
+//Storage for user uploaded files
+const avatarStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./public/img/userAvatars/");
+    },
+    filename: function (req, file, callback) {
+        callback(null, "avatar-user" + req.session.userID + ".png");
+    }
+});
+const avatarUpload = multer({
+    storage: avatarStorage
+});
+
+app.use(session({
+    secret: "abc123bby16project",
+    name: "weCoolSessionID",
+    resave: false,
+    saveUninitialized: true
+}));
 
 //Root route//
 app.get("/", function (req, res) {
@@ -37,13 +48,13 @@ app.get("/", function (req, res) {
 });
 
 //creates a user table for database//
-app.get("/tryLogin", function (req, res){
-// Let's build the DB if it doesn't exist
+app.get("/tryLogin", function (req, res) {
+    // Let's build the DB if it doesn't exist
     const connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      multipleStatements: true
+        host: 'localhost',
+        user: 'root',
+        password: '',
+        multipleStatements: true
     });
 
     const createDBAndTables = `CREATE DATABASE IF NOT EXISTS COMP2800;
@@ -62,8 +73,8 @@ app.get("/tryLogin", function (req, res){
         if (error) {
             console.log(error);
         }
-      });
-      connection.end();
+    });
+    connection.end();
 });
 
 //inputs into the user database table//
@@ -86,22 +97,31 @@ app.post("/tryInsert", function (req, res) {
             // If account with email or display name exists, then do not create account and send message
             if (results.length > 0) {
                 if (results[0].email == req.body.email) {
-                    res.send({status: "emailExists", msg: "Email is in use"});
+                    res.send({
+                        status: "emailExists",
+                        msg: "Email is in use"
+                    });
                 } else {
-                    res.send({status: "displayExists", msg: "Display name is in use"});
+                    res.send({
+                        status: "displayExists",
+                        msg: "Display name is in use"
+                    });
                 }
                 connection.end();
             }
             // If account with email does not exist, create new account with email
             else {
                 connection.query('INSERT INTO BBY_16_user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
-                [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
-                function (error, results, fields) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    res.send({ status: "success", msg: "Account created."});
-                });
+                    [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        res.send({
+                            status: "success",
+                            msg: "Account created."
+                        });
+                    });
                 connection.end();
             }
         });
@@ -159,15 +179,15 @@ app.get("/map", function (req, res) {
 
 //loads the signup page//
 app.get("/signUp", function (req, res) {
-        let doc = fs.readFileSync("./app/html/signup.html", "utf8");
-        res.send(doc);
+    let doc = fs.readFileSync("./app/html/signup.html", "utf8");
+    res.send(doc);
 });
 
 //loads the home page//
 app.get("/home", function (req, res) {
     if (req.session.loggedIn && req.session.admin == 0) {
         res.send(fs.readFileSync("./app/html/home.html", "utf8"));
-    } else if (req.session.loggedIn && req.session.admin > 0){
+    } else if (req.session.loggedIn && req.session.admin > 0) {
         res.send(fs.readFileSync("./app/html/admin.html", "utf8"))
     } else {
         res.redirect("/");
@@ -175,27 +195,30 @@ app.get("/home", function (req, res) {
 });
 
 //user login verification//
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 
 //Verifies user credentials exist within db. 
 //If credentials are correct, user is logged in.
 app.post("/login", function (req, res) {
-    const connection = mysql.createConnection(
-        {
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "COMP2800"
-        }
-    );
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
 
     //select statement for all tuples matching both provided email AND password. Should return 0-1 results.
     connection.query(`SELECT * FROM BBY_16_user WHERE email = "${req.body.email}" AND password = "${req.body.password}";`, function (error, results, fields) {
         if (results.length == 1) {
             req.session.loggedIn = true;
+            req.session.userID = results[0].userID;
             req.session.displayName = results[0].displayName;
             req.session.email = results[0].email;
-            req.session.name = results[0].fname + " " + results[0].lname;
+            req.session.password = results[0].password;
+            req.session.fname = results[0].fname;
+            req.session.lname = results[0].lname;
             req.session.admin = results[0].admin;
             res.send({
                 status: "success",
@@ -203,7 +226,10 @@ app.post("/login", function (req, res) {
                 admin: req.session.admin
             });
         } else {
-            res.send({ status: "fail", msg: "User account not found." });
+            res.send({
+                status: "fail",
+                msg: "User account not found."
+            });
         }
     })
 })
@@ -230,7 +256,7 @@ app.get("/getNavbarFooter", function (req, res) {
         "footer": footer,
         "displayName": req.session.displayName,
         "email": req.session.email,
-        "name": req.session.name
+        "name": req.session.fname + " " + req.session.lname
     };
     res.send(JSON.stringify(components));
 });
@@ -240,9 +266,31 @@ app.get("/getGreetingName", function (req, res) {
     const greetingName = {
         "displayName": req.session.displayName,
         "email": req.session.email,
-        "name": req.session.name
+        "name": req.session.fname + " " + req.session.lname
     };
     res.send(JSON.stringify(greetingName));
+});
+
+//returns the info of the currently active user in the session
+app.get("/getUserInfo", function (req, res) {
+    let displayPic;
+    const avatarPath = "/img/userAvatars/avatar-user" + req.session.userID + ".png";
+    if (fs.existsSync("./public/" + avatarPath)) {
+        displayPic = avatarPath;
+    } else {
+        displayPic = "/img/userAvatars/default.png"
+    }
+    const userData = {
+        "userID": req.session.userID,
+        "fname": req.session.fname,
+        "lname": req.session.lname,
+        "displayName": req.session.displayName,
+        "email": req.session.email,
+        "password": req.session.password,
+        "admin": req.session.admin,
+        "avatar": displayPic
+    };
+    res.send(JSON.stringify(userData));
 });
 
 //returns the info for all users to be sent to admin//
@@ -250,27 +298,154 @@ app.get("/getUserTable", function (req, res) {
 
     //should have a check to make sure user is admin before executing the next code//
 
-    const connection = mysql.createConnection(
-        {
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "COMP2800"
-        }
-    );
-    
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+
 
     connection.query(`SELECT * FROM BBY_16_user;`, function (error, results, fields) {
 
         if (results.length > 0) {
             res.send(JSON.stringify(results));
         } else {
-            res.send({ status: "fail", msg: "User account not found." });
+            res.send({
+                status: "fail",
+                msg: "User account not found."
+            });
         }
     })
 
 });
 
+// Checks the database for the current user's password to verify identity before making changes
+
+app.post("/verifyPw", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    if (req.body.password1 != req.body.password2) {
+        res.send({
+            status: "fail",
+            msg: "Passwords do not match"
+        });
+    } else {
+        let connection = mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '',
+            database: 'COMP2800'
+        });
+        connection.connect();
+        connection.query('SELECT * FROM BBY_16_user WHERE password = ? AND userID = ?;', [req.body.password1, req.session.userID],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                if (results.length == 1) {
+                    res.send({
+                        status: "success",
+                        msg: "Success!"
+                    });
+                } else {
+                    res.send({
+                        status: "fail",
+                        msg: "Wrong password"
+                    });
+                }
+            });
+        connection.end();
+    }
+});
+
+// Updates the user info and checks if display name and email is already in use, before setting values 
+app.post("/editUserData", function(req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    if (req.body.fname == "" || req.body.lname == "" || req.body.displayName == "" || req.body.email == "" || req.body.password == "") {
+        res.send({status: "fail", msg: "Fields must not be empty!"});
+    } else {
+        connection.query('SELECT * FROM BBY_16_user WHERE userID <> ? AND (displayName = ? OR email = ?);', [req.body.userID, req.body.displayName, req.body.email],
+        function(error, results, fields) {
+            if (error) {
+                console.log(error); 
+            }
+            let users = results;
+            if(users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for(let i=0; i < users.length; i++) {
+                    if(users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if(users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
+                }
+                if (displayNameTaken && emailTaken) {
+                    connection.end();
+                    res.send({status:"fail", msg: "The display name and email is taken"});
+                } else {
+                    if (displayNameTaken) {
+                        connection.end();
+                        res.send({status:"fail", msg: "The display name is taken"});
+                    }
+                    if (emailTaken) {
+                        connection.end();
+                        res.send({status:"fail", msg: "The email is taken"});
+                    }
+                }
+            } else {
+                updateChanges(req,res,connection);
+            }
+        });
+    }
+});
+
+//Update all fields with the valid inputs after checks have been done
+function updateChanges(req, res, connection) {
+
+    connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password ,req.body.userID],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            // If the user is editing their own info -> need to update current session info as well
+            if (req.session.userID == req.body.userID) {
+                req.session.fname = req.body.fname;
+                req.session.lname = req.body.lname;
+                req.session.displayName = req.body.displayName;
+                req.session.email = req.body.email;
+                req.session.password = req.body.password;
+            }
+            // This edit can only be done through admin dashboard, and when they submit a change through that the request body will have an additional "admin" key
+            if (("admin" in req.body) == true) {
+                connection.query('UPDATE BBY_16_user SET admin = ? WHERE userID = ?;', [req.body.admin, req.body.userID],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        connection.end();
+                        res.send({status: "success", msg: "Changes saved"});
+                    });
+            } 
+            else {
+                connection.end();
+                res.send({status: "success", msg: "Changes saved"});
+            }
+        });
+}
+
+// Uploads avatar image to file system
+app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
+    req.file.filename = req.file.originalname;
+});
+
+//Run server on port 8000
 let port = 8000;
 // app.listen(port, console.log("Server is running!"));
 app.listen(process.env.PORT || port, function (err) {

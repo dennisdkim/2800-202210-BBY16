@@ -1,0 +1,95 @@
+/* ----import font---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* ---- Universal Selectors ---- */
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Page Sizing ---- */
+body {
+  min-width: 400px;
+  width: 100vw;
+  height: 100vh;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+/* ---- Content window ---- */
+#content {
+  min-height: 500px;
+  height: calc(100vh - 180px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#avatar {
+  max-width: 140px;
+  clip-path: circle(40% at center);
+}
+
+#profile-info {
+  text-align: center;
+  font-size: 1.0em;
+}
+
+.input-field {
+  display: flex;
+  justify-content: space-around;
+  margin: 8px auto auto auto;
+  line-height: 30px;
+  font-size: 10pt;
+}
+
+input {
+  height: 30px;
+  border-radius: 5px;
+  border: #69869D 1px solid;
+}
+
+#avatar-upload {
+  border: #69869D 2px solid;
+  height: 40px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.button {
+  height: 30px;
+  border-radius: 5px;
+  background-color: #728EA5;
+  border-width: 0;
+  color: white;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+#pwAuth {
+  margin-top: 10px;
+  width: 30em;
+  font-size: 9pt;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#errorMessage {
+  text-align: center;
+}
