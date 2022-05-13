@@ -10,11 +10,12 @@
 #navbar-desktop-links {
     
     height: 100px;
-    width: 500px;
+    width: 950px;
     display: none;
     align-items: center;
     margin-left: 20px;
-    
+    border: red 1px solid;
+    margin-right: 20px;
 }
 
 #navbar-desktop-links img {
@@ -25,10 +26,11 @@
 
 #navbar-desktop-links a {
     text-decoration: none;
-    margin-left: 30px;
+    margin-left: 40px;
     margin-top: 10px;
     color: black;
     opacity: 0.5;
+    white-space: nowrap;
 }
 
 #navbar-desktop-links a:hover {
@@ -57,9 +59,9 @@
 }
 
 #profile-menu {
-    height: 200px;
-    width: 300px;
+    width: 100%;
     background: white;
+    border-bottom: black 1px solid;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -69,7 +71,10 @@
     right: 0;
     transition: 0.5s;
     z-index: 50;
+    padding-bottom: 30px;
 }
+
+
 
 #profile-menu.hidden {
     display: none;
@@ -77,10 +82,16 @@
 
 #profile-menu a {
     width: 70%;
-    border: black 1px solid;
+    border: #69869D 1px solid;
     padding: 20px 20px;
     border-radius: 10px;
-    
+    margin: 10px 0;
+    color: black;
+    text-decoration: none;
+}
+
+.extra-links {
+    display: block;
 }
 
 @media screen and (min-width: 600px) {
@@ -89,5 +100,12 @@
     }
     #navbar-desktop-links {
         display: flex;
+    }
+
+    #profile-menu {
+        width: 300px;
+    }
+    .extra-links {
+        display: none;
     }
 }

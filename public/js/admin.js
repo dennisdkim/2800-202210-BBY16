@@ -19,6 +19,7 @@ let editUserResponseMsg = document.getElementById("errorMessage");
 let newUserResponseMsg = document.getElementById("newUser-errorMessage");
 let searchHeader = document.getElementById("users-displayed-indicator");
 let userSearchBar = document.getElementById("search-user-bar");
+let clearFieldButton = document.getElementById("clearButton");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -41,6 +42,15 @@ function toggleNewUserMenu(input) {
         newUserMenu.hidden = true;
     }
 };
+
+// clears the fields in the new user menu. //
+clearFieldButton.addEventListener("click", () => {
+    document.querySelectorAll(".newUser-input").forEach( input => {
+        input.value = ""; 
+        document.getElementById("newUser-adminStatus").checked = false;
+    });
+
+})
 
 // loads the user list when there is input in the user search bar//
 userSearchBar.addEventListener("input", (e) => {
@@ -75,7 +85,7 @@ function loadUserList() {
         function (res) {
             const result = res.json().then(
                 users => {
-
+                    
                     
 
                     for (let i = 0; i < users.length; i++) {
@@ -84,13 +94,14 @@ function loadUserList() {
                         let newUser = document.createElement("button");
                         newUser.classList.add("user");
                         newUser.value = users[i].userID;
-                        const defaultProfilePic = `<img src="/img/userAvatars/default.png" alt="profile">`;
+                        const defaultProfilePic = `<img src=${users[i].avatar} alt="profile pic">`;
                         const userInfo = `<div class="user-names"><div class="user-uid"></div> <div class="user-name"></div> <div class="user-displayname"></div></div>`;
                         newUser.innerHTML = defaultProfilePic + userInfo;
                         newUser.querySelector(".user-uid").innerHTML = "ID: " + users[i].userID;
                         newUser.querySelector(".user-name").innerHTML = "Name: " + users[i].fname + " " + users[i].lname;
                         newUser.querySelector(".user-displayname").innerHTML = "User: " + users[i].displayName;
                         userList.appendChild(newUser);
+                        console.log(JSON.stringify(users[i]));
 
                     }
 
@@ -126,6 +137,7 @@ function loadUserList() {
                                             } else {
                                                 document.getElementById("adminStatus").checked = false;
                                             }
+                                            document.getElementById("profile-form-pic").src = data.avatar;
                                             saveUserInfoButton.value = data.userID;
                                             deleteUserButton.value = data.userID;
                                         }
