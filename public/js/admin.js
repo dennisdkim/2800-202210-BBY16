@@ -184,11 +184,11 @@ deleteUserButton.addEventListener("click", (e)=> {
 
 
 })
-/*
+
 //function for adding a new user//
 function addUser() {
     
-    fetch("/loadUserData", {
+    fetch("/addNewUser", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
@@ -197,7 +197,7 @@ function addUser() {
         body: JSON.stringify({
             displayName: document.getElementById("newUser-DisplayName").value.trim(),
             fname: document.getElementById("newUser-fname").value.trim(),
-            lName: document.getElementById("newUser-lname").value.trim(),
+            lname: document.getElementById("newUser-lname").value.trim(),
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
             admin: document.getElementById("").value,
@@ -213,4 +213,3 @@ function addUser() {
     )
     
 }
-*/

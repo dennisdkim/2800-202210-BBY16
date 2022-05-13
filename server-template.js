@@ -295,7 +295,6 @@ app.post("/editUserData", function(req, res) {
             if (error) {
                 console.log(error); 
             }
-            console.log(req.body);
             let users = results;
             if(users.length > 0) {
                 let displayNameTaken = false;
@@ -359,6 +358,9 @@ function updateChanges(req, res, connection) {
         });
 }
 
+// Delete user from database on admin dashboard - the user must enter the correct display name to confirm the deletion,
+// they also cannot delete themselves which will also protect against deleting the last admin as well (as they can't delete
+// themselves anyway if they're the last admin in the database)
 app.post("/deleteUser", function(req, res) {
     console.log(req.body);
     const connection = mysql.createConnection({
@@ -390,15 +392,59 @@ app.post("/deleteUser", function(req, res) {
         });
 });
 
-// Helper function get get admin user counts from database
-function getAdminCount(connection){
-    connection.query('SELECT * FROM BBY_16_user WHERE admin = 1;',
-        function (error, results, fields){
+// Adds new user from admin dashboard and checks if display name and email is already in use, before inserting values 
+app.post("/addNewUser", function(req, res) {
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "COMP2800"
+    });
+    connection.query('SELECT * FROM BBY_16_user WHERE displayName = ? OR email = ?;', [req.body.displayName, req.body.email],
+        function(error, results, fields) {
+            if (error) {
+                console.log(error); 
+            }
+            let users = results;
+            if(users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for(let i=0; i < users.length; i++) {
+                    if(users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if(users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
+                }
+                if (displayNameTaken && emailTaken) {
+                    connection.end();
+                    res.send({status:"fail", msg: "The display name and email is taken"});
+                } else {
+                    if (displayNameTaken) {
+                        connection.end();
+                        res.send({status:"fail", msg: "The display name is taken"});
+                    }
+                    if (emailTaken) {
+                        connection.end();
+                        res.send({status:"fail", msg: "The email is taken"});
+                    }
+                }
+            } else {
+                addUser(req,res,connection);
+            }
+        });
+});
+
+//Adds new user into user table with inputs after checks have been done
+function addUser(req, res, connection) {
+    connection.query('INSERT INTO BBY_16_user(fname, lname, displayName, email, password, admin) VALUES (?, ?, ?, ?, ?, admin);', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.admin],
+        function (error, results, fields) {
             if (error) {
                 console.log(error);
             }
-            console.log(results.length);
-            return results.length;
+            connection.end();
+            res.send({status: "success", msg: "Changes saved"});
         });
 }
 
