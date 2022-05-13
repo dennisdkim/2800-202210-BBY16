@@ -5,7 +5,8 @@ let map;
 
 // navigator.geolocation parameter to enable high accuracy tracking
 var options = {
-  enableHighAccuracy: true
+  enableHighAccuracy: true,
+  timeout: 10000
 };
 
 // displays error if navigator.geolocation catches an error
@@ -34,6 +35,7 @@ function initMap() {
           map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
         }
       );
+      map.setZoom(14);
     });
 
     const radiusInput = document.createElement("input");
