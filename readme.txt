@@ -4,4 +4,4 @@ Team Members:
 [Buck Sin], [A00805677], [B], [May 06]
 [Doohyung Kim], [A01268522], [C], [May 06]
 [Lester Shun], [A01312027], [B], [May 06]
-This assignment is [100]% complete.
+This assignment (Milestone 2) is [100]% complete.

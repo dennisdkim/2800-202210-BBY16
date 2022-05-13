@@ -2,10 +2,10 @@
   "name": "comp2800bby16",
   "version": "1.0.0",
   "description": "\"# COMP2800BBY16\"",
-  "main": "index.js",
+  "main": "wecool-server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server-template.js"
+    "start": "node wecool-server"
 
   },
   "repository": {
