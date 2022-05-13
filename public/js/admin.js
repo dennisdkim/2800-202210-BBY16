@@ -20,6 +20,7 @@ let newUserResponseMsg = document.getElementById("newUser-errorMessage");
 let searchHeader = document.getElementById("users-displayed-indicator");
 let userSearchBar = document.getElementById("search-user-bar");
 let clearFieldButton = document.getElementById("clearButton");
+let revertChangesButton = document.getElementById("revertButton");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -45,8 +46,8 @@ function toggleNewUserMenu(input) {
 
 // clears the fields in the new user menu. //
 clearFieldButton.addEventListener("click", () => {
-    document.querySelectorAll(".newUser-input").forEach( input => {
-        input.value = ""; 
+    document.querySelectorAll(".newUser-input").forEach(input => {
+        input.value = "";
         document.getElementById("newUser-adminStatus").checked = false;
     });
 
@@ -54,19 +55,19 @@ clearFieldButton.addEventListener("click", () => {
 
 // loads the user list when there is input in the user search bar//
 userSearchBar.addEventListener("input", (e) => {
-loadUserList();
-if(e.currentTarget.value.length == 0) {
-    searchHeader.innerHTML = "Showing all users";
-} else {
-    searchHeader.innerHTML = `Searching users with "${e.currentTarget.value}"`; 
-}
+    loadUserList();
+    if (e.currentTarget.value.length == 0) {
+        searchHeader.innerHTML = "Showing all users";
+    } else {
+        searchHeader.innerHTML = `Searching users with "${e.currentTarget.value}"`;
+    }
 });
 
 // loads a list of all users//
 function loadUserList() {
 
     let userList = document.getElementById("user-list-container");
-    while(userList.firstChild) {
+    while (userList.firstChild) {
         userList.removeChild(userList.firstChild);
     };
 
@@ -75,18 +76,18 @@ function loadUserList() {
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
-          },
+        },
         body: JSON.stringify({
-            query: document.getElementById("search-user-bar").value,            
-        }) 
+            query: document.getElementById("search-user-bar").value,
+        })
     }
 
     fetch("/getUserList", option).then(
         function (res) {
             const result = res.json().then(
                 users => {
-                    
-                    
+
+
 
                     for (let i = 0; i < users.length; i++) {
 
@@ -112,39 +113,44 @@ function loadUserList() {
                             console.log(e.currentTarget.value);
                             toggleEditUserMenu(1);
                             clearDeleteUserCode();
-                            
+
                             fetch("/loadUserData", {
                                 method: 'POST',
                                 headers: {
                                     "Accept": 'application/json',
                                     "Content-Type": 'application/json'
-                                  },
-                                body: JSON.stringify({userID: e.currentTarget.value}) 
+                                },
+                                body: JSON.stringify({ userID: e.currentTarget.value })
                             }).then(
                                 function (res) {
                                     const userData = res.json().then(
                                         data => {
                                             console.log(data)
-                                            document.getElementById("profile-id").innerHTML = data.userID;
-                                            document.getElementById("profile-name").innerHTML = data.fname + " " + data.lname;
-                                            document.getElementById("displayName").value = data.displayName;
-                                            document.getElementById("fname").value = data.fname;
-                                            document.getElementById("lname").value = data.lname;
-                                            document.getElementById("email").value = data.email;
-                                            document.getElementById("newPassword").value = data.password;
-                                            if(data.admin) {
-                                                document.getElementById("adminStatus").checked = true;
-                                            } else {
-                                                document.getElementById("adminStatus").checked = false;
+                                            fillInForm();
+                                            function fillInForm() {
+                                                document.getElementById("profile-id").innerHTML = data.userID;
+                                                document.getElementById("profile-name").innerHTML = data.fname + " " + data.lname;
+                                                document.getElementById("displayName").value = data.displayName;
+                                                document.getElementById("fname").value = data.fname;
+                                                document.getElementById("lname").value = data.lname;
+                                                document.getElementById("email").value = data.email;
+                                                document.getElementById("newPassword").value = data.password;
+                                                if (data.admin) {
+                                                    document.getElementById("adminStatus").checked = true;
+                                                } else {
+                                                    document.getElementById("adminStatus").checked = false;
+                                                }
                                             }
+
                                             document.getElementById("profile-form-pic").src = data.avatar;
                                             saveUserInfoButton.value = data.userID;
                                             deleteUserButton.value = data.userID;
+                                            revertChangesButton.addEventListener("click", fillInForm);
                                         }
                                     )
                                 }
                             )
-                            
+
                         });
                     }
                 });
@@ -161,7 +167,7 @@ saveUserInfoButton.addEventListener("click", (e) => {
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
-          },
+        },
         body: JSON.stringify({
             userID: e.currentTarget.value,
             displayName: document.getElementById("displayName").value.trim(),
@@ -170,8 +176,8 @@ saveUserInfoButton.addEventListener("click", (e) => {
             email: document.getElementById("email").value.trim(),
             password: document.getElementById("newPassword").value.trim(),
             admin: document.getElementById("adminStatus").checked ? 1 : 0,
-            
-        }) 
+
+        })
     }).then(
         function (res) {
             const userData = res.json().then(
@@ -188,7 +194,7 @@ saveUserInfoButton.addEventListener("click", (e) => {
 
 //enables the delete user button when the user types in the specific user's username//
 deleteUserCode.addEventListener("input", () => {
-    if(deleteUserCode.value == document.getElementById("displayName").value) {
+    if (deleteUserCode.value == document.getElementById("displayName").value) {
         deleteUserButton.disabled = false;
     } else {
         deleteUserButton.disabled = true;
@@ -196,22 +202,22 @@ deleteUserCode.addEventListener("input", () => {
 })
 
 //resets the delete user code field//
-function clearDeleteUserCode () {
+function clearDeleteUserCode() {
     deleteUserCode.value = "";
     deleteUserButton.disabled = true;
 }
 
 //initiates the user delete function//
-deleteUserButton.addEventListener("click", (e)=> {
+deleteUserButton.addEventListener("click", (e) => {
     console.log(e.currentTarget.value);
-    
+
     fetch("/deleteUser", {
         method: "POST",
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify({userID: e.currentTarget.value, displayName: document.getElementById("confirm-delete-code").value})
+        body: JSON.stringify({ userID: e.currentTarget.value, displayName: document.getElementById("confirm-delete-code").value })
     }).then(
         function (res) {
             const userData = res.json().then(
@@ -229,13 +235,13 @@ deleteUserButton.addEventListener("click", (e)=> {
 addUserButton.addEventListener("click", addUser)
 
 function addUser() {
-    
+
     fetch("/addNewUser", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
-          },
+        },
         body: JSON.stringify({
             displayName: document.getElementById("newUser-DisplayName").value.trim(),
             fname: document.getElementById("newUser-fname").value.trim(),
@@ -243,7 +249,7 @@ function addUser() {
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
             admin: document.getElementById("newUser-adminStatus").checked ? 1 : 0,
-        }) 
+        })
     }).then(
         function (res) {
             const userData = res.json().then(

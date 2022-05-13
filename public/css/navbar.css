@@ -1,3 +1,10 @@
+/* ----import font---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+    font-family: 'Inter', sans-serif;
+}
+
 #navbar-component {
     height: 100px;
     width: 100%;
@@ -5,6 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: rgba(0,0,0,0.1) 1px solid;
 }
 
 #navbar-desktop-links {
@@ -14,7 +22,6 @@
     display: none;
     align-items: center;
     margin-left: 20px;
-    border: red 1px solid;
     margin-right: 20px;
 }
 
@@ -47,6 +54,10 @@
     opacity: 0.5;
 }
 
+#current-page {
+    font-weight: 400;
+}
+
 #user-avatar {
     margin-right: 20px;
     z-index: 50;
@@ -61,7 +72,7 @@
 #profile-menu {
     width: 100%;
     background: white;
-    border-bottom: black 1px solid;
+    border-bottom: rgba(0,0,0,0.1) 1px solid;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -72,6 +83,8 @@
     transition: 0.5s;
     z-index: 50;
     padding-bottom: 30px;
+    padding-top: 20px;
+
 }
 
 
@@ -104,8 +117,14 @@
 
     #profile-menu {
         width: 300px;
+        border-left: rgba(0,0,0,0.1) 1px solid;
+        border-bottom-left-radius: 10px;
     }
     .extra-links {
         display: none;
+    }
+
+    #current-page {
+    display: none;
     }
 }

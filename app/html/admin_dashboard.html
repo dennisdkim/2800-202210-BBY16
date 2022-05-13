@@ -13,7 +13,9 @@
 <body>
     <div id="navbar"></div>
     <div id="content">
-        <div id="user-list-header"><h4 id="users-displayed-indicator">Showing all users</h4><button id="new-user-button">Add New User</button></div>
+        <div id="user-list-header">
+            <h4 id="users-displayed-indicator">Showing all users</h4><button id="new-user-button">Add New User</button>
+        </div>
         <div id="search-container">
             <input type="text" id="search-user-bar" placeholder="Search User">
         </div>
@@ -51,19 +53,19 @@
                 </div>
                 <div class="input-field">
                     <p>Administrator</p>
-                    <input type="checkbox" id="adminStatus" name="isAdmin" 
-                        />
+                    <input type="checkbox" id="adminStatus" name="isAdmin" />
                 </div>
-                
+
                 <div id="delete-user-inputs">
                     <input type="text" id="confirm-delete-code" placeholder="Enter Username to Delete">
                     <button type="button" id="deleteButton" disabled>Delete User</button>
-                
+
                 </div>
-                <button type="button" class="profile-button" id="cancelButton"
-                onclick=toggleEditUserMenu(0)>Close</button>
-                <button type="button" class="profile-button" id="saveButton">Save Changes</button>
-                <div id="errorMessage"></div>
+                <div class="profile-buttons">
+                    <button type="button" class="profile-button" id="revertButton">Revert Changes</button>
+                    <button type="button" class="profile-button" id="saveButton">Save Changes</button>
+                </div>
+                <div class="response-message" id="errorMessage"></div>
             </div>
 
         </div>
@@ -88,24 +90,25 @@
                 </div>
                 <div class="input-field">
                     <p>Password</p>
-                    <input type="password" id="newUser-Password" class="newUser-input" name="password" placeholder="New Password"
-                        pattern="[A-Z0-9a-z]{8,20}" />
+                    <input type="password" id="newUser-Password" class="newUser-input" name="password"
+                        placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}" />
                 </div>
                 <div class="input-field">
                     <p>Administrator</p>
-                    <input type="checkbox" id="newUser-adminStatus" name="isAdmin" 
-                        />
+                    <input type="checkbox" id="newUser-adminStatus" name="isAdmin" />
                 </div>
                 <div class="input-field">
                     <p>Picture</p><br>
-                    <input class="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
-                    placeholder="" />
+                    <input class="avatar-upload" type="file" value="Upload Image"
+                        accept="image/png, image/gif, image/jpeg" placeholder="" />
                 </div>
-                <button type="button" class="profile-button" id="closeButton"
-                    onclick=toggleNewUserMenu(0)>Close</button>
-                <button type="button" class="profile-button" id="clearButton">Clear Fields</button>
-                <button type="button" class="profile-button" id="addUserButton">Add User</button>
-                <div id="newUser-errorMessage"></div>
+
+                <div class="profile-buttons">
+                    <button type="button" class="profile-button" id="clearButton">Clear Fields</button>
+                    <button type="button" class="profile-button" id="addUserButton">Add User</button>
+                </div>
+
+                <div class="response-message" id="newUser-errorMessage"></div>
             </div>
 
         </div>
