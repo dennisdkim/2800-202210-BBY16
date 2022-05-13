@@ -105,7 +105,6 @@ function loadUserList() {
                         newUser.querySelector(".user-name").innerHTML = "Name: " + users[i].fname + " " + users[i].lname;
                         newUser.querySelector(".user-displayname").innerHTML = "User: " + users[i].displayName;
                         userList.appendChild(newUser);
-                        console.log(JSON.stringify(users[i]));
 
                     }
 
@@ -113,7 +112,6 @@ function loadUserList() {
 
                     for (let i = 0; i < user.length; i++) {
                         user[i].addEventListener("click", (e) => {
-                            console.log(e.currentTarget.value);
                             toggleEditUserMenu(1);
                             clearDeleteUserCode();
 
@@ -128,7 +126,6 @@ function loadUserList() {
                                 function (res) {
                                     const userData = res.json().then(
                                         data => {
-                                            console.log(data)
                                             fillInForm();
                                             function fillInForm() {
                                                 document.getElementById("profile-id").innerHTML = data.userID;
@@ -163,7 +160,6 @@ function loadUserList() {
 
 //function to edit user data //
 saveUserInfoButton.addEventListener("click", (e) => {
-    console.log(e.currentTarget.value);
 
     fetch("/editUserData", {
         method: 'POST',
@@ -185,7 +181,6 @@ saveUserInfoButton.addEventListener("click", (e) => {
         function (res) {
             const userData = res.json().then(
                 data => {
-                    console.log(data.msg);
                     editUserResponseMsg.innerHTML = data.msg;
                     loadUserList();
                 }
@@ -212,7 +207,6 @@ function clearDeleteUserCode() {
 
 //initiates the user delete function//
 deleteUserButton.addEventListener("click", (e) => {
-    console.log(e.currentTarget.value);
 
     fetch("/deleteUser", {
         method: "POST",
@@ -225,7 +219,6 @@ deleteUserButton.addEventListener("click", (e) => {
         function (res) {
             const userData = res.json().then(
                 data => {
-                    console.log(data.msg);
                     editUserResponseMsg.innerHTML = data.msg;
                     loadUserList();
                 }
@@ -257,7 +250,6 @@ function addUser() {
         function (res) {
             const userData = res.json().then(
                 data => {
-                    console.log(data);
                     document.getElementById("newUser-errorMessage").innerHTML = data.msg;
                     loadUserList();
                 }

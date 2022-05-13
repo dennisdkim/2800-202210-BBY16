@@ -371,7 +371,6 @@ app.get("/getUserTable", function (req, res) {
 // they also cannot delete themselves which will also protect against deleting the last admin as well (as they can't delete
 // themselves anyway if they're the last admin in the database)
 app.post("/deleteUser", function (req, res) {
-    console.log(req.body);
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ? AND displayName = ?;', [req.body.userID, req.body.displayName],
         function (error, results, fields) {
 
