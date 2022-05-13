@@ -58,27 +58,6 @@ app.get("/", function (req, res) {
     }
 });
 
-//creates a user table for database//
-app.get("/tryLogin", function (req, res) {
-    // Let's build the DB if it doesn't exist
-    const createDBAndTables = `CREATE DATABASE IF NOT EXISTS COMP2800;
-        use COMP2800;
-        CREATE TABLE IF NOT EXISTS BBY_16_user (
-        userID int NOT NULL AUTO_INCREMENT,
-        fname VARCHAR(30) NOT NULL,
-        lname VARCHAR(30) NOT NULL,
-        email VARCHAR(30) NOT NULL UNIQUE,
-        displayName VARCHAR(30) NOT NULL UNIQUE,
-        password VARCHAR(30) NOT NULL,
-        admin TINYINT NOT NULL DEFAULT 0,
-        PRIMARY KEY (userID));`;
-    connection.query(createDBAndTables, function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-    });
-});
-
 //inputs into the user database table//
 app.post("/tryInsert", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -122,12 +101,6 @@ app.post("/tryInsert", function (req, res) {
 //inputs into the coolzone database table//
 app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    let connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'COMP2800'
-    });
     // Checking for coolzone exists
     connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
