@@ -36,7 +36,7 @@ async function loadProfileData() {
     //DOM calls to insert display pic into div #avatar if it exists
     var avatar = document.createElement("img");
     avatar.src = infoParsed.avatar;
-    avatar.setAttribute("alt", "user " + infoParsed.userID +"'s avatar");
+    avatar.setAttribute("id", "avatar");
     document.getElementById("profile-info").replaceChild(avatar, document.getElementById("avatar"));
   } catch (error) {
     console.log(error);

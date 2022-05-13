@@ -19,16 +19,27 @@
       <h4 id="displayNameDisplay"></h4>
     </div>
     <div id="profile-form">
-      <input type="text" id="fname" name="fname" placeholder="First Name" />
-      <br />
-      <input type="text" id="lname" name="lname" placeholder="Last Name" />
-      <br />
-      <input type="text" id="displayName" name="displayName" placeholder="Display Name" />
-      <br />
-      <input type="email" id="email" name="email" placeholder="Email" />
-      <br />
-      <input type="password" id="newPassword" name="password" placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}" />
-      <input id="avatar-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg"
+      <div class="input-field">
+        <p>Username</p>
+        <input type="text" id="displayName" name="displayName" placeholder="Username"/>
+      </div>
+      <div class="input-field">
+        <p>First Name</p>
+        <input type="text" id="fname" name="fname" placeholder="First Name"/>
+      </div>
+      <div class="input-field">
+        <p>Last Name</p>
+        <input type="text" id="lname" name="lname" placeholder="Last Name"/>
+      </div>
+      <div class="input-field">
+        <p>Email</p>
+        <input type="email" id="email" name="email" placeholder="Email"/>
+      </div>
+      <div class="input-field">
+        <p>Password</p>
+        <input type="password" id="newPassword" name="password" placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}" />
+      </div>
+      <input id="avatar-upload" type="file" class="input-field" value="Upload Image" accept="image/png, image/gif, image/jpeg"
         placeholder="" />
       <div id="errorMessage"></div>
       <p>For security purposes, please confirm your current password to confirm changes:</p>
