@@ -36,7 +36,8 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//heroku db configuration
+//heroku db configuration. Use only for hosting. //
+/*
 const dbConfigHeroku = {
     host: "us-cdbr-east-05.cleardb.net",
     user: "b3823a53995411",
@@ -44,7 +45,16 @@ const dbConfigHeroku = {
     database:"heroku_c99a07a4f72e738"
 }
 
-let connection = mysql.createPool(dbConfigHeroku);
+//let connection = mysql.createPool(dbConfigHeroku);
+*/
+
+//local connection configuration object. //
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "COMP2800"
+});
 
 //Root route//
 app.get("/", function (req, res) {

@@ -21,7 +21,7 @@ let searchHeader = document.getElementById("users-displayed-indicator");
 let userSearchBar = document.getElementById("search-user-bar");
 let clearFieldButton = document.getElementById("clearButton");
 let revertChangesButton = document.getElementById("revertButton");
-let addUserMenuButton = document.getElementById("#new-user-button");
+let addUserMenuButton = document.getElementById("new-user-button");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -40,10 +40,10 @@ function toggleNewUserMenu(input) {
         newUserMenu.hidden = false;
         userEditMenu.hidden = true;
         newUserResponseMsg.innerHTML = "";
-        addUserMenuButton.classList.add("active");
+        addUserMenuButton.classList.add(".active");
     } else if (input == 0) {
         newUserMenu.hidden = true;
-        addUserMenuButton.classList.remove("active");
+        addUserMenuButton.classList.remove(".active");
     }
 };
 
@@ -257,7 +257,3 @@ function addUser() {
         }
     )
 }
-
-document.getElementById("logoHomeButton").addEventListener("click", function(){
-    window.location = "/home";
-});
