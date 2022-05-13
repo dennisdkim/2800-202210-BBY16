@@ -265,3 +265,7 @@ function addUser() {
         }
     )
 }
+
+document.getElementById("logoHomeButton").addEventListener("click", function(){
+    window.location = "/home";
+});
