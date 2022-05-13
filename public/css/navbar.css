@@ -106,6 +106,10 @@
     display: block;
 }
 
+#logoHomeButton{
+    cursor: pointer;
+}
+
 @media screen and (min-width: 600px) {
     #back-button {
         display: none;

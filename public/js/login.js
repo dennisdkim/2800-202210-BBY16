@@ -30,3 +30,13 @@ document.getElementById("loginButton").addEventListener("click", function (e) {
     password: document.getElementById("password").value
   });
 });
+
+// Event listener for password input field. Allows users to press enter to log in.
+document.getElementById("password").addEventListener("keypress", function(e){
+  if (e.key === "Enter"){
+    submitLogin({
+      email: document.getElementById("email").value,
+      password: document.getElementById("password").value
+    });
+  }
+});

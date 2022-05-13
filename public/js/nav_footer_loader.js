@@ -18,6 +18,10 @@ loadNavbarFooter();
               document.getElementById("user-avatar").addEventListener("click", function (k) {
               profileMenu.classList.toggle("hidden");
               });
+
+              document.getElementById("logoHomeButton").addEventListener("click", function(){
+                window.location = "/home";
+              });
             }
           )
         }
