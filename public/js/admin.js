@@ -1,4 +1,3 @@
-
 'use strict';
 
 // Page Initialization //
@@ -15,13 +14,16 @@ newUserButton.addEventListener('click', () => {
 let saveUserInfoButton = document.getElementById("saveButton");
 let deleteUserButton = document.getElementById("deleteButton");
 let deleteUserCode = document.getElementById("confirm-delete-code");
-
+let addUserButton = document.getElementById("addUserButton");
+let editUserResponseMsg = document.getElementById("errorMessage");
+let newUserResponseMsg = document.getElementById("newUser-errorMessage");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
     if (input == 1) {
         userEditMenu.hidden = false;
         newUserMenu.hidden = true;
+        editUserResponseMsg.innerHTML = "";
     } else if (input == 0) {
         userEditMenu.hidden = true;
     }
@@ -32,6 +34,7 @@ function toggleNewUserMenu(input) {
     if (input == 1) {
         newUserMenu.hidden = false;
         userEditMenu.hidden = true;
+        newUserResponseMsg.innerHTML = "";
     } else if (input == 0) {
         newUserMenu.hidden = true;
     }
@@ -112,7 +115,6 @@ function loadUserList() {
     )
 }
 
-
 //function to edit user data //
 saveUserInfoButton.addEventListener("click", (e) => {
     console.log(e.currentTarget.value);
@@ -138,7 +140,7 @@ saveUserInfoButton.addEventListener("click", (e) => {
             const userData = res.json().then(
                 data => {
                     console.log(data.msg);
-                    document.getElementById("errorMessage").innerHTML = data.msg;
+                    editUserResponseMsg.innerHTML = data.msg;
                 }
             )
         }
@@ -161,6 +163,7 @@ function clearDeleteUserCode () {
     deleteUserButton.disabled = true;
 }
 
+//initiates the user delete function//
 deleteUserButton.addEventListener("click", (e)=> {
     console.log(e.currentTarget.value);
     
@@ -176,7 +179,7 @@ deleteUserButton.addEventListener("click", (e)=> {
             const userData = res.json().then(
                 data => {
                     console.log(data.msg);
-                    document.getElementById("errorMessage").innerHTML = data.msg;
+                    editUserResponseMsg.innerHTML = data.msg;
                 }
             )
         }
@@ -184,11 +187,13 @@ deleteUserButton.addEventListener("click", (e)=> {
 
 
 })
-/*
+
 //function for adding a new user//
+addUserButton.addEventListener("click", addUser)
+
 function addUser() {
     
-    fetch("/loadUserData", {
+    fetch("/addNewUser", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
@@ -200,17 +205,16 @@ function addUser() {
             lName: document.getElementById("newUser-lname").value.trim(),
             email: document.getElementById("newUser-Email").value.trim(),
             password: document.getElementById("newUser-Password").value.trim(),
-            admin: document.getElementById("").value,
+            admin: document.getElementById("adminStatus").checked ? 1 : 0,
         }) 
     }).then(
         function (res) {
             const userData = res.json().then(
                 data => {
                     console.log(data);
+                    document.getElementById("newUser-errorMessage").innerHTML = data.msg;
                 }
             )
         }
     )
-    
 }
-*/
