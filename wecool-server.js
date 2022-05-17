@@ -323,7 +323,6 @@ app.post("/loadUserData", function (req, res) {
             "admin": user.admin,
             "avatar": displayPic
         };
-        connection.end();
         res.send(JSON.stringify(userData));
     });
 });
