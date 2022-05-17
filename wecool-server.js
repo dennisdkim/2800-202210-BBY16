@@ -263,16 +263,6 @@ app.get("/getNavbarFooter", function (req, res) {
     res.send(JSON.stringify(components));
 });
 
-//returns the first and last name, email, and display name to the page//
-app.get("/getGreetingName", function (req, res) {
-    const greetingName = {
-        "displayName": req.session.displayName,
-        "email": req.session.email,
-        "name": req.session.fname + " " + req.session.lname
-    };
-    res.send(JSON.stringify(greetingName));
-});
-
 //returns the info of the currently active user in the session
 app.get("/getUserInfo", function (req, res) {
     let displayPic;
