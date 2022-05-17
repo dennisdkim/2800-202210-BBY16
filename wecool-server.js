@@ -9,6 +9,7 @@ const fs = require("fs");
 const mysql = require("mysql2");
 const multer = require("multer");
 const { connect } = require("tls");
+const is_heroku = process.env.IS_HEROKU || false;
 
 //Mapping system paths to app's virtual paths
 app.use("/js", express.static("./public/js"));
@@ -36,25 +37,26 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//heroku db configuration. Use only for hosting. //
-/*
+//heroku db configuration. Use only for hosting. 
 const dbConfigHeroku = {
     host: "us-cdbr-east-05.cleardb.net",
     user: "b3823a53995411",
     password: "762e1d0a",
     database:"heroku_c99a07a4f72e738"
 }
-
-//let connection = mysql.createPool(dbConfigHeroku);
-*/
-
-//local connection configuration object. //
-const connection = mysql.createConnection({
+//local db config. Use for localhost.
+const dbConfigLocal = {
     host: "localhost",
     user: "root",
     password: "",
     database: "COMP2800"
-});
+}
+
+if (is_heroku) {
+    var connection = mysql.createPool(dbConfigHeroku);
+} else {
+    var connection = mysql.createConnection(dbConfigLocal);
+}
 
 //Root route//
 app.get("/", function (req, res) {
