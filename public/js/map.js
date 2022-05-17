@@ -66,15 +66,13 @@ function initMap() {
         strokeColor: '#ffffff',
       },
     });
-    // getCoolzones(pos);
   }, error, options);
 }
 
 window.onload = initMap;
 
-
-function getCoolzones(location){
-  var distanceFromCurrent = document.getElementById("radius").value;
-  var thousand = 1000;
-  var currentLocation = new google.maps.LatLng(location.lat, location.long);
-} 
+function loadCoolzones(pos){
+  //go through database (make a get call from database)
+  //check if distance between our current position and coolzone position is less than search radius
+  //if the location is, load marker
+}
