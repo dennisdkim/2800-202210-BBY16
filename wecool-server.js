@@ -573,6 +573,11 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
 });
 
+app.post("/loadCoolzones", function(req, res){
+    connection.query('SELECT * FROM bby_16_coolzones WHERE ');
+    res.send({ status: "success", msg: "Changes saved" });
+});
+
 //Run server on port 8000
 let port = 8000;
 app.listen(process.env.PORT || port, function (err) {

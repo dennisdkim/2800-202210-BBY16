@@ -3,6 +3,15 @@
 // google.maps.Map object
 let map;
 
+// array for coolzone markers in given area
+let markers = [];
+
+// globally defined radius for center of map
+let globalRadius;
+
+//globally defined center position
+let centerPosMarker;
+
 // navigator.geolocation parameter to enable high accuracy tracking
 var options = {
   enableHighAccuracy: true,
@@ -32,10 +41,42 @@ function initMap() {
     locationButton.addEventListener("click", () => {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+          let curPos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+          displayCenterPos(curPos);
+          displayRadius(curPos, 2);
         }
       );
       map.setZoom(14);
+    });
+
+    const locationInput = document.createElement("input");
+    locationInput.placeholder = "Enter a location";
+    const searchBox = new google.maps.places.SearchBox(locationInput);
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationInput);
+
+    map.addListener("bounds_changed", () => {
+      searchBox.setBounds(map.getBounds());
+    });
+    searchBox.addListener("places_changed", ()=>{
+      const places = searchBox.getPlaces();
+      if (places.length == 0) {
+        return;
+      }
+
+      const bounds = new google.maps.LatLngBounds();
+      const geocoder = new google.maps.Geocoder();
+
+      places.forEach((place)=>{
+        if (!place.geometry || !place.geometry.location){
+          return;
+        }
+        if (places.length == 1){
+          displayCenterPos(places[0].geometry.location);
+          // displayRadius(places[0].geometry.location, document.getElementById("radiusInput").value);
+          displayRadius(places[0].geometry.location, 2);
+        }
+      });
+
     });
 
     const radiusInput = document.createElement("input");
@@ -44,39 +85,80 @@ function initMap() {
     radiusInput.min = "1";
     radiusInput.min = "10";
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(radiusInput);
-    const currentRadius = new google.maps.Circle({
-      strokeColor: "#94bbdc",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#94bbdc",
-      fillOpacity: 0.3,
-      map,
-      center: { lat: location.lat, lng: location.long},
-      radius: Number(radiusInput.defaultValue) * 1000
-    });
 
-    //creates a marker showing current location on map
-    var marker = new google.maps.Marker({
-      position: {lat: location.lat, lng: location.long},
-      map: map,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 10,
-        fillOpacity: 1,
-        strokeWeight: 2,
-        fillColor: '#5384ED',
-        strokeColor: '#ffffff',
-      },
-    });
-    // getCoolzones(pos);
+    let currentLatLong = new google.maps.LatLng(location.lat, location.long);
+    
+    displayRadius(currentLatLong, radiusInput.defaultValue);
+    displayCenterPos(currentLatLong);
+
   }, error, options);
 }
 
 window.onload = initMap;
 
+//takes a longitude and latitude value and displays an icon 
+function displayCenterPos(myLatLong){
+  centerPosMarker = new google.maps.Marker({
+    position: myLatLong,
+    map: map,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10,
+      fillOpacity: 1,
+      strokeWeight: 2,
+      fillColor: '#5384ED',
+      strokeColor: '#ffffff',
+    },
+  });
+  markers.forEach((marker) => {
+    marker.setMap(null);
+  });
+  markers = [];
+  markers.push(centerPosMarker);
+  map.setCenter(myLatLong);
+  displayCoolzones({
+    // radius: document.getElementById("radiusInput").value,
+    radius: 2,
+    latitude: myLatLong.lat(),
+    longitude: myLatLong.lng()
+  });
+}
 
-function getCoolzones(location){
-  var distanceFromCurrent = document.getElementById("radius").value;
-  var thousand = 1000;
-  var currentLocation = new google.maps.LatLng(location.lat, location.long);
+// takes in a longitude, latitude, and radius to create a circle representing search radius
+function displayRadius(myLatLong, myRad){
+  if (globalRadius){
+    globalRadius.setOptions({fillOpacity:0, strokeOpacity:0});
+  }
+  globalRadius = new google.maps.Circle({
+    strokeColor: "#94bbdc",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#94bbdc",
+    fillOpacity: 0.3,
+    map,
+    center: myLatLong,
+    radius: myRad * 1000
+  });
+}
+
+
+async function displayCoolzones(data){
+  console.log(data);
+  // post request for all coolzones 
+  try {
+    let responseArray = await fetch("/loadCoolzones", {
+      method: 'POST',
+      headers: {
+        "Accept": 'application/json',
+        "Content-Type": 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (e){
+    console.log(e);
+  }
+  // loop through returned coolzones and select those that are within our search radius
+
+  //
+
 } 
