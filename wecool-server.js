@@ -258,9 +258,6 @@ app.get("/getNavbarFooter", function (req, res) {
     const components = {
         "navbar": navbar,
         "footer": footer,
-        "displayName": req.session.displayName,
-        "email": req.session.email,
-        "name": req.session.fname + " " + req.session.lname
     };
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(components));
