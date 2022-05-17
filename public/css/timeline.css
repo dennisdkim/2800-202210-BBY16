@@ -1,0 +1,22 @@
+/* ----universal selectors---- */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ----page sizing---- */
+body {
+    width: 100vw;
+    height: 100vh;
+    min-height: 500px;
+    overflow: hidden;
+}
+
+/* ----main content window----- */
+#content {
+    min-height: 500px;
+    height: calc(100vh - 180px);
+    width: 100%;
+    background-color: lightgrey;
+}

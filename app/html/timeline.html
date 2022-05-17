@@ -5,18 +5,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
-  <title>Document</title>
+  <link rel="stylesheet" href="/css/timeline.css">
+  <title>Timeline</title>
 </head>
 <body>
-  <div>
-    <h1>Timeline page!</h1>
+  <div id="navbar"></div>
+  <div id="content">
+    <h1>Timeline</h1>
   </div>
-  <div class="navbar">
-    <a class="navButton" href="./home.html">Home</a>
-    <a class="navButton" href="./settings.html">Settings</a>
-    <a class="navButton" href="./profile.html">Profile</a>
-    <a class="navButton" href="./timeline.html">Timeline</a>
-    <a class="navButton" href="./map.html">Map</a>
+  <div id="post-list-container">
+    <div class="post-container">
+      <div class="poster-display-pic-container">
+        <img class="poster-display-pic" src="" alt="">
+      </div>
+      <div class="post-info-container">
+        <h3 class="poster-name">City of Vancouver</h3>
+        <p class="post-description">The City of Vancouver is happy to present a new water fountain at the Broadway and Main St. as a part of a new hydrate the public initiative.</p>
+        <button class="find-on-map-button">Find on Map</button>
+        <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span class="post-time">2:55pm</span></p>
+      </div>
+      <div class="post-info-container">
+        <h3 class="poster-name">SoupMania</h3>
+        <p class="post-description">Our venue is now fully air-conditioned. Come in for a nice gazpacho.</p>
+        <button class="find-on-map-button">Find on Map</button>
+        <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span class="post-time">2:34pm</span></p>
+      </div>
+    </div>
   </div>
+
+  <div id="post-content-container">Post content container</div>
+  <div id="footer"></div>
+  <script src="/js/nav_footer_loader.js"></script>
 </body>
 </html>
