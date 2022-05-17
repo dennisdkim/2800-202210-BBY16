@@ -560,6 +560,21 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
 });
 
+// Allows admin user to delete avatar from file system 
+app.post("/deleteUserAvatar", function (req, res) {
+    const path = "./public/img/userAvatars/avatar-user" + req.body.userID + ".png";
+    if (fs.existsSync(path)) {
+        fs.unlink(path, (error) => {
+            if (error) {
+                console.log(error);
+            }
+            res.send({status: "success", msg: "Display picture deleted"});
+        });
+    } else {
+        res.send({status: "fail", msg: "This user does not have a display picture"});
+    }
+});
+
 //Run server on port 8000
 let port = 8000;
 app.listen(process.env.PORT || port, function (err) {
