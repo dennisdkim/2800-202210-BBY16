@@ -14,6 +14,7 @@ const { connect } = require("tls");
 app.use("/js", express.static("./public/js"));
 app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
+app.use("/sounds", express.static("./public/sounds"));
 app.use("/html", express.static("./app/html"));
 
 //Storage for user uploaded files

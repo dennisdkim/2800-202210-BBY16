@@ -43,15 +43,19 @@ document.getElementById("signUpButton").addEventListener("click", function (e) {
   });
 });
 
-// Easter Egg on Signup Page 
+// Easter Egg on Login Page 
 var animationToggle = false;
+var windSound = new Audio('/sounds/wind.mp3');
+windSound.loop = true;
 
 // When the fan is clicked, animation will play where it will spin
 function spinFan() {
   if (animationToggle) {
+    windSound.pause();
     document.getElementById("fanImg").className = "";
     animationToggle = false;
   } else {
+    windSound.play();
     document.getElementById("fanImg").className = "spinnable";
     animationToggle = true;
   }
