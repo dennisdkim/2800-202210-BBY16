@@ -112,8 +112,8 @@ app.post("/tryInsert", function (req, res) {
 app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
-    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
     function (error, results, fields) {
         if (error) {
             console.log(error);

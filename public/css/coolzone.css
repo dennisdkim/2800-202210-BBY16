@@ -108,6 +108,61 @@ input[type="checkbox"]{
   display: none;
 }
 
+label{
+  display: inline-block;
+  padding: 2vh 2vw;
+  color: black;
+  opacity: 0.5;
+  justify-self: center;
+}
+
+label:hover{
+  opacity: 1;
+  cursor: pointer;
+}
+
+#aircon:checked ~label[for="aircon"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#freeWater:checked ~label[for="freeWater"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#swimmingPool:checked ~label[for="swimmingPool"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#waterParks:checked ~label[for="waterParks"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#outdoor:checked ~label[for="outdoor"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#indoor:checked ~label[for="indoor"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#freeWifi:checked ~label[for="freeWifi"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+label>span{
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 0px;
+  align-items: flex-end;
+}
+
+
 @media only screen and (min-width: 615px) {
 * {
   font-size: 24px;

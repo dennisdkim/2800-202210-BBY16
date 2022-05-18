@@ -22,18 +22,19 @@ async function submitCoolzone(data){
   }
 };
 
-  let acTag = document.getElementById("acTag");
-  let fdTag = document.getElementById("fdTag");
-  let wpTag = document.getElementById("wpTag");
-  let poolTag = document.getElementById("poolTag");
-  let outdoorTag = document.getElementById("outdoorTag");
-  let wifiTag = document.getElementById("wifiTag");
-
-
+  let acTag = document.getElementById("aircon");
+  let fdTag = document.getElementById("freeWater");
+  let wpTag = document.getElementById("waterParks");
+  let poolTag = document.getElementById("swimmingPool");
+  let outdoorTag = document.getElementById("outdoor");
+  let indoorTag = document.getElementById("indoor");
+  let wifiTag = document.getElementById("freeWifi");
 
 function checkBoxes(data) {
   if (data.checked == true) {
     data.value = 1;
+  } else if (data.checked == false) {
+    data.value = 0;
   }
 }
 
@@ -44,6 +45,7 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
   checkBoxes(wpTag);
   checkBoxes(poolTag);
   checkBoxes(outdoorTag);
+  checkBoxes(indoorTag);
   checkBoxes(wifiTag);
   submitCoolzone({
     coolzoneName: document.getElementById("coolzoneName").value,
@@ -51,11 +53,12 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     dateTag: document.getElementById("dateTag").value,
     enddateTag: document.getElementById("enddateTag").value,
     description: document.getElementById("description").value,
-    acTag: document.getElementById("acTag").value,
-    fdTag: document.getElementById("fdTag").value,
-    wpTag: document.getElementById("wpTag").value,
-    poolTag: document.getElementById("poolTag").value,
-    outdoorTag: document.getElementById("outdoorTag").value,
-    wifiTag: document.getElementById("wifiTag").value
+    acTag: document.getElementById("aircon").value,
+    fdTag: document.getElementById("freeWater").value,
+    wpTag: document.getElementById("waterParks").value,
+    poolTag: document.getElementById("swimmingPool").value,
+    outdoorTag: document.getElementById("outdoor").value,
+    indoorTag: document.getElementById("indoor").value,
+    wifiTag: document.getElementById("freeWifi").value
   });
 });

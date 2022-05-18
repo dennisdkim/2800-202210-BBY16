@@ -8,6 +8,8 @@
   <title>Host a Coolzone</title>
   <link rel="stylesheet" type="text/css" href="/css/coolzone.css">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
+  <link rel="stylesheet"
+    href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 
 <body>
@@ -44,13 +46,32 @@
       <div class="containerName">
         <span>Amenities</span>
       </div>
-      <div class="amenities">
-        <input type="checkbox" name="acTag" id="acTag">Air Conditioned
-        <input type="checkbox" name="fdTag" id="fdTag">Free Drinks
-        <input type="checkbox" name="wpTag" id="wpTag">Water Park
-        <input type="checkbox" name="poolTag" id="poolTag">Swimming Pools
-        <input type="checkbox" name="outdoorTag" id="outdoorTag">Outdoors
-        <input type="checkbox" name="wifiTag" id="wifiTag">Free Wifi
+      <div id="Amenities">
+        <input type="checkbox" id="aircon" />
+        <label for="aircon">Air Conditioning
+          <span class="material-symbols-outlined">ac_unit</span></label>
+        <input type="checkbox" id="freeWater" />
+        <label for="freeWater">Free Water
+          <span class="material-symbols-outlined">water_drop</span></label>
+        <input type="checkbox" id="swimmingPool" />
+        <label for="swimmingPool">Swimming Pool
+          <span class="material-symbols-outlined">pool</span></label>
+        <input type="checkbox" id="waterParks" />
+        <label for="waterParks">Water Park
+          <span class="material-symbols-outlined">sprinkler</span></label>
+        <input type="checkbox" id="outdoor" />
+        <label for="outdoor">Outdoor
+          <span class="material-symbols-outlined">
+            location_away
+          </span></label>
+        <input type="checkbox" id="indoor" />
+        <label for="indoor">Indoor
+          <span class="material-symbols-outlined">
+            location_home
+          </span></label>
+        <input type="checkbox" id="freeWifi" />
+        <label for="freeWifi">Free Wi-Fi
+          <span class="material-symbols-outlined"> wifi </span></label>
       </div>
     </div>
     <div class="picContainer">
