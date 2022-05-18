@@ -22,8 +22,29 @@ async function submitCoolzone(data){
   }
 };
 
+  let acTag = document.getElementById("acTag");
+  let fdTag = document.getElementById("fdTag");
+  let wpTag = document.getElementById("wpTag");
+  let poolTag = document.getElementById("poolTag");
+  let outdoorTag = document.getElementById("outdoorTag");
+  let wifiTag = document.getElementById("wifiTag");
+
+
+
+function checkBoxes(data) {
+  if (data.checked == true) {
+    data.value = 1;
+  }
+}
+
 //event listener to call submitCoolzone method upon button click.
 document.getElementById("createCoolzone").addEventListener("click", function (e) {
+  checkBoxes(acTag);
+  checkBoxes(fdTag);
+  checkBoxes(wpTag);
+  checkBoxes(poolTag);
+  checkBoxes(outdoorTag);
+  checkBoxes(wifiTag);
   submitCoolzone({
     coolzoneName: document.getElementById("coolzoneName").value,
     location: document.getElementById("location").value,
