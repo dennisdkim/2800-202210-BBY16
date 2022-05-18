@@ -42,3 +42,17 @@ document.getElementById("signUpButton").addEventListener("click", function (e) {
     password: document.getElementById("password").value
   });
 });
+
+// Easter Egg on Signup Page 
+var animationToggle = false;
+
+// When the fan is clicked, animation will play where it will spin
+function spinFan() {
+  if (animationToggle) {
+    document.getElementById("fanImg").className = "";
+    animationToggle = false;
+  } else {
+    document.getElementById("fanImg").className = "spinnable";
+    animationToggle = true;
+  }
+}

@@ -40,3 +40,17 @@ document.getElementById("password").addEventListener("keypress", function(e){
     });
   }
 });
+
+// Easter Egg on Login Page 
+var animationToggle = false;
+
+// When the fan is clicked, animation will play where it will spin
+function spinFan() {
+  if (animationToggle) {
+    document.getElementById("fanImg").className = "";
+    animationToggle = false;
+  } else {
+    document.getElementById("fanImg").className = "spinnable";
+    animationToggle = true;
+  }
+}

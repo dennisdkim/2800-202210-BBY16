@@ -25,13 +25,34 @@ body {
 
 .logoContainer {
   height: 30%;
+  width: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #logoImg{
-  width: 300px;
+  width: 200px;
+}
+
+#fanImg{
+  width: 100px;
+}
+
+.spinnable {
+  animation: rotateFan 1.5s infinite linear;
+}
+
+/* animation for easter egg objective  */
+@keyframes rotateFan {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .login-form {
