@@ -16,6 +16,7 @@
   <div id="navbar"></div>
 
   <div class="container">
+
     <form class="topContainer" action="/">
       <div class="labelContainer">
         <label id="czName">Coolzone Name: </label>
@@ -30,18 +31,17 @@
         <input type="datetime-local" id="enddateTag" name="enddateTag">
       </div>
     </form>
-    <br>
+
     <div class="descriptionContainer">
       <div class="containerName">
         <span>Description</span>
       </div>
-      <br />
       <div class="descInputContainer">
         <input type="text" id="description" name="description"
           placeholder="Enter a small description about the CoolZone!">
       </div>
     </div>
-    <br>
+
     <div class="amenitiesContainer">
       <div class="containerName">
         <span>Amenities</span>
@@ -49,16 +49,29 @@
       <div id="Amenities">
         <input type="checkbox" id="aircon" />
         <label for="aircon">Air Conditioning
-          <span class="material-symbols-outlined">ac_unit</span></label>
+          <span class="material-symbols-outlined">
+            ac_unit
+          </span>
+        </label>
         <input type="checkbox" id="freeWater" />
         <label for="freeWater">Free Water
-          <span class="material-symbols-outlined">water_drop</span></label>
+          <span class="material-symbols-outlined">
+            water_drop
+          </span>
+        </label>
         <input type="checkbox" id="swimmingPool" />
         <label for="swimmingPool">Swimming Pool
-          <span class="material-symbols-outlined">pool</span></label>
+          <span class="material-symbols-outlined">
+            pool
+
+          </span>
+        </label>
         <input type="checkbox" id="waterParks" />
         <label for="waterParks">Water Park
-          <span class="material-symbols-outlined">sprinkler</span></label>
+          <span class="material-symbols-outlined">
+            sprinkler
+          </span>
+        </label>
         <input type="checkbox" id="outdoor" />
         <label for="outdoor">Outdoor
           <span class="material-symbols-outlined">
@@ -71,19 +84,25 @@
           </span></label>
         <input type="checkbox" id="freeWifi" />
         <label for="freeWifi">Free Wi-Fi
-          <span class="material-symbols-outlined"> wifi </span></label>
+          <span class="material-symbols-outlined">
+            wifi
+          </span>
+        </label>
       </div>
     </div>
+
     <div class="picContainer">
       <form id="upload-images-form">
         <input id="coolzone-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" />
         <input id="submit" type="submit" value="Submit" />
       </form>
     </div>
+
     <div class="botContainer">
       <span id="errorMsg" class="errors"></span>
       <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
     </div>
+
   </div>
 
   <div id="footer"></div>

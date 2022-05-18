@@ -63,9 +63,8 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
   });
 });
 
-const upLoadForm = document.getElementById("upload-images-form");
-upLoadForm.addEventListener("submit", uploadImages);
-
+const uploadCoolzone = document.getElementById("upload-images-form");
+uploadCoolzone.addEventListener("submit", uploadImages);
 function uploadImages(e) {
   e.preventDefault();
 
