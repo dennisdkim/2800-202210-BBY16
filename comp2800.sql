@@ -38,12 +38,16 @@ CREATE TABLE `bby_16_coolzones` (
   `startdate` datetime NOT NULL,
   `enddate` datetime NOT NULL,
   `description` varchar(200),
+  `latitude` Decimal(8,6),
+  `longitude` Decimal(9,6),
   `aircon` tinyint(4) DEFAULT 0,
   `freedrinks` tinyint(4) DEFAULT 0,
   `waterpark` tinyint(4) DEFAULT 0,
   `pool` tinyint(4) DEFAULT 0,
   `outdoors` tinyint(4) DEFAULT 0,
-  `wifi` tinyint(4) DEFAULT 0
+  `indoors` tinyint(4) DEFAULT 0,
+  `wifi` tinyint(4) DEFAULT 0,
+  `open` tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
