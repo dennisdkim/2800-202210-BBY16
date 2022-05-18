@@ -16,7 +16,7 @@ app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
 
-//Storage for user uploaded files
+//Storage for user uploaded files (avatars/display pictures)
 const avatarStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, "./public/img/userAvatars/");
@@ -27,6 +27,19 @@ const avatarStorage = multer.diskStorage({
 });
 const avatarUpload = multer({
     storage: avatarStorage
+});
+
+//Storage for user uploaded timeline photos
+const timelineStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./public/img/timelinePhotos/");
+    },
+    filename: function (req, file, callback) {
+        callback(null, "")
+    }
+});
+const timelineUpload = multer({
+    storage: timelineStorage
 });
 
 app.use(session({
@@ -360,15 +373,12 @@ app.post("/deleteUser", function (req, res) {
                 console.log(error);
             }
             if (results.length == 0) {
-                connection.end();
                 res.send({ status: "fail", msg: "Incorrect display name" });
             } else {
                 if (req.session.userID == req.body.userID) {
-                    connection.end();
                     res.send({ status: "fail", msg: "Cannot delete yourself" });
                 } else {
                     connection.query('DELETE FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
-                        connection.end();
                         res.send({ status: "success", msg: "User deleted" });
                     });
                 }
@@ -396,15 +406,12 @@ app.post("/addNewUser", function (req, res) {
                     }
                 }
                 if (displayNameTaken && emailTaken) {
-                    connection.end();
                     res.send({ status: "fail", msg: "The display name and email is taken" });
                 } else {
                     if (displayNameTaken) {
-                        connection.end();
                         res.send({ status: "fail", msg: "The display name is taken" });
                     }
                     if (emailTaken) {
-                        connection.end();
                         res.send({ status: "fail", msg: "The email is taken" });
                     }
                 }
@@ -517,15 +524,12 @@ app.post("/editUserData", function (req, res) {
                         }
                     }
                     if (displayNameTaken && emailTaken) {
-                        connection.end();
                         res.send({ status: "fail", msg: "The display name and email is taken" });
                     } else {
                         if (displayNameTaken) {
-                            connection.end();
                             res.send({ status: "fail", msg: "The display name is taken" });
                         }
                         if (emailTaken) {
-                            connection.end();
                             res.send({ status: "fail", msg: "The email is taken" });
                         }
                     }
@@ -572,6 +576,31 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     req.file.filename = req.file.originalname;
     res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
 });
+
+app.post("/submitTimelinePost", function (req, res) {
+    let coolzoneID;
+    if (req.body.coolzoneID == "") {
+        coolzoneID = null;
+    } else {
+        coolzoneID = req.body.coolzoneID;
+    }
+    let currentDate = new Date();
+    let curDateTime = currentDate.getUTCFullYear() + "-" + (currentDate.getUTCMonth() + 1) + "-" + currentDate.getUTCDate() + " " + currentDate.getUTCHours()
+    + ":" + currentDate.getUTCMinutes() + ":" + currentDate.getUTCSeconds();
+    connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID) VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID()',
+        [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID],
+        function (error, result, fields) {
+            if (error) {
+                console.log(error);
+            }
+            let postID = result;
+
+            uploadTimelinePhoto(req, postID);
+        });
+});
+
+function uploadTimelinePhoto(req, postID) {
+}
 
 //Run server on port 8000
 let port = 8000;
