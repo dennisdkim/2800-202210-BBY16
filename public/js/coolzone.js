@@ -2,7 +2,7 @@
 'use strict';
 
 //Sends input field data to server to be inserted into db.
-async function submitCoolzone(data){
+async function submitCoolzone(data) {
   try {
     let response = await fetch("/tryCoolzone", {
       method: 'POST',
@@ -22,13 +22,13 @@ async function submitCoolzone(data){
   }
 };
 
-  let acTag = document.getElementById("aircon");
-  let fdTag = document.getElementById("freeWater");
-  let wpTag = document.getElementById("waterParks");
-  let poolTag = document.getElementById("swimmingPool");
-  let outdoorTag = document.getElementById("outdoor");
-  let indoorTag = document.getElementById("indoor");
-  let wifiTag = document.getElementById("freeWifi");
+let acTag = document.getElementById("aircon");
+let fdTag = document.getElementById("freeWater");
+let wpTag = document.getElementById("waterParks");
+let poolTag = document.getElementById("swimmingPool");
+let outdoorTag = document.getElementById("outdoor");
+let indoorTag = document.getElementById("indoor");
+let wifiTag = document.getElementById("freeWifi");
 
 function checkBoxes(data) {
   if (data.checked == true) {
@@ -62,3 +62,29 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     wifiTag: document.getElementById("freeWifi").value
   });
 });
+
+const upLoadForm = document.getElementById("upload-images-form");
+upLoadForm.addEventListener("submit", uploadImages);
+
+function uploadImages(e) {
+  e.preventDefault();
+
+  const coolzoneUpload = document.querySelector('#coolzone-upload');
+  const formData = new FormData();
+
+  for (let i = 0; i < coolzoneUpload.files.length; i++) {
+    // put the images from the input into the form data
+    formData.append("files", coolzoneUpload.files[i]);
+  }
+
+  const options = {
+    method: 'POST',
+    body: formData,
+  };
+
+  fetch("/upload-coolzone", options
+  ).then(function (res) {
+    console.log(res);
+  }).catch(function (err) { ("Error:", err) }
+  );
+}

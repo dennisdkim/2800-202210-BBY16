@@ -16,7 +16,7 @@ app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
 app.use("/html", express.static("./app/html"));
 
-//Storage for user uploaded files
+//Storage for user uploaded files of avatars
 const avatarStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, "./public/img/userAvatars/");
@@ -27,6 +27,19 @@ const avatarStorage = multer.diskStorage({
 });
 const avatarUpload = multer({
     storage: avatarStorage
+});
+
+//Storage for user uploaded files of coolzones.
+const coolzoneStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./public/img/coolzones/")
+    },
+    filename: function (req, file, callback) {
+        callback(null, "coolzone-user" + req.session.userID + ".png");
+    }
+});
+const coolzoneUpload = multer({
+    storage: coolzoneStorage
 });
 
 app.use(session({
@@ -113,13 +126,13 @@ app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
     connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
-    function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        res.send({ status: "success", msg: "Coolzone created."});
-    });
+        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({ status: "success", msg: "Coolzone created." });
+        });
 });
 
 //loads the profile page//
@@ -440,29 +453,29 @@ app.post("/getUserList", function (req, res) {
         let queryFilter = "";
         if (req.body.query.length > 0) {
             queryFilter = `WHERE (fname LIKE "%${req.body.query}%" OR lname LIKE "%${req.body.query}%" OR displayName LIKE "%${req.body.query}%")`;
-}
-connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${queryFilter};`, function (error, results, fields) {
-    if (results.length > 0) {
-        let resultsWithDisplayImages = results.map(user => {
-            let displayPic;
-            const avatarPath = "/img/userAvatars/avatar-user" + user.userID + ".png";
-            if (fs.existsSync("./public" + avatarPath)) {
-                displayPic = avatarPath;
+        }
+        connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${queryFilter};`, function (error, results, fields) {
+            if (results.length > 0) {
+                let resultsWithDisplayImages = results.map(user => {
+                    let displayPic;
+                    const avatarPath = "/img/userAvatars/avatar-user" + user.userID + ".png";
+                    if (fs.existsSync("./public" + avatarPath)) {
+                        displayPic = avatarPath;
+                    } else {
+                        displayPic = "/img/userAvatars/default.png"
+                    }
+                    user.avatar = displayPic;
+                    return user;
+                })
+                res.send(JSON.stringify(resultsWithDisplayImages));
             } else {
-                displayPic = "/img/userAvatars/default.png"
+                res.send({ status: "fail", msg: "No user accounts found." });
             }
-            user.avatar = displayPic;
-            return user;
-        })
-        res.send(JSON.stringify(resultsWithDisplayImages));
-    } else {
-        res.send({ status: "fail", msg: "No user accounts found." });
-    }
-});
+        });
 
     } else {
-    res.send("Admin status required for access.");
-}
+        res.send("Admin status required for access.");
+    }
 });
 
 // Checks the database for the current user's password to verify identity before making changes
@@ -570,7 +583,12 @@ function updateChanges(req, res, connection) {
 // Uploads avatar image to file system
 app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     req.file.filename = req.file.originalname;
-    res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
+    res.send({ "status": "success", "path": "/img/userAvatars/avatar-user" + req.session.userID + ".png" });
+});
+// Uploads coolzone image to file system
+app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res) {
+    req.file.filename = req.file.originalname;
+    res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
 });
 
 //Run server on port 8000
