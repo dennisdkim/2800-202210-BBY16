@@ -16,6 +16,8 @@
     <!--"post-list-container" is the left "list" section-->
     <div id="post-list-container">
       <!--following "post-containers" to be generated with JS-->
+      <div id="open-new-post-button" onclick=togglePostForm(1)>New Post +</div>
+
       <div class="post-container" onclick=togglePostContent(1)>
         <div class="poster-display-pic-container">
           <img class="poster-display-pic" src="/img/userAvatars/avatar-user1.png" alt="">
@@ -29,6 +31,7 @@
               class="post-time">2:55pm</span></p>
         </div>
       </div>
+
       <div class="post-container" onclick=togglePostContent(1)>
         <div class="poster-display-pic-container">
           <img class="poster-display-pic" src="/img/userAvatars/avatar-user1.png" alt="">
@@ -42,32 +45,7 @@
               class="post-time">2:55pm</span></p>
         </div>
       </div>
-      <div class="post-container" onclick=togglePostContent(1)>
-        <div class="poster-display-pic-container">
-          <img class="poster-display-pic" src="/img/userAvatars/avatar-user1.png" alt="">
-        </div>
-        <div class="post-info-container">
-          <h3 class="poster-name">City of Vancouver</h3>
-          <p class="post-description">The City of Vancouver is happy to present a new water fountain at the Broadway and
-            Main St. as a part of a new hydrate the public initiative.</p>
-          <button class="find-on-map-button">Find on Map</button>
-          <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span
-              class="post-time">2:55pm</span></p>
-        </div>
-      </div>
-      <div class="post-container" onclick=togglePostContent(1)>
-        <div class="poster-display-pic-container">
-          <img class="poster-display-pic" src="/img/userAvatars/avatar-user1.png" alt="">
-        </div>
-        <div class="post-info-container">
-          <h3 class="poster-name">City of Vancouver</h3>
-          <p class="post-description">The City of Vancouver is happy to present a new water fountain at the Broadway and
-            Main St. as a part of a new hydrate the public initiative.</p>
-          <button class="find-on-map-button">Find on Map</button>
-          <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span
-              class="post-time">2:55pm</span></p>
-        </div>
-      </div>
+
       <div class="post-container" onclick=togglePostContent(1)>
         <div class="poster-display-pic-container">
           <img class="poster-display-pic" src="/img/userAvatars/avatar-user3.png" alt="">
@@ -83,7 +61,7 @@
     </div>
     <!--"post-content-container" is the right "content" section-->
     <!--content inside to be generated with JS-->
-    <div id="post-content-container">
+    <div id="post-content-container" hidden>
       <div id="close-edit-user-button" class="close-button" onclick=togglePostContent(0)>X</div>
       <div id="post-content-header">
         <div id="poster-name-container">
@@ -108,9 +86,32 @@
       </div>
     </div>
 
-
+    <div id="timeline-post-form-container" hidden>
+      <h3 id="post-form-header">
+        Create a new post
+      </h3>
+      <div id="close-edit-user-button" class="close-button" onclick=togglePostForm(0)>X</div>
+      <div class="post-form-input">
+        <p>Post Title</p> <input id="post-form-title" type="text" maxlength="50">
+      </div>
+      <div class="post-form-input">
+        <p>Description</p> <textarea id="post-form-description" type="text" maxlength="1000"></textarea>
+      </div>
+      <div class="post-form-input" id="post-image-upload-container">
+        <p>Upload Photo</p>
+        <input id="image-upload-input" type="file" class="input-field" value="Upload Image"
+          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" />
+      </div>
+      <div class="post-form-input" id="coolzone-selection-box">
+        <p>Link a coolzone</p>
+        <input type="text" placeholder="Search.." id="post-form-coolzone-id" onkeyup="filterFunction()">
+      </div>
+      <button id="submit-post-button">Submit Post</button>
+  
+    </div>
   </div>
 
+  
 
   <div id="footer"></div>
   <script src="/js/nav_footer_loader.js"></script>
