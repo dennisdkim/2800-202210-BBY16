@@ -19,4 +19,48 @@ body {
     height: calc(100vh - 180px);
     width: 100%;
     background-color: lightgrey;
+    display: flex;
+}
+
+/* ----post list----*/
+#post-list-container {
+    background-color: white;
+    min-width: 100%;
+    border: red solid 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-container {
+    border: black solid 1px;
+    width: min(400px, 100%);
+    background-color: rgba();
+    padding: 20px;
+
+}
+
+
+
+
+/* ----post content ----*/
+#post-content-container {
+    width: 500px;
+}
+
+
+
+@media screen and (min-width: 600px){
+    #post-list-container {
+        min-width: 600px;
+        max-width: 600px;
+        align-items: flex-end;
+    }
+
+    #post-content-container {
+        width: calc(100% - 600px);
+
+
+    }
+
 }
