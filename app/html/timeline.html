@@ -13,24 +13,10 @@
 <body>
   <div id="navbar"></div>
   <div id="content">
+    <div id="open-new-post-button" onclick=togglePostForm(1)>New Post +</div>
     <!--"post-list-container" is the left "list" section-->
     <div id="post-list-container">
       <!--following "post-containers" to be generated with JS-->
-      <div id="open-new-post-button" onclick=togglePostForm(1)>New Post +</div>
-
-      <div class="post-container" onclick=togglePostContent(1)>
-        <div class="poster-display-pic-container">
-          <img class="poster-display-pic" src="/img/userAvatars/avatar-user1.png" alt="">
-        </div>
-        <div class="post-info-container">
-          <h3 class="poster-name">City of Vancouver</h3>
-          <p class="post-description">The City of Vancouver is happy to present a new water fountain at the Broadway and
-            Main St. as a part of a new hydrate the public initiative.</p>
-          <button class="find-on-map-button">Find on Map</button>
-          <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span
-              class="post-time">2:55pm</span></p>
-        </div>
-      </div>
 
       <div class="post-container" onclick=togglePostContent(1)>
         <div class="poster-display-pic-container">
@@ -104,15 +90,14 @@
       </div>
       <div class="post-form-input" id="coolzone-selection-box">
         <p>Link a coolzone</p>
-        <input type="text" placeholder="Search.." id="post-form-coolzone-id">
+        <div ><span id="selected-cz-id">None Selected</span> - <span id="selected-coolzone"></span> <button id="remove-selected-cz-button">Remove</button></div>
+        <input type="text" placeholder="Search name or address..." id="post-form-coolzone-id">
         <ul id="coolzone-suggestion-box"></ul>
       </div>
       <button id="submit-post-button">Submit Post</button>
   
     </div>
   </div>
-
-  
 
   <div id="footer"></div>
   <script src="/js/nav_footer_loader.js"></script>
