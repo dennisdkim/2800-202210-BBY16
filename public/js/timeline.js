@@ -64,6 +64,26 @@ function loadPostList() {
 
 loadPostList();
 
+function loadPostContent(num) {
+    post = {postID: num};
+    fetch("/loadPostContent", {
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(post)
+    }).then(
+        function (res) {
+            const userData = res.json().then(
+                data => {
+                    console.log(data);
+                }
+            );
+        }
+    );
+}
+
 // submits the creation of timeline posts into the server //
 submitPostButton.addEventListener("click", createPost);
 
