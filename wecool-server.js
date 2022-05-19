@@ -613,9 +613,16 @@ app.post("/getTimelinePosts", function (req, res) {
     function (error, results, fields) {
         console.log(results);
         for (let i = 0; i < results.length; i++) {
+            let displayPic;
+            const avatarPath = "/img/userAvatars/avatar-user" + results[i].userID + ".png";
+            if (fs.existsSync("./public" + avatarPath)) {
+                displayPic = avatarPath;
+            } else {
+                displayPic = "/img/userAvatars/default.png"
+            }
             timelineData[i] = {
                 displayName: results[i].displayName,
-                avatar: "/img/userAvatars/avatar-user" + results[i].userID + ".png",
+                avatar: displayPic,
                 postTime: results[i].postTime,
                 title: results[i].title,
                 coolzoneID: results[i].coolzoneID,
