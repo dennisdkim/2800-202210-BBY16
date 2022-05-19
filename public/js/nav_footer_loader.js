@@ -18,10 +18,22 @@ loadNavbarFooter();
               document.getElementById("user-avatar").addEventListener("click", function (k) {
               profileMenu.classList.toggle("hidden");
               });
-
+              document.getElementById("current-page").innerHTML = document.title;
               document.getElementById("logoHomeButton").addEventListener("click", function(){
-                window.location = "/home";
+                window.location = "/home";           
               });
+              document.querySelectorAll(".navlink").forEach( link => {
+                if(link.innerText == document.title) {
+                  link.classList.add("selected");
+                  console.log(link);
+                }
+              })
+              
+
+              //for( let i = 0; i< links.length; i++) {
+                //if(links[i].innerText)
+              //  console.log(links[i].innerHTML);
+              //}
             }
           )
         }

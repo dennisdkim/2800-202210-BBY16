@@ -3,16 +3,16 @@
 
     <div id="navbar-desktop-links">
         <img src="./img/logo/logo.jpg" alt="logo" id="logoHomeButton">
-        <a href="/map">Map</a>
-        <a href="/timeline">Timeline</a>
-        <a href="#">New Coolzone</a>
-        <a href="#">My Coolzones</a>
-        <a href="/admin">Admin</a>
-        <a href="/settings">Settings</a>
+        <a href="/map" class="navlink">Map</a>
+        <a href="/timeline" class="navlink">Timeline</a>
+        <a href="/coolzone" class="navlink">New Coolzone</a>
+        <a href="#" class="navlink">My Coolzones</a>
+        <a href="/admin" class="navlink">Admin</a>
+        <a href="/settings" class="navlink">Settings</a>
     </div>
 
     <div id="back-button">
-        <img src="./img/icons/left-arrow.png" alt="back">
+        <img src="./img/icons/left-arrow.png" alt="back" onclick="history.back()">
     </div>
 
     <h3 id="current-page">Page</h3>
@@ -25,6 +25,9 @@
 </div>
 
 <div id="profile-menu">
+    <a class="extra-links" href="/admin">Admin Dashboard</a>
+    <a class="extra-links" href="/coolzone">New Coolzone</a>
+    <a class="extra-links" href="#">My Coolzones</a>
     <a href="/profile">Edit profile</a>
     <a href="/logout">Logout</a>
 </div>
