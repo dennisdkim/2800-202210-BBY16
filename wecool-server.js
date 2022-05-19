@@ -36,7 +36,7 @@ const timelineStorage = multer.diskStorage({
     },
     filename: function (req, file, callback) {
         const photoCode = Date.now() + "-" + Math.round(Math.random() * Math.pow(10, 10));
-        callback(null, photoCode + file.originalname.split('/').pop().trim());
+        callback(null, photoCode + "." + file.originalname.split('.').pop().trim());
     }
 });
 const timelineUpload = multer({
@@ -587,18 +587,19 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
         coolzoneID = req.body.coolzoneID;
     }
     let currentDate = new Date();
-    let curDateTime = currentDate.getUTCFullYear() + "-" + (currentDate.getUTCMonth() + 1) + "-" + currentDate.getUTCDate() + " " + currentDate.getUTCHours()
-        + ":" + currentDate.getUTCMinutes() + ":" + currentDate.getUTCSeconds();
-        for(let i=0; i < req.files.length; i++) {
-            console.log(req.files[i].filename);
-        }
-    connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID) VALUES (?, ?, ?, ?, ?);',
-        [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID],
+    let curDateTime = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate() + " " + currentDate.getHours()
+        + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+    let pictures = [];
+    for(let i=0; i < req.files.length; i++) {
+        pictures.push("/img/timelinePhotos/" + req.files[i].filename);
+    }
+    connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) VALUES (?, ?, ?, ?, ?, ?);',
+        [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID, JSON.stringify(pictures)],
         function (error, result, fields) {
-            if (error) {
+            if (error) {                
                 console.log(error);
             }
-            let postID = result;
+            res.send({status: "success", msg: "Post submitted"});
         });
 });
 
