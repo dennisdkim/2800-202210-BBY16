@@ -187,7 +187,6 @@ saveUserInfoButton.addEventListener("click", (e) => {
             )
         }
     )
-
 });
 
 //enables the delete user button when the user types in the specific user's username//

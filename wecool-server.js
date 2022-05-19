@@ -35,7 +35,7 @@ const timelineStorage = multer.diskStorage({
         callback(null, "./public/img/timelinePhotos/");
     },
     filename: function (req, file, callback) {
-        callback(null, "")
+        callback(null, "test.png")
     }
 });
 const timelineUpload = multer({
@@ -126,13 +126,13 @@ app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
     connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
-    function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        res.send({ status: "success", msg: "Coolzone created."});
-    });
+        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({ status: "success", msg: "Coolzone created." });
+        });
 });
 
 //loads the profile page//
@@ -447,29 +447,29 @@ app.post("/getUserList", function (req, res) {
         let queryFilter = "";
         if (req.body.query.length > 0) {
             queryFilter = `WHERE (fname LIKE "%${req.body.query}%" OR lname LIKE "%${req.body.query}%" OR displayName LIKE "%${req.body.query}%")`;
-}
-connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${queryFilter};`, function (error, results, fields) {
-    if (results.length > 0) {
-        let resultsWithDisplayImages = results.map(user => {
-            let displayPic;
-            const avatarPath = "/img/userAvatars/avatar-user" + user.userID + ".png";
-            if (fs.existsSync("./public" + avatarPath)) {
-                displayPic = avatarPath;
+        }
+        connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${queryFilter};`, function (error, results, fields) {
+            if (results.length > 0) {
+                let resultsWithDisplayImages = results.map(user => {
+                    let displayPic;
+                    const avatarPath = "/img/userAvatars/avatar-user" + user.userID + ".png";
+                    if (fs.existsSync("./public" + avatarPath)) {
+                        displayPic = avatarPath;
+                    } else {
+                        displayPic = "/img/userAvatars/default.png"
+                    }
+                    user.avatar = displayPic;
+                    return user;
+                })
+                res.send(JSON.stringify(resultsWithDisplayImages));
             } else {
-                displayPic = "/img/userAvatars/default.png"
+                res.send({ status: "fail", msg: "No user accounts found." });
             }
-            user.avatar = displayPic;
-            return user;
-        })
-        res.send(JSON.stringify(resultsWithDisplayImages));
-    } else {
-        res.send({ status: "fail", msg: "No user accounts found." });
-    }
-});
+        });
 
     } else {
-    res.send("Admin status required for access.");
-}
+        res.send("Admin status required for access.");
+    }
 });
 
 // Checks the database for the current user's password to verify identity before making changes
@@ -574,10 +574,11 @@ function updateChanges(req, res, connection) {
 // Uploads avatar image to file system
 app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     req.file.filename = req.file.originalname;
-    res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
+    res.send({ "status": "success", "path": "/img/userAvatars/avatar-user" + req.session.userID + ".png" });
 });
 
 app.post("/submitTimelinePost", timelineUpload.array("files"), function (req, res) {
+    console.log(req.body.title);
     let coolzoneID;
     if (req.body.coolzoneID == "") {
         coolzoneID = null;
@@ -586,22 +587,22 @@ app.post("/submitTimelinePost", timelineUpload.array("files"), function (req, re
     }
     let currentDate = new Date();
     let curDateTime = currentDate.getUTCFullYear() + "-" + (currentDate.getUTCMonth() + 1) + "-" + currentDate.getUTCDate() + " " + currentDate.getUTCHours()
-    + ":" + currentDate.getUTCMinutes() + ":" + currentDate.getUTCSeconds();
-    connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID) VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID()',
+        + ":" + currentDate.getUTCMinutes() + ":" + currentDate.getUTCSeconds();
+    connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID) VALUES (?, ?, ?, ?, ?);',
         [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID],
         function (error, result, fields) {
             if (error) {
                 console.log(error);
             }
             let postID = result;
-            uploadTimelinePhoto(req, postID);
+            //uploadTimelinePhoto(req, postID);
         });
 });
 
-function uploadTimelinePhoto(req, postID) {
-}
+// function uploadTimelinePhoto(req, postID) {
+// }
 
-app.post("/getTimelinePosts", function (req, res) {
+app.get("/getTimelinePosts", function (req, res) {
     let timelineData = [];
     connection.query('SELECT * FROM BBY_16_timeline', function (error, results, fields) {
         for (let i = 0; i < results.length; i++) {
@@ -611,12 +612,18 @@ app.post("/getTimelinePosts", function (req, res) {
                 title: results[i].title,
                 description: results[i].description,
                 coolzoneID: results[i].coolzoneID,
-                pictures:  results[i].pictures
+                pictures: results[i].pictures
             };
+            console.log(timelineData[i]);
         }
+
+        console.log(timelineData);
+        res.send(JSON.stringify(timelineData));
     });
-    res.send(JSON.stringify(timelineData));
+
 });
+
+
 
 //Run server on port 8000
 let port = 8000;
