@@ -69,11 +69,16 @@ function createPost() {
 
     console.log("create a post");
     let newBody = new FormData();
+    let imageUpload = document.getElementById("image-upload-input");
 
     newBody.append("title", document.getElementById("post-form-title").value);
     newBody.append("description", document.getElementById("post-form-description").value);
-    newBody.append("photos", document.getElementById("image-upload-input").files);
-    newBody.append("coolzoneID", 0);
+    for( let i =0; i < imageUpload.files.length; i++) {
+        newBody.append("photos", imageUpload.files[i]);
+        console.log(imageUpload.files[i]);
+    }
+
+
 
     fetch("/submitTimelinePost", {
         method: 'POST',
