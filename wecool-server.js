@@ -601,8 +601,21 @@ app.post("/submitTimelinePost", timelineUpload.array("files"), function (req, re
 function uploadTimelinePhoto(req, postID) {
 }
 
-app.get("/getTimelinePosts", function (req, res) {
-    
+app.post("/getTimelinePosts", function (req, res) {
+    let timelineData = [];
+    connection.query('SELECT * FROM BBY_16_timeline', function (error, results, fields) {
+        for (let i = 0; i < results.length; i++) {
+            timelineData[i] = {
+                userID: results[i].userID,
+                postTime: results[i].postTime,
+                title: results[i].title,
+                description: results[i].description,
+                coolzoneID: results[i].coolzoneID,
+                pictures:  results[i].pictures
+            };
+        }
+    });
+    res.send(JSON.stringify(timelineData));
 });
 
 //Run server on port 8000
