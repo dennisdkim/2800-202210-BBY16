@@ -35,7 +35,8 @@ const timelineStorage = multer.diskStorage({
         callback(null, "./public/img/timelinePhotos/");
     },
     filename: function (req, file, callback) {
-        callback(null, "")
+        const photoCode = Date.now() + "-" + Math.round(Math.random() * Math.pow(10, 10));
+        callback(null, photoCode + file.originalname.split('/').pop().trim());
     }
 });
 const timelineUpload = multer({
@@ -587,6 +588,9 @@ app.post("/submitTimelinePost", timelineUpload.array("files"), function (req, re
     let currentDate = new Date();
     let curDateTime = currentDate.getUTCFullYear() + "-" + (currentDate.getUTCMonth() + 1) + "-" + currentDate.getUTCDate() + " " + currentDate.getUTCHours()
     + ":" + currentDate.getUTCMinutes() + ":" + currentDate.getUTCSeconds();
+    for (let i = 0; i < req.files.length; i++) {
+        console.log(req.files[i]).filename;
+    }
     connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID) VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID()',
         [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID],
         function (error, result, fields) {
@@ -594,12 +598,8 @@ app.post("/submitTimelinePost", timelineUpload.array("files"), function (req, re
                 console.log(error);
             }
             let postID = result;
-            uploadTimelinePhoto(req, postID);
         });
 });
-
-function uploadTimelinePhoto(req, postID) {
-}
 
 app.post("/getTimelinePosts", function (req, res) {
     let timelineData = [];
