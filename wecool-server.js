@@ -112,8 +112,8 @@ app.post("/tryInsert", function (req, res) {
 app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
-    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
     function (error, results, fields) {
         if (error) {
             console.log(error);
@@ -459,7 +459,6 @@ connection.query(`SELECT userID, fname, lname, displayName FROM BBY_16_user ${qu
         res.send({ status: "fail", msg: "No user accounts found." });
     }
 });
-
     } else {
     res.send("Admin status required for access.");
 }
@@ -573,9 +572,23 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
 });
 
+//loads all coolzones within search radius
 app.post("/loadCoolzones", function(req, res){
-    connection.query('SELECT * FROM bby_16_coolzones WHERE ');
-    res.send({ status: "success", msg: "Changes saved" });
+    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+    [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat], 
+    function(error, results){
+        if (error){
+            console.log(error);
+        }
+        else if(results.length == 0){
+            res.send({status: "success", msg: "no coolzones in your search area"});
+        } else {
+            res.send({status: "success", 
+            msg: "here are the coolzones in your area",
+            coolzones: results
+        });
+        }
+    });
 });
 
 //Run server on port 8000

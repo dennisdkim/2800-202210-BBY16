@@ -99,6 +99,18 @@ span {
   border-top-left-radius: 5px;
 }
 
+.pac-item > span {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  background-color: white;
+}
+
+.pac-matched {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  background-color:  white;
+}
+
 #description {
   width: 90%;
   height: 100px;

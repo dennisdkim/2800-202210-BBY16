@@ -116,11 +116,24 @@ function displayCenterPos(myLatLong){
   markers = [];
   markers.push(centerPosMarker);
   map.setCenter(myLatLong);
+
+  const myLng = myLatLong.lng();
+  const myLat = myLatLong.lat();
+  const myRad = 2 * 0.621371192;
+
+  const lng_min = myLng - myRad / Math.abs(Math.cos(myLat * (Math.PI/180)) * 69);
+  const lng_max = myLng + myRad / Math.abs(Math.cos(myLat* (Math.PI/180)) * 69);
+  const lat_min = myLat - (myRad / 69);
+  const lat_max = myLat + (myRad / 69);
+
   displayCoolzones({
-    // radius: document.getElementById("radiusInput").value,
-    radius: 2,
-    latitude: myLatLong.lat(),
-    longitude: myLatLong.lng()
+    radius: myRad,
+    latitude: myLat,
+    longitude: myLng,
+    minLng: lng_min,
+    maxLng: lng_max,
+    minLat: lat_min,
+    maxLat: lat_max
   });
 }
 
@@ -137,16 +150,24 @@ function displayRadius(myLatLong, myRad){
     fillOpacity: 0.3,
     map,
     center: myLatLong,
-    radius: myRad * 1000
+    radius: myRad * 1300
   });
 }
 
+function createMarker(resultsArray){
+  resultsArray.forEach((coolzone)=>{
+    markers.push(new google.maps.Marker({
+      position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
+      title: coolzone.czname,
+      map: map
+    }));
+  });
+}
 
 async function displayCoolzones(data){
-  console.log(data);
   // post request for all coolzones 
   try {
-    let responseArray = await fetch("/loadCoolzones", {
+    let response = await fetch("/loadCoolzones", {
       method: 'POST',
       headers: {
         "Accept": 'application/json',
@@ -154,11 +175,9 @@ async function displayCoolzones(data){
       },
       body: JSON.stringify(data)
     });
+    let parsedJSON = await response.json();
+    createMarker(parsedJSON.coolzones);
   } catch (e){
     console.log(e);
   }
-  // loop through returned coolzones and select those that are within our search radius
-
-  //
-
 } 
