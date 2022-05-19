@@ -36,7 +36,7 @@ const timelineStorage = multer.diskStorage({
     },
     filename: function (req, file, callback) {
         const photoCode = Date.now() + "-" + Math.round(Math.random() * Math.pow(10, 10));
-        callback(null, photoCode + file.originalname.split('/').pop().trim());
+        callback(null, photoCode + "." + file.originalname.split('.').pop().trim());
     }
 });
 const timelineUpload = multer({
@@ -636,3 +636,19 @@ app.listen(process.env.PORT || port, function (err) {
         console.log(err);
 })
 
+
+
+
+
+
+
+
+
+
+
+
+app.post("/getCoolzoneSuggestions", (req, res) => {
+    connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE '%${req,body.query}%' OR LOCATION LIKE '%${req,body.query}%';`, (error, results, fields) => {
+        results
+    })
+})

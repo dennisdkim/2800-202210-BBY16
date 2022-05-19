@@ -3,6 +3,7 @@ let postForm = document.getElementById("timeline-post-form-container");
 let searchCoolzoneInput = document.getElementById("post-form-coolzone-id");
 let submitPostButton = document.getElementById("submit-post-button");
 
+
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
     if (input == 1) {
@@ -78,8 +79,6 @@ function createPost() {
         console.log(imageUpload.files[i]);
     }
 
-
-
     fetch("/submitTimelinePost", {
         method: 'POST',
         body: newBody
@@ -90,6 +89,28 @@ function createPost() {
                     console.log(data.msg);
 
                 })
+        }
+    )
+}
+
+// generates suggestions for coolzones in the coolzone search bar. //
+searchCoolzoneInput.addEventListener("click", generateSuggestions);
+
+function generateSuggestions () {
+    fetch("/getCoolzoneSuggestions", {
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({query: searchCoolzoneInput.value})
+    }).then(
+        res => {
+            res.json().then(
+                data => {
+                    console.log(data);
+                }
+            )
         }
     )
 }
