@@ -41,6 +41,10 @@ body {
   width: 100px;
 }
 
+#fanImg:hover{
+  cursor: pointer;
+}
+
 .spinnable {
   animation: rotateFan 1.5s infinite linear;
 }
