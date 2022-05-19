@@ -17,28 +17,33 @@
 
   <div class="container">
 
-    <form class="topContainer" action="/">
-      <div class="labelContainer">
-        <label id="czName">Coolzone Name: </label>
-        <label id="loc">Location: </label>
-        <label id="date">Start Date: </label>
-        <label id="enddate">End Date: </label>
+    <div class="topContainer" >
+      <div class="containerName">
+        <span>Coolzone Information</span>
       </div>
-      <div class="inputContainer">
-        <input type="text" id="coolzoneName" name="coolzoneName">
-        <input type="text" id="location" name="location">
-        <input type="datetime-local" id="dateTag" name="dateTag">
-        <input type="datetime-local" id="enddateTag" name="enddateTag">
+      <div class="coolzoneInfo">
+        <div class="labelContainer">
+          <label id="czName">Coolzone Name: </label>
+          <label id="loc">Location: </label>
+          <label id="date">Start Date: </label>
+          <label id="enddate">End Date: </label>
+        </div>
+        <div class="inputContainer">
+          <input type="text" id="coolzoneName" name="coolzoneName">
+          <input type="text" id="location" name="location">
+          <input type="datetime-local" id="dateTag" name="dateTag">
+          <input type="datetime-local" id="enddateTag" name="enddateTag">
+        </div>
       </div>
-    </form>
+    </div>
 
     <div class="descriptionContainer">
       <div class="containerName">
         <span>Description</span>
       </div>
       <div class="descInputContainer">
-        <input type="text" id="description" name="description"
-          placeholder="Enter a small description about the CoolZone!">
+        <textarea id="description" name="description" rows="10" cols="50"
+          placeholder="Enter a small description about the CoolZone!"></textarea>
       </div>
     </div>
 
@@ -46,7 +51,7 @@
       <div class="containerName">
         <span>Amenities</span>
       </div>
-      <div id="Amenities">
+      <div id="amenities">
         <input type="checkbox" id="aircon" />
         <label for="aircon">Air Conditioning
           <span class="material-symbols-outlined">
@@ -92,6 +97,9 @@
     </div>
 
     <div class="picContainer">
+      <div class="containerName">
+        <span>Upload An Image</span>
+      </div>
       <form id="upload-images-form">
         <input id="coolzone-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" />
         <input id="submit" type="submit" value="Submit" />

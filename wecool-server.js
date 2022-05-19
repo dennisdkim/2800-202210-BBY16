@@ -131,7 +131,7 @@ app.post("/tryCoolzone", function (req, res) {
             if (error) {
                 console.log(error);
             }
-            res.send({ status: "success", msg: "Coolzone created." });
+            res.send({ status: "success", msg: "Coolzone created!" });
         });
 });
 

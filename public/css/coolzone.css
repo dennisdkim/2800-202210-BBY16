@@ -17,23 +17,16 @@ body{
   flex-direction: column;
 }
 
-.topContainer {
+.coolzoneInfo {
   display: flex;
   flex-direction: row;
 }
 
-.addyContainer, .descriptionContainer, .amenitiesContainer {
+.topContainer, .descriptionContainer, .amenitiesContainer {
   display: flex;
   flex-direction: column;
   border: 2px solid rgb(105,134,157);
   border-radius: 10px;
-  border: 2px solid rgb(105,134,157);
-  border-radius: 10px;
-}
-
-.amenities{
-  display: flex;
-  flex-direction: column;
 }
 
 .infoContainer {
@@ -56,10 +49,11 @@ body{
 }
 
 
-.botContainer, .picContainer {
+.botContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: start;
 }
 
 input {
@@ -70,7 +64,7 @@ input {
   border-color: rgb(105,134,157);
 }
 
-#CoolzoneName, #location, #timeTag, #dateTag, #endtimeTag, #enddateTag{
+#coolzoneName, #location, #dateTag, #enddateTag{
   width: 80%;
   margin-bottom: 10px;
 }
@@ -89,19 +83,21 @@ input {
   font-size: 26px;
 }
 
-#picButton{
-  border-radius: 10px;
-}
-
 span {
   background-color: rgb(105,134,157);
+  border-color: rgb(105,134,157);
   border-bottom-right-radius: 5px;
   border-top-left-radius: 5px;
 }
 
+.containerName {
+  margin: 0;
+  padding: 0;
+}
+
 #description {
-  width: 90%;
-  height: 100px;
+  width: 95%;
+  height: auto;
 }
 
 input[type="checkbox"]{
@@ -162,6 +158,15 @@ label>span{
   align-items: flex-end;
 }
 
+.inputContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#errorMsg {
+  background-color: #94bbdc;
+}
 
 @media only screen and (min-width: 615px) {
 * {
@@ -178,35 +183,35 @@ label>span{
   grid-row: 1 / 2;
 }
 
-.addyContainer {
-  grid-column: 2 / 3;
-  grid-row: 2 / 4;
-}
-
-.topContainer {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-}
-
 .descriptionContainer{
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
 
 .amenitiesContainer {
   grid-column: 3 / 4;
-  grid-row: 2 / 4;
+  grid-row: 1 / 3;
+}
+
+#amenities {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .picContainer{
   grid-column: 3 / 4;
-  grid-row: 4 / 5;
-  align-self: center;
+  grid-row: 3 / 4;
+  width: 100%; 
+  height: 100%; 
+  border: 2px rgb(105,134,157) solid ;
+  /* justify-content: center; */
 }
 
 .botContainer{
   grid-column: 1 / end;
-  grid-row: 5 / end;
+  grid-row: 4 / 5;
+  align-items: center;
 }
 
 }
