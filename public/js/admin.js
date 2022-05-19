@@ -80,9 +80,7 @@ function loadUserList() {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify({
-            query: document.getElementById("search-user-bar").value,
-        })
+        body: JSON.stringify({query: document.getElementById("search-user-bar").value,})
     }
 
     fetch("/getUserList", option).then(

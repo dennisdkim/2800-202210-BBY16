@@ -609,7 +609,7 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
 
 app.post("/getTimelinePosts", function (req, res) {
     let timelineData = [];
-    connection.query('SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID FROM BBY_16_timeline INNER JOIN BBY_16_timeline.userID = BBY_16_user.userID',
+    connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID FROM BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID ORDER BY POSTTIME DESC;`,
     function (error, results, fields) {
         console.log(results);
         for (let i = 0; i < results.length; i++) {

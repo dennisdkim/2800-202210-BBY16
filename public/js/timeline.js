@@ -28,7 +28,7 @@ function togglePostForm(input) {
 function loadPostList() {
 
     fetch("/getTimelinePosts", {
-        method: 'GET',
+        method: 'POST',
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
@@ -40,29 +40,29 @@ function loadPostList() {
                 data => {
                     console.log(data);
 
-                    for (post in data) {
-                        let newPostContainer = document.createElement("div");
-                        newPostContainer.innerHTML =
-                                `<div class="poster-display-pic-container">
-                                <img class="poster-display-pic" src="/img/userAvatars/avatar-user3.png" alt="">
-                                </div>
-                                <div class="post-info-container">
-                                <h3 class="poster-name"></h3>
-                                <p class="post-description"></p>
-                                <button class="find-on-map-button">Find on Map</button>
-                                <p class="post-timestamp">Posted <span class="post-date"></span> - <span class="post-time">2:34pm</span></p>
-                                </div>
-                                </div>`;
-                        newPostContainer.classList.add("post-container");
+                    // for (post in data) {
+                    //     let newPostContainer = document.createElement("div");
+                    //     newPostContainer.innerHTML =
+                    //             `<div class="poster-display-pic-container">
+                    //             <img class="poster-display-pic" src="/img/userAvatars/avatar-user3.png" alt="">
+                    //             </div>
+                    //             <div class="post-info-container">
+                    //             <h3 class="poster-name"></h3>
+                    //             <p class="post-description"></p>
+                    //             <button class="find-on-map-button">Find on Map</button>
+                    //             <p class="post-timestamp">Posted <span class="post-date"></span> - <span class="post-time">2:34pm</span></p>
+                    //             </div>
+                    //             </div>`;
+                    //     newPostContainer.classList.add("post-container");
                         //continue filling in the data, then append into post list container //
-                    }
+                    // }
                 }
             )
         }
     )
 }
 
-//loadPostList();
+loadPostList();
 
 // submits the creation of timeline posts into the server //
 submitPostButton.addEventListener("click", createPost);
@@ -99,6 +99,10 @@ searchCoolzoneInput.addEventListener("keyup", generateSuggestions);
 
 function generateSuggestions () {
     console.log(searchCoolzoneInput.value);
+    while (suggestionBox.firstChild) {
+        suggestionBox.removeChild(suggestionBox.firstChild);
+    };
+
     fetch("/getCoolzoneSuggestions", {
         method: 'POST',
         headers: {
@@ -117,7 +121,7 @@ function generateSuggestions () {
                         numOfSuggestions = data.length;
                     }
 
-                    for(let i = 0; i < numOfSuggestions) {
+                    for(let i = 0; i < numOfSuggestions; i++) {
                         data[i]
                         let newSuggestion = document.createElement("li");
                         newSuggestion.classList.add("coolzone-suggestion");
