@@ -628,6 +628,19 @@ app.post("/getTimelinePosts", function (req, res) {
 });
 
 
+app.post("/getCoolzoneSuggestions", (req, res) => {
+    console.log("route is activated");
+    console.log(req.body.query);
+    connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE "%${req.body.query}%" OR LOCATION LIKE "%${req.body.query}%";`, (error, results, fields) => {
+        console.log(results);
+        if(error) {
+            console.log(error);
+        } else {
+            res.send(JSON.stringify(results));
+        }
+    })
+})
+
 
 //Run server on port 8000
 let port = 8000;
@@ -648,8 +661,3 @@ app.listen(process.env.PORT || port, function (err) {
 
 
 
-app.post("/getCoolzoneSuggestions", (req, res) => {
-    connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE '%${req,body.query}%' OR LOCATION LIKE '%${req,body.query}%';`, (error, results, fields) => {
-        results
-    })
-})

@@ -2,6 +2,7 @@ let postContent = document.getElementById("post-content-container");
 let postForm = document.getElementById("timeline-post-form-container");
 let searchCoolzoneInput = document.getElementById("post-form-coolzone-id");
 let submitPostButton = document.getElementById("submit-post-button");
+let suggestionBox = document.getElementById("coolzone-suggestion-box");
 
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
@@ -94,21 +95,37 @@ function createPost() {
 }
 
 // generates suggestions for coolzones in the coolzone search bar. //
-searchCoolzoneInput.addEventListener("click", generateSuggestions);
+searchCoolzoneInput.addEventListener("keyup", generateSuggestions);
 
 function generateSuggestions () {
+    console.log(searchCoolzoneInput.value);
     fetch("/getCoolzoneSuggestions", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify({query: searchCoolzoneInput.value})
+        body: JSON.stringify({query: searchCoolzoneInput.value,})
     }).then(
         res => {
             res.json().then(
                 data => {
                     console.log(data);
+                    let numOfSuggestions = 5;
+
+                    if(data.length < 5) {
+                        numOfSuggestions = data.length;
+                    }
+
+                    for(let i = 0; i < numOfSuggestions) {
+                        data[i]
+                        let newSuggestion = document.createElement("li");
+                        newSuggestion.classList.add("coolzone-suggestion");
+                        newSuggestion.innerHTML = data[i].CZNAME + " - " + data[i].LOCATION;
+                        newSuggestion.value = data[i].EVENTID;
+                        suggestionBox.appendChild(newSuggestion);
+                    }
+
                 }
             )
         }
