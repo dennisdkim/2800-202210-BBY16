@@ -578,6 +578,7 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     res.send({ "status": "success", "path": "/img/userAvatars/avatar-user" + req.session.userID + ".png" });
 });
 
+// Submits timeline post information into the database BBY_16_timeline, and also uploads any photos into the file system in img/timelinePhotos
 app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, res) {
     console.log(req.body.title);
     let coolzoneID;
@@ -608,19 +609,26 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
 
 app.post("/getTimelinePosts", function (req, res) {
     let timelineData = [];
-    connection.query('SELECT * FROM BBY_16_timeline', function (error, results, fields) {
+    connection.query('SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID FROM BBY_16_timeline INNER JOIN BBY_16_timeline.userID = BBY_16_user.userID',
+    function (error, results, fields) {
+        console.log(results);
         for (let i = 0; i < results.length; i++) {
+            let displayPic;
+            const avatarPath = "/img/userAvatars/avatar-user" + results[i].userID + ".png";
+            if (fs.existsSync("./public" + avatarPath)) {
+                displayPic = avatarPath;
+            } else {
+                displayPic = "/img/userAvatars/default.png"
+            }
             timelineData[i] = {
-                userID: results[i].userID,
+                displayName: results[i].displayName,
+                avatar: displayPic,
                 postTime: results[i].postTime,
                 title: results[i].title,
-                description: results[i].description,
                 coolzoneID: results[i].coolzoneID,
-                pictures: results[i].pictures
             };
             console.log(timelineData[i]);
         }
-
         console.log(timelineData);
         res.send(JSON.stringify(timelineData));
     });
