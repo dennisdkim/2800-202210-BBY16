@@ -609,7 +609,8 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
 
 app.post("/getTimelinePosts", function (req, res) {
     let timelineData = [];
-    connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID FROM BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID ORDER BY POSTTIME DESC;`,
+    connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID, BBY_16_timeline.postID `
+        + `FROM BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID ORDER BY postTime DESC;`,
     function (error, results, fields) {
         console.log(results);
         for (let i = 0; i < results.length; i++) {
@@ -626,6 +627,7 @@ app.post("/getTimelinePosts", function (req, res) {
                 postTime: results[i].postTime,
                 title: results[i].title,
                 coolzoneID: results[i].coolzoneID,
+                postID: results[i].postID
             };
             console.log(timelineData[i]);
         }
@@ -635,6 +637,40 @@ app.post("/getTimelinePosts", function (req, res) {
 
 });
 
+app.post("/loadPostContent", function (req, res) {
+    connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi' +
+        ' FROM ((BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID) ' + 
+        'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?', req.body.postID,
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            let displayPic;
+            const avatarPath = "/img/userAvatars/avatar-user" + results[0].userID + ".png";
+            if (fs.existsSync("./public" + avatarPath)) {
+                displayPic = avatarPath;
+            } else {
+                displayPic = "/img/userAvatars/default.png"
+            }
+            let postData = {
+                displayName: results[0].displayName,
+                avatar: displayPic,
+                postTime: results[0].postTime,
+                title: results[0].title,
+                description: results[0].description,
+                pictures: results[0].pictures,
+                aircon: results[0].aircon,
+                freedrinks: results[0].freedrinks,
+                waterpark: results[0].waterpark,
+                pool: results[0].pool,
+                outdoors: results[0].outdoors,
+                wifi: results[0].wifi,
+                editPermissions: (results[0].userID == req.session.userID) ? true : false
+            };
+            console.log(postData);
+            res.send(JSON.stringify(postData));
+        });
+});
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
     console.log("route is activated");
