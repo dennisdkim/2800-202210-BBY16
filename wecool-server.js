@@ -577,7 +577,7 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
     res.send({"status": "success", "path" : "/img/userAvatars/avatar-user" + req.session.userID + ".png"});
 });
 
-app.post("/submitTimelinePost", function (req, res) {
+app.post("/submitTimelinePost", timelineUpload.array("files"), function (req, res) {
     let coolzoneID;
     if (req.body.coolzoneID == "") {
         coolzoneID = null;
@@ -594,13 +594,16 @@ app.post("/submitTimelinePost", function (req, res) {
                 console.log(error);
             }
             let postID = result;
-
             uploadTimelinePhoto(req, postID);
         });
 });
 
 function uploadTimelinePhoto(req, postID) {
 }
+
+app.get("/getTimelinePosts", function (req, res) {
+    
+});
 
 //Run server on port 8000
 let port = 8000;
