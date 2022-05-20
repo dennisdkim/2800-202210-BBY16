@@ -280,7 +280,7 @@ document.getElementById("delete-post-photo-button").addEventListener("click", (e
         res.json().then(
             data => {
                 console.log(data.msg);
-                loadPostContent(parcel.path.postID, submitPostEditButton.value);
+                loadPostContent(deletePhotoButton.value, submitPostEditButton.value);
             }
         )
     }   

@@ -735,10 +735,11 @@ app.post("/deleteTimelinePhoto", function (req, res) {
                         console.log(pictureArray);
                         let index = pictureArray.indexOf(req.body.path);
                         console.log(index);
+                        console.log("Removed pic ", pictureArray.splice(index, 1));
                         if (index != -1) {
-                            pictureArray.splice(index);
+                            // pictureArray.splice(index, 1);
+                            console.log("Resulting array ", pictureArray);
                         }
-                        console.log(pictureArray);
                         connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
                             function (error, results, fields) {
                                 if (error) {
