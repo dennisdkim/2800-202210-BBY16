@@ -90,7 +90,7 @@ function initMap() {
       
     });
 
-    const radiusOptions = [{number: 100, multiplier: 0.001, unit: "m"}, {number: 300, multiplier: 0.001, unit: "m"}, {number: 1, multiplier: 1, unit: "km"}, {number: 2, multiplier: 1, unit: "km"}, {number: 3, multiplier: 1, unit: "km"}, {number: 4, multiplier: 1, unit: "km"},{number: 5, multiplier: 1, unit: "km"}, {number: 10, multiplier: 1, unit: "km"}];
+    const radiusOptions = [{number: 300, multiplier: 0.001, unit: "m"}, {number: 1, multiplier: 1, unit: "km"}, {number: 2, multiplier: 1, unit: "km"}, {number: 3, multiplier: 1, unit: "km"}, {number: 4, multiplier: 1, unit: "km"},{number: 5, multiplier: 1, unit: "km"}, {number: 10, multiplier: 1, unit: "km"}];
     const radiusInput = document.createElement("select");
     radiusInput.id = "radiusInput";
     radiusInput.addEventListener("change", ()=>{
@@ -107,6 +107,9 @@ function initMap() {
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(radiusInput);
 
     let currentLatLong = new google.maps.LatLng(location.lat, location.long);
+
+    displayRadius(currentLatLong, radiusInput.options[radiusInput.selectedIndex].value);
+    displayCenterPos(currentLatLong);
 
   }, error, options);
 }
@@ -131,16 +134,18 @@ function waitForElm(selector) {
   });
 }
 
-async function loadMap(){
-  initMap;
+// async function loadMap(){
+//   initMap;
   
-  const elm = await waitForElm("#radiusInput");
+//   const elm = await waitForElm("#radiusInput");
   
-  displayRadius(currentLatLong, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
-  displayCenterPos(currentLatLong);
-}
+  // displayRadius(currentLatLong, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
+  // displayCenterPos(currentLatLong);
+// }
 
-window.onload = loadMap;
+// window.onload = loadMap;
+
+window.onload = initMap;
 
 //takes a longitude and latitude value and displays an icon 
 function displayCenterPos(myLatLong){
