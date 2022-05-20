@@ -265,7 +265,7 @@ function selectThumbnail (e) {
         currentImageContainer.childNodes[i].classList.remove("image-selected");
     }
     e.currentTarget.classList.add("image-selected");
-    console.log(e.currentTarget.src.match(/img\/[a-zA-Z0-9.\/]+/gm));
+    console.log(e.currentTarget.src.match(/img\/[a-zA-Z0-9.\/-]+/gm));
 }
 
 // deletes a post photo //
@@ -275,7 +275,7 @@ document.getElementById("delete-post-photo-button").addEventListener("click", (e
     let parcel = {postID: e.currentTarget.value, path: '',};
     for(let i =0; i < currentImageContainer.childNodes.length; i++) {
         if(currentImageContainer.childNodes[i].classList.contains("image-selected")) {
-            parcel.path = currentImageContainer.childNodes[i].src.match(/img\/[a-zA-Z0-9.\/]+/gm)[0];
+            parcel.path = currentImageContainer.childNodes[i].src.match(/\/img\/[a-zA-Z0-9.\/-]+/gm)[0];
         }
     }
     console.log(parcel);
@@ -292,7 +292,6 @@ document.getElementById("delete-post-photo-button").addEventListener("click", (e
         res.json().then(
             data => {
                 console.log(data.msg);
-                //loadPostContent(parcel.path.postID, submitPostEditButton.value);
                 loadPostContent(deletePhotoButton.value, submitPostEditButton.value);
             }
         )
@@ -367,7 +366,7 @@ submitPostEditButton.addEventListener("click", (e) => {
 // deletes the timeline post //
 
 deletePostButton.addEventListener("click", () => {
-    fetch("/editTimelinePost", {
+    fetch("/deleteTimelinePost", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
