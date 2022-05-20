@@ -707,9 +707,20 @@ app.post("/loadPostContent", function (req, res) {
     }
 });
 
-// app.post("/editTimelinePost", function (req, res) {
-//     connection.query("");
-// });
+// Updates the timeline table with the edited values in the post title and post description
+app.post("/editTimelinePost", function (req, res) {
+    if (req.body.title == "" || req.body.description == "") {
+        res.send({status: "fail", msg: "Title and description must not be empty"});
+    } else {
+    connection.query("UPDATE BBY_16_timeline SET title = ?, description = ? WHERE postID = ?", [req.body.title, req.body.description, req.body.postID],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({status: "success", msg: "Post updated"});
+        });
+    }
+});
 
 // Allows user to delete timeline photo when editing post by removing the image in the file system and remove its reference in the database
 app.post("/deleteTimelinePhoto", function (req, res) {
