@@ -641,7 +641,7 @@ app.post("/getTimelinePosts", function (req, res) {
 // coolzone vs. a regular post (not associated with coolzone)
 app.post("/loadPostContent", function (req, res) {
     // A timeline post that links to a coolzone, it will load the coolzone traits as well as coolzone ID
-    if (!req.body.coolzoneID) {
+    if (req.body.coolzoneID) {
         connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi' +
         ' FROM ((BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID) ' + 
         'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?;', req.body.postID,
@@ -657,6 +657,7 @@ app.post("/loadPostContent", function (req, res) {
                 displayPic = "/img/userAvatars/default.png"
             }
             let postData = {
+                postID: results[0].postID,
                 displayName: results[0].displayName,
                 avatar: displayPic,
                 postTime: results[0].postTime,
@@ -691,6 +692,7 @@ app.post("/loadPostContent", function (req, res) {
                 displayPic = "/img/userAvatars/default.png"
             }
             let postData = {
+                postID: results[0].postID,
                 displayName: results[0].displayName,
                 avatar: displayPic,
                 postTime: results[0].postTime,
@@ -704,6 +706,23 @@ app.post("/loadPostContent", function (req, res) {
         });
     }
 });
+
+// app.post("/editTimelinePost", function (req, res) {
+//     connection.query("");
+// });
+
+// app.post("/deleteTimelinePhoto", function (req, res) {
+//     if (fs.existsSync("./public/" + req.body.path)) {
+//         connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
+//             function (error, results, fields) {
+
+//             });
+//         fs.unlink("./public/" + req.body.path);
+//         res.send({status: "success", msg: "Photo deleted"});
+//     } else {
+//         res.send({status: "fail", msg: "Photo could not be deleted"});
+//     }
+// });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
     console.log("route is activated");
