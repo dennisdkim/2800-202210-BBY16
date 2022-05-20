@@ -14,6 +14,7 @@ const { connect } = require("tls");
 app.use("/js", express.static("./public/js"));
 app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
+app.use("/sounds", express.static("./public/sounds"));
 app.use("/html", express.static("./app/html"));
 
 //Storage for user uploaded files of avatars
@@ -82,40 +83,44 @@ app.get("/", function (req, res) {
 });
 
 //inputs into the user database table//
-app.post("/tryInsert", function (req, res) {
+app.post("/newSignUp", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for email or display name in existing accounts
-    connection.query('SELECT * FROM BBY_16_user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
+    connection.query('SELECT * FROM BBY_16_user WHERE displayName = ? OR email = ?;', [req.body.displayName, req.body.email],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
             }
-            // If account with email or display name exists, then do not create account and send message
-            if (results.length > 0) {
-                if (results[0].email == req.body.email) {
-                    res.send({
-                        status: "emailExists",
-                        msg: "Email is in use"
-                    });
-                } else {
-                    res.send({
-                        status: "displayExists",
-                        msg: "Display name is in use"
-                    });
+            let users = results;
+            if (users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if (users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
                 }
-            }
-            // If account with email does not exist, create new account with email
-            else {
-                connection.query('INSERT INTO BBY_16_user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
-                    [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+                if (displayNameTaken && emailTaken) {
+                    res.send({ status: "fail", msg: "The display name and email is taken" });
+                } else {
+                    if (displayNameTaken) {
+                        res.send({ status: "fail", msg: "The display name is taken" });
+                    }
+                    if (emailTaken) {
+                        res.send({ status: "fail", msg: "The email is taken" });
+                    }
+                }
+            // If email and display name is not taken, then create account
+            } else {
+                connection.query('INSERT INTO BBY_16_user(fname, lname, displayName, email, password) VALUES (?, ?, ?, ?, ?);', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password],
                     function (error, results, fields) {
                         if (error) {
                             console.log(error);
                         }
-                        res.send({
-                            status: "success",
-                            msg: "Account created."
-                        });
+                        res.send({ status: "success", msg: "Account created" });
                     });
             }
         });
@@ -271,22 +276,9 @@ app.get("/getNavbarFooter", function (req, res) {
     const components = {
         "navbar": navbar,
         "footer": footer,
-        "displayName": req.session.displayName,
-        "email": req.session.email,
-        "name": req.session.fname + " " + req.session.lname
     };
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(components));
-});
-
-//returns the first and last name, email, and display name to the page//
-app.get("/getGreetingName", function (req, res) {
-    const greetingName = {
-        "displayName": req.session.displayName,
-        "email": req.session.email,
-        "name": req.session.fname + " " + req.session.lname
-    };
-    res.send(JSON.stringify(greetingName));
 });
 
 //returns the info of the currently active user in the session
@@ -373,15 +365,12 @@ app.post("/deleteUser", function (req, res) {
                 console.log(error);
             }
             if (results.length == 0) {
-                connection.end();
                 res.send({ status: "fail", msg: "Incorrect display name" });
             } else {
                 if (req.session.userID == req.body.userID) {
-                    connection.end();
                     res.send({ status: "fail", msg: "Cannot delete yourself" });
                 } else {
                     connection.query('DELETE FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
-                        connection.end();
                         res.send({ status: "success", msg: "User deleted" });
                     });
                 }
@@ -409,15 +398,12 @@ app.post("/addNewUser", function (req, res) {
                     }
                 }
                 if (displayNameTaken && emailTaken) {
-                    connection.end();
                     res.send({ status: "fail", msg: "The display name and email is taken" });
                 } else {
                     if (displayNameTaken) {
-                        connection.end();
                         res.send({ status: "fail", msg: "The display name is taken" });
                     }
                     if (emailTaken) {
-                        connection.end();
                         res.send({ status: "fail", msg: "The email is taken" });
                     }
                 }
@@ -530,15 +516,12 @@ app.post("/editUserData", function (req, res) {
                         }
                     }
                     if (displayNameTaken && emailTaken) {
-                        connection.end();
                         res.send({ status: "fail", msg: "The display name and email is taken" });
                     } else {
                         if (displayNameTaken) {
-                            connection.end();
                             res.send({ status: "fail", msg: "The display name is taken" });
                         }
                         if (emailTaken) {
-                            connection.end();
                             res.send({ status: "fail", msg: "The email is taken" });
                         }
                     }
@@ -609,6 +592,21 @@ app.post("/loadCoolzones", function (req, res) {
                 });
             }
         });
+});
+
+// Allows admin user to delete avatar from file system 
+app.post("/deleteUserAvatar", function (req, res) {
+    const path = "./public/img/userAvatars/avatar-user" + req.body.userID + ".png";
+    if (fs.existsSync(path)) {
+        fs.unlink(path, (error) => {
+            if (error) {
+                console.log(error);
+            }
+            res.send({status: "success", msg: "Display picture deleted"});
+        });
+    } else {
+        res.send({status: "fail", msg: "This user does not have a display picture"});
+    }
 });
 
 //Run server on port 8000
