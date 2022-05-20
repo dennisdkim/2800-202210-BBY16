@@ -606,7 +606,7 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
 
 
 
-
+// Sends the information necessary to display the timeline "preview" cards on the timeline page
 app.post("/getTimelinePosts", function (req, res) {
     let timelineData = [];
     connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID, BBY_16_timeline.postID `
@@ -637,10 +637,14 @@ app.post("/getTimelinePosts", function (req, res) {
 
 });
 
+// Loads the content page for each timeline post. It will load slightly different information, depending on if the post is associated with a
+// coolzone vs. a regular post (not associated with coolzone)
 app.post("/loadPostContent", function (req, res) {
-    connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi' +
+    // A timeline post that links to a coolzone, it will load the coolzone traits as well as coolzone ID
+    if (!req.body.coolzoneID) {
+        connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi' +
         ' FROM ((BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID) ' + 
-        'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?', req.body.postID,
+        'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?;', req.body.postID,
         function (error, results, fields) {
             if (error) {
                 console.log(error);
@@ -659,6 +663,7 @@ app.post("/loadPostContent", function (req, res) {
                 title: results[0].title,
                 description: results[0].description,
                 pictures: results[0].pictures,
+                coolzoneID: results[0].coolzoneID,
                 aircon: results[0].aircon,
                 freedrinks: results[0].freedrinks,
                 waterpark: results[0].waterpark,
@@ -670,6 +675,34 @@ app.post("/loadPostContent", function (req, res) {
             console.log(postData);
             res.send(JSON.stringify(postData));
         });
+    // A regular timeline post not associated to any coolzone, it will only load post info
+    } else {
+        connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName FROM BBY_16_timeline ' +
+        'INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID WHERE BBY_16_timeline.postID = ?;', req.body.postID,
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            let displayPic;
+            const avatarPath = "/img/userAvatars/avatar-user" + results[0].userID + ".png";
+            if (fs.existsSync("./public" + avatarPath)) {
+                displayPic = avatarPath;
+            } else {
+                displayPic = "/img/userAvatars/default.png"
+            }
+            let postData = {
+                displayName: results[0].displayName,
+                avatar: displayPic,
+                postTime: results[0].postTime,
+                title: results[0].title,
+                description: results[0].description,
+                pictures: results[0].pictures,
+                editPermissions: (results[0].userID == req.session.userID) ? true : false
+            };
+            console.log(postData);
+            res.send(JSON.stringify(postData));
+        });
+    }
 });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
