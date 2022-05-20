@@ -22,6 +22,7 @@ let userSearchBar = document.getElementById("search-user-bar");
 let clearFieldButton = document.getElementById("clearButton");
 let revertChangesButton = document.getElementById("revertButton");
 let addUserMenuButton = document.getElementById("new-user-button");
+let deleteAviButton = document.getElementById("deleteAviButton");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -29,6 +30,8 @@ function toggleEditUserMenu(input) {
         userEditMenu.hidden = false;
         newUserMenu.hidden = true;
         editUserResponseMsg.innerHTML = "";
+        document.getElementById("avatarMsg").innerHTML = "";
+
     } else if (input == 0) {
         userEditMenu.hidden = true;
     }
@@ -143,6 +146,7 @@ function loadUserList() {
                                             document.getElementById("profile-form-pic").src = data.avatar;
                                             saveUserInfoButton.value = data.userID;
                                             deleteUserButton.value = data.userID;
+                                            deleteAviButton.value = data.userID;
                                             revertChangesButton.addEventListener("click", fillInForm);
                                         }
                                     )
@@ -253,4 +257,33 @@ function addUser() {
             )
         }
     )
+}
+
+// Delete user display picture when the "Delete Display Picture" is clicked
+deleteAviButton.addEventListener("click", function (e) {
+    deleteUserPicture(e);
+});
+
+// Allows admin to delete user display pictures in the case it violets site rules
+async function deleteUserPicture(e){
+    try {
+        let deleteResponse = await fetch ("/deleteUserAvatar", {
+            method: 'POST',
+            headers: {
+                "Accept": 'application/json',
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({userID: e.currentTarget.value})
+        });
+        let parsedResponse = await deleteResponse.json();
+        if (parsedResponse.status == "success") {
+            document.getElementById("profile-form-pic").src = "img/userAvatars/default.png";
+            document.getElementById("avatarMsg").innerHTML = parsedResponse.msg;
+            loadUserList();
+        } else {
+            document.getElementById("avatarMsg").innerHTML = parsedResponse.msg;
+        }
+    } catch (error) {
+        console.log(error);
+    }
 }

@@ -46,8 +46,7 @@ CREATE TABLE bby_16_coolzones (
   pool tinyint(4) DEFAULT 0,
   outdoors tinyint(4) DEFAULT 0,
   indoors tinyint(4) DEFAULT 0,
-  wifi tinyint(4) DEFAULT 0,
-  open tinyint(4) DEFAULT 0
+  wifi tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

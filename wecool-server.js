@@ -14,6 +14,7 @@ const { connect } = require("tls");
 app.use("/js", express.static("./public/js"));
 app.use("/css", express.static("./public/css"));
 app.use("/img", express.static("./public/img"));
+app.use("/sounds", express.static("./public/sounds"));
 app.use("/html", express.static("./app/html"));
 
 //Storage for user uploaded files (avatars/display pictures)
@@ -39,8 +40,22 @@ const timelineStorage = multer.diskStorage({
         callback(null, photoCode + "." + file.originalname.split('.').pop().trim());
     }
 });
+
 const timelineUpload = multer({
     storage: timelineStorage
+});
+
+//Storage for user uploaded files of coolzones.
+const coolzoneStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./public/img/coolzones/")
+    },
+    filename: function (req, file, callback) {
+        callback(null, "coolzone-user" + req.session.userID + ".png");
+    }
+});
+const coolzoneUpload = multer({
+    storage: coolzoneStorage
 });
 
 app.use(session({
@@ -83,40 +98,44 @@ app.get("/", function (req, res) {
 });
 
 //inputs into the user database table//
-app.post("/tryInsert", function (req, res) {
+app.post("/newSignUp", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for email or display name in existing accounts
-    connection.query('SELECT * FROM BBY_16_user WHERE email = ? OR displayName = ?', [req.body.email, req.body.displayName],
+    connection.query('SELECT * FROM BBY_16_user WHERE displayName = ? OR email = ?;', [req.body.displayName, req.body.email],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
             }
-            // If account with email or display name exists, then do not create account and send message
-            if (results.length > 0) {
-                if (results[0].email == req.body.email) {
-                    res.send({
-                        status: "emailExists",
-                        msg: "Email is in use"
-                    });
-                } else {
-                    res.send({
-                        status: "displayExists",
-                        msg: "Display name is in use"
-                    });
+            let users = results;
+            if (users.length > 0) {
+                let displayNameTaken = false;
+                let emailTaken = false;
+                for (let i = 0; i < users.length; i++) {
+                    if (users[i].displayName == req.body.displayName) {
+                        displayNameTaken = true;
+                    }
+                    if (users[i].email == req.body.email) {
+                        emailTaken = true;
+                    }
                 }
-            }
-            // If account with email does not exist, create new account with email
-            else {
-                connection.query('INSERT INTO BBY_16_user(fname, lname, email, displayName, password) VALUES (?, ?, ?, ?, ?)',
-                    [req.body.fname, req.body.lname, req.body.email, req.body.displayName, req.body.password],
+                if (displayNameTaken && emailTaken) {
+                    res.send({ status: "fail", msg: "The display name and email is taken" });
+                } else {
+                    if (displayNameTaken) {
+                        res.send({ status: "fail", msg: "The display name is taken" });
+                    }
+                    if (emailTaken) {
+                        res.send({ status: "fail", msg: "The email is taken" });
+                    }
+                }
+            // If email and display name is not taken, then create account
+            } else {
+                connection.query('INSERT INTO BBY_16_user(fname, lname, displayName, email, password) VALUES (?, ?, ?, ?, ?);', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password],
                     function (error, results, fields) {
                         if (error) {
                             console.log(error);
                         }
-                        res.send({
-                            status: "success",
-                            msg: "Account created."
-                        });
+                        res.send({ status: "success", msg: "Account created" });
                     });
             }
         });
@@ -126,14 +145,14 @@ app.post("/tryInsert", function (req, res) {
 app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
-    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, aircon, freedrinks, waterpark, pool, outdoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.wifiTag],
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-            }
-            res.send({ status: "success", msg: "Coolzone created." });
-        });
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
+    function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        res.send({ status: "success", msg: "Coolzone created."});
+    });
 });
 
 //loads the profile page//
@@ -272,22 +291,9 @@ app.get("/getNavbarFooter", function (req, res) {
     const components = {
         "navbar": navbar,
         "footer": footer,
-        "displayName": req.session.displayName,
-        "email": req.session.email,
-        "name": req.session.fname + " " + req.session.lname
     };
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(components));
-});
-
-//returns the first and last name, email, and display name to the page//
-app.get("/getGreetingName", function (req, res) {
-    const greetingName = {
-        "displayName": req.session.displayName,
-        "email": req.session.email,
-        "name": req.session.fname + " " + req.session.lname
-    };
-    res.send(JSON.stringify(greetingName));
 });
 
 //returns the info of the currently active user in the session
@@ -704,6 +710,66 @@ app.post("/loadPostContent", function (req, res) {
                 res.send(JSON.stringify(postData));
             });
     }
+});
+
+// Uploads coolzone image to file system
+app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res) {
+    req.file.filename = req.file.originalname;
+    res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
+});
+
+//loads all coolzones within search radius
+app.post("/loadCoolzones", function (req, res) {
+    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+        [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
+        function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+            else if (results.length == 0) {
+                res.send({ status: "success", msg: "no coolzones" });
+            } else {
+                res.send({
+                    status: "success",
+                    msg: "yes coolzones",
+                    coolzones: results
+                });
+            }
+        });
+});
+
+// Allows admin user to delete avatar from file system 
+app.post("/deleteUserAvatar", function (req, res) {
+    const path = "./public/img/userAvatars/avatar-user" + req.body.userID + ".png";
+    if (fs.existsSync(path)) {
+        fs.unlink(path, (error) => {
+            if (error) {
+                console.log(error);
+            }
+            res.send({status: "success", msg: "Display picture deleted"});
+        });
+    } else {
+        res.send({status: "fail", msg: "This user does not have a display picture"});
+    }
+});
+
+//loads all coolzones within search radius
+app.post("/loadCoolzones", function(req, res){
+    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+    [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat], 
+    function(error, results){
+        if (error){
+            console.log(error);
+        }
+        else if(results.length == 0){
+            res.send({status: "success", msg: "no coolzones"});
+        } else {
+            res.send({status: "success", 
+            msg: "yes coolzones",
+            coolzones: results
+        });
+        }
+    });
 });
 
 // Updates the timeline table with the edited values in the post title and post description
