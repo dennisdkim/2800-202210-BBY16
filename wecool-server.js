@@ -657,6 +657,7 @@ app.post("/loadPostContent", function (req, res) {
                 displayPic = "/img/userAvatars/default.png"
             }
             let postData = {
+                postID: results[0].postID,
                 displayName: results[0].displayName,
                 avatar: displayPic,
                 postTime: results[0].postTime,
@@ -691,6 +692,7 @@ app.post("/loadPostContent", function (req, res) {
                 displayPic = "/img/userAvatars/default.png"
             }
             let postData = {
+                postID: results[0].postID,
                 displayName: results[0].displayName,
                 avatar: displayPic,
                 postTime: results[0].postTime,
@@ -703,6 +705,54 @@ app.post("/loadPostContent", function (req, res) {
             res.send(JSON.stringify(postData));
         });
     }
+});
+
+// app.post("/editTimelinePost", function (req, res) {
+//     connection.query("");
+// });
+
+// Allows user to delete timeline photo when editing post by removing the image in the file system and remove its reference in the database
+app.post("/deleteTimelinePhoto", function (req, res) {
+    if (fs.existsSync("./public/" + req.body.path)) {
+        fs.unlink("./public/" + req.body.path);
+        connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
+            function (error, results, fields) {
+                let pictureArray = JSON.parse(results[0].pictures);
+                let index = pictureArray.indexOf(req.body.path);
+                if (index != -1) {
+                    pictureArray.splice(index);
+                }
+                connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
+                    function (error, results, fields) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        res.send({status: "success", msg: "Photo deleted"});
+                    });
+            });
+    } else {
+        res.send({status: "fail", msg: "Photo could not be deleted"});
+    }
+});
+
+// Allows user to add more timeline photos when editing post by adding the image in the file system and adding its reference in the database
+app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res) {
+    let pictures = [];
+    for(let i=0; i < req.files.length; i++) {
+        pictures.push("/img/timelinePhotos/" + req.files[i].filename);
+    }
+    connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
+        function (error, results, fields) {
+            let pictureArray = JSON.parse(results[0].pictures);
+            pictureArray.push(...pictures);
+            connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
+                function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    res.send({status: "success", msg: "Photo(s) added"});
+                });
+        });
 });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
