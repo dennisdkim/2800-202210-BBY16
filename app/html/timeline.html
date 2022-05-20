@@ -60,16 +60,17 @@
       <div class="post-form-input" id="post-image-upload-container">
         <p>Upload Photo</p>
         <input id="image-upload-input" type="file" class="input-field" value="Upload Image"
-          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple"/>
+          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple" />
       </div>
       <div class="post-form-input" id="coolzone-selection-box">
         <p>Link a coolzone</p>
-        <div ><span id="selected-cz-id">None Selected</span> - <span id="selected-coolzone"></span> <button id="remove-selected-cz-button">Remove</button></div>
+        <div><span id="selected-cz-id">None Selected</span> - <span id="selected-coolzone"></span> <button
+            id="remove-selected-cz-button">Remove</button></div>
         <input type="text" placeholder="Search name or address..." id="post-form-coolzone-id">
         <ul id="coolzone-suggestion-box"></ul>
       </div>
       <button id="submit-post-button">Submit Post</button>
-  
+
     </div>
 
     <div id="timeline-post-edit-form-container" hidden>
@@ -88,12 +89,13 @@
         <div id="current-image-container"></div>
         <button id="delete-post-photo-button">Delete Photo</button>
         <input id="image-edit-upload-input" type="file" class="input-field" value="Upload Image"
-          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple"/>
-          <button id="add-post-photo-button">Add Photo</button>
+          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple" />
+        <button id="add-post-photo-button">Add Photo</button>
       </div>
-      
-      <button id="submit-post-edit-button">Submit Changes</button>
-  
+      <div id="edit-buttons-container">
+        <button id="delete-post-edit-button">Delete Post</button>
+        <button id="submit-post-edit-button">Submit Changes</button>
+      </div>
     </div>
   </div>
 

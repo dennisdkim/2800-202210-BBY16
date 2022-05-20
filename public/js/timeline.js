@@ -10,6 +10,7 @@ let submitPostEditButton = document.getElementById("submit-post-edit-button");
 let currentImageContainer = document.getElementById("current-image-container");
 let deletePhotoButton = document.getElementById("delete-post-photo-button");
 let addPhotoButton = document.getElementById("add-post-photo-button");
+let deletePostButton = document.getElementById("delete-post-edit-button");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
@@ -124,6 +125,16 @@ function createPost() {
             const data = res.json().then(
                 data => {
                     console.log(data.msg);
+
+                    //resets post form//
+                    document.getElementById("post-form-title").value = "";
+                    document.getElementById("post-form-description").value = "";
+                    document.getElementById("selected-coolzone").innerHTML = "";
+                    document.getElementById("selected-cz-id").innerHTML = "None Selected";
+                    searchCoolzoneInput.value = "";
+                    togglePostForm(0);
+
+                    //reload post list//
                     loadPostList();
                 })
         }
@@ -174,11 +185,10 @@ function generateSuggestions () {
                             newSuggestion.value = data[i].EVENTID;
 
                             newSuggestion.addEventListener("click", (e)=> {
-                                document.getElementById("selected-coolzone").innerHTML = e.currentTarget.innerText;
-                                document.getElementById("selected-cz-id").innerHTML = e.currentTarget.value;
+                            document.getElementById("selected-coolzone").innerHTML = e.currentTarget.innerText;
+                            document.getElementById("selected-cz-id").innerHTML = e.currentTarget.value;
                             })
                         }
-    
                     }
                 )
             }
@@ -223,7 +233,10 @@ function loadPostContent (pID, czID) {
                             let newImage = document.createElement("img");
                             newImage.src = pictureArray[i];
                             newImage.alt = "post pic";
+                            
                             imageSlider.appendChild(newImage);
+                            console.log(newImage.height);
+                            console.log(newImage.width);
                             let newImageDuplicate = newImage.cloneNode(true);
                             newImageDuplicate.addEventListener("click", (e) => {selectThumbnail(e)});
                             editImageContainer.appendChild(newImageDuplicate);
@@ -239,7 +252,6 @@ function loadPostContent (pID, czID) {
                     deletePhotoButton.value = pID;
                     document.getElementById("post-edit-form-title").value = data.title;
                     document.getElementById("post-edit-form-description").value = data.description;
-
 
                 }
             )
@@ -280,7 +292,8 @@ document.getElementById("delete-post-photo-button").addEventListener("click", (e
         res.json().then(
             data => {
                 console.log(data.msg);
-                loadPostContent(parcel.path.postID, submitPostEditButton.value);
+                //loadPostContent(parcel.path.postID, submitPostEditButton.value);
+                loadPostContent(deletePhotoButton.value, submitPostEditButton.value);
             }
         )
     }   
@@ -335,8 +348,13 @@ submitPostEditButton.addEventListener("click", (e) => {
             res.json().then(
                 data => {
                     console.log(data.msg);
-                    console.log(deletePhotoButton.value);
-                    console.log(submitPostEditButton.value);
+
+                    //resets post form//
+                    document.getElementById("post-edit-form-title").value = "";
+                    document.getElementById("post-edit-form-description").value = "";
+                    togglePostEdit(0);
+
+                    //reloads post list and content//
                     loadPostContent(deletePhotoButton.value, submitPostEditButton.value);
                     loadPostList();
                 }
@@ -344,3 +362,34 @@ submitPostEditButton.addEventListener("click", (e) => {
         }
     )
 })
+
+
+// deletes the timeline post //
+
+deletePostButton.addEventListener("click", () => {
+    fetch("/editTimelinePost", {
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({postID: deletePhotoButton.value})
+    }).then(
+        res => {
+            res.json().then(
+                data => {
+                    console.log(data.msg);
+
+                    //resets post form//
+                    document.getElementById("post-edit-form-title").value = "";
+                    document.getElementById("post-edit-form-description").value = "";
+                    togglePostEdit(0);
+
+                    //reloads post list and content//
+                    loadPostList();
+                }
+            )
+        }
+    )
+})
+
