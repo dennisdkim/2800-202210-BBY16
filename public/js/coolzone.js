@@ -1,6 +1,22 @@
 
 'use strict';
 
+//global searched location longitude
+let myLong;
+//global searched location latitude
+let myLat;
+
+function initGoogle(){
+  const autocomplete = new google.maps.places.Autocomplete(document.getElementById("location"));
+  autocomplete.addListener("place_changed", ()=>{
+    const place = autocomplete.getPlace();
+    myLat = place.geometry.location.lat();
+    myLong = place.geometry.location.lng();
+  });
+}
+
+window.onload = initGoogle;
+
 //Sends input field data to server to be inserted into db.
 async function submitCoolzone(data){
   try {
@@ -22,6 +38,7 @@ async function submitCoolzone(data){
   }
 };
 
+
 //event listener to call submitCoolzone method upon button click.
 document.getElementById("createCoolzone").addEventListener("click", function (e) {
   submitCoolzone({
@@ -35,6 +52,8 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     wpTag: document.getElementById("wpTag").value,
     poolTag: document.getElementById("poolTag").value,
     outdoorTag: document.getElementById("outdoorTag").value,
-    wifiTag: document.getElementById("wifiTag").value
+    wifiTag: document.getElementById("wifiTag").value,
+    longitude: myLong,
+    latitude: myLat
   });
 });

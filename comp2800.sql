@@ -119,6 +119,11 @@ ALTER TABLE `bby_16_user`
 --
 ALTER TABLE `bby_16_coolzones`
   ADD CONSTRAINT `bby_16_coolzones_ibfk_1` FOREIGN KEY (`hostid`) REFERENCES `bby_16_user` (`userID`);
+
+ALTER TABLE bby_16_coolzones
+  ADD COLUMN longitude DECIMAL(9,6) AFTER description,
+  ADD COLUMN latitude DECIMAL(8,6) AFTER description;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
