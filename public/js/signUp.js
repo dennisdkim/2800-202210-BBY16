@@ -4,7 +4,7 @@
 //Sends input field data to server to be inserted into db.
 async function submitSignUp(data){
   try {
-    let response = await fetch("/tryInsert", {
+    let response = await fetch("/newSignUp", {
       method: 'POST',
       headers: {
         "Accept": 'application/json',
@@ -13,20 +13,8 @@ async function submitSignUp(data){
       body: JSON.stringify(data)
     });
     let parsedJSON = await response.json();
-    document.getElementById("errorMsgEmail").innerHTML = "";
-    document.getElementById("errorMsgDisplay").innerHTML = "";
     document.getElementById("errorMsg").innerHTML = "";
-    if (parsedJSON.status == "success") {
-      document.getElementById("errorMsg").innerHTML = parsedJSON.msg + "<br/>";
-    } else {
-      if (parsedJSON.status == "emailExists") {
-        document.getElementById("errorMsgEmail").innerHTML = parsedJSON.msg + "<br/>";
-      } else if (parsedJSON.status == "displayExists"){
-        document.getElementById("errorMsgDisplay").innerHTML = parsedJSON.msg + "<br/>";
-      } else {
-        document.getElementById("errorMsg").innerHTML = "Sign up failed";
-      }
-    }
+    document.getElementById("errorMsg").innerHTML = parsedJSON.msg + "<br/>";
   } catch (error) {
     console.log(error);
   }
