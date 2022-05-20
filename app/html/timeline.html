@@ -17,33 +17,6 @@
     <!--"post-list-container" is the left "list" section-->
     <div id="post-list-container">
       <!--following "post-containers" to be generated with JS-->
-
-      <div class="post-container" onclick=togglePostContent(1)>
-        <div class="poster-display-pic-container">
-          <img class="poster-display-pic" src="/img/userAvatars/avatar-user1.png" alt="">
-        </div>
-        <div class="post-info-container">
-          <h3 class="poster-name">City of Vancouver</h3>
-          <p class="post-description">The City of Vancouver is happy to present a new water fountain at the Broadway and
-            Main St. as a part of a new hydrate the public initiative.</p>
-          <button class="find-on-map-button">Find on Map</button>
-          <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span
-              class="post-time">2:55pm</span></p>
-        </div>
-      </div>
-
-      <div class="post-container" onclick=togglePostContent(1)>
-        <div class="poster-display-pic-container">
-          <img class="poster-display-pic" src="/img/userAvatars/avatar-user3.png" alt="">
-        </div>
-        <div class="post-info-container">
-          <h3 class="poster-name">SoupMania</h3>
-          <p class="post-description">Our venue is now fully air-conditioned. Come in for a nice gazpacho.</p>
-          <button class="find-on-map-button">Find on Map</button>
-          <p class="post-timestamp">Posted <span class="post-date">April 27 2022</span> - <span
-              class="post-time">2:34pm</span></p>
-        </div>
-      </div>
     </div>
     <!--"post-content-container" is the right "content" section-->
     <!--content inside to be generated with JS-->
@@ -116,6 +89,7 @@
         <button id="delete-post-photo-button">Delete Photo</button>
         <input id="image-edit-upload-input" type="file" class="input-field" value="Upload Image"
           accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple"/>
+          <button id="add-post-photo-button">Add Photo</button>
       </div>
       
       <button id="submit-post-edit-button">Submit Changes</button>

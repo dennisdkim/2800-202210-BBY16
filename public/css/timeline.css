@@ -24,6 +24,21 @@ body {
     position: relative;
 }
 
+#open-new-post-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 20px 20px;
+    font-size: 0.8em;
+    color: #69869D;
+    background-color: white;
+    border: 1px solid #69869D;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 6;
+}
+
 /* ----post list----*/
 #post-list-container {
     background-color: white;
@@ -84,19 +99,7 @@ body {
     margin-top: 20px;
 }
 
-#open-new-post-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    padding: 20px 20px;
-    font-size: 0.8em;
-    color: #69869D;
-    background-color: white;
-    border: 1px solid #69869D;
-    text-align: center;
-    border-radius: 10px;
-    cursor: pointer;
-}
+
 
 /* ----post content ----*/
 
@@ -113,6 +116,23 @@ body {
     z-index: 10;
     overflow-y: scroll;
     color: #4E4E4E;
+}
+
+#edit-post-button {
+    position: absolute;
+    top: 20px;
+    height: 40px;
+    right: 70px;
+    width: 70px;
+    font-size: 0.8em;
+    text-align: center;
+    line-height: 40px;
+    color: #69869D;
+    background-color: white;
+    border: 1px solid #69869D;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 .close-button {
@@ -140,6 +160,7 @@ body {
 #poster-name-container {
     display: flex;
     align-items: center;
+    max-width: calc( 100% - 150px);
 }
 
 #post-content-poster-name {
@@ -162,6 +183,16 @@ body {
     width: 100%;
     border: black 1px solid;
     margin-bottom: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+}
+
+#image-slider img {
+    min-width: 100%;
+    padding-left: 20%;
+    padding-right: 20%;
 }
 
 #post-content-post-amenities {
@@ -178,13 +209,13 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: rgba(255,255,255,0.9);
-    padding-top: 100px;
+    background-color: rgba(255,255,255,1);
+    padding-top: 30px;
     padding-left: calc((100% - 400px) / 2);
     padding-right: calc((100% - 400px) / 2);
     z-index: 15;
     overflow-y: hidden;
-
+    
 }
 
 #post-form-header {
@@ -247,11 +278,69 @@ body {
     margin: 20px 130px;
 }
 
+/* ----Timeline Post Edit Form----*/
+#timeline-post-edit-form-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255,255,255,1);
+    padding-top: 30px;
+    padding-left: calc((100% - 400px) / 2);
+    padding-right: calc((100% - 400px) / 2);
+    z-index: 15;
+    overflow-y: hidden;
+}
+
+#post-edit-form-title {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+}
+
+#post-edit-form-description {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100px;
+    max-height: 100px;
+    border: none;
+    border-radius: none;
+}
+
+
+
+#current-image-container img {
+    max-height: 70px;
+    padding: 3px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.image-selected {
+    background-color: #69869D;
+    opacity: 0.7;
+}
+
+#submit-post-edit-button {
+    width: 140px;
+    height: 50px;
+    background-color: #728EA5;
+    border-radius: 10px;
+    color: white;
+    font-weight: 1.3em;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    margin: 20px 130px;
+}
 
 @media screen and (min-width: 600px){
 
     #post-list-container {
-        min-width: 400px;
+        min-width: 600px;
         max-width: 600px;
         align-items: flex-start;
         border-right: lightgrey 1px solid;
@@ -274,6 +363,11 @@ body {
     #post-content-post-description {
         font-size: 0.9em;
 
+    }
+
+    #open-new-post-button {
+        left: 460px;
+        max-width: 115px;
     }
 
 }

@@ -7,6 +7,9 @@ let suggestionBox = document.getElementById("coolzone-suggestion-box");
 let imageSlider = document.getElementById("image-slider");
 let postEditForm = document.getElementById("timeline-post-edit-form-container");
 let submitPostEditButton = document.getElementById("submit-post-edit-button");
+let currentImageContainer = document.getElementById("current-image-container");
+let deletePhotoButton = document.getElementById("delete-post-photo-button");
+let addPhotoButton = document.getElementById("add-post-photo-button");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
@@ -79,6 +82,7 @@ function loadPostList() {
                         postListContainer.appendChild(newPostContainer);
 
                         newPostContainer.addEventListener("click", (e) => {
+                            //loadPostContent(data[i].postID, data[i].coolzoneID);
                             loadPostContent(data[i].postID, data[i].coolzoneID);
                         });
                     }
@@ -115,7 +119,7 @@ function createPost() {
             const data = res.json().then(
                 data => {
                     console.log(data.msg);
-
+                    loadPostList();
                 })
         }
     )
@@ -182,6 +186,12 @@ function loadPostContent (pID, czID) {
     console.log(pID);
     console.log(czID);
     togglePostContent(1);
+    while (currentImageContainer.firstChild) {
+        currentImageContainer.removeChild(currentImageContainer.firstChild);
+    };
+    while (imageSlider.firstChild) {
+        imageSlider.removeChild(imageSlider.firstChild);
+    };
     fetch("/loadPostContent", {
         method: 'POST',
         headers: {
@@ -210,16 +220,18 @@ function loadPostContent (pID, czID) {
                             newImage.alt = "post pic";
                             imageSlider.appendChild(newImage);
                             let newImageDuplicate = newImage.cloneNode(true);
-                            newImageDuplicate.addEventListener("click", () => {
-                                document.getElementById("delete-post-photo-button").value = {postID: pID, path:pictureArray[i]};
-                            })
+                            newImageDuplicate.addEventListener("click", (e) => {selectThumbnail(e)});
                             editImageContainer.appendChild(newImageDuplicate);
                         }
                     }
                     document.getElementById("post-content-post-description").innerHTML = data.description;
-                    console.log(data.editPermissions);
-                    submitPostEditButton.value = pID;
-                    
+                    if(data.editPermissions) {
+                        document.getElementById("edit-post-button").hidden = false;
+                    } else {
+                        document.getElementById("edit-post-button").hidden = true;
+                    }
+                    submitPostEditButton.value = czID;
+                    deletePhotoButton.value = pID;
                     document.getElementById("post-edit-form-title").value = data.title;
                     document.getElementById("post-edit-form-description").value = data.description;
 
@@ -230,24 +242,71 @@ function loadPostContent (pID, czID) {
     )
 }
 
+// controls the selection-state of the thumbnail images for deletion //
+function selectThumbnail (e) {
+    for(let i =0; i < currentImageContainer.childNodes.length; i++) {
+        currentImageContainer.childNodes[i].classList.remove("image-selected");
+    }
+    e.currentTarget.classList.add("image-selected");
+    console.log(e.currentTarget.src.match(/img\/[a-zA-Z0-9.\/]+/gm));
+}
+
 // deletes a post photo //
-document.getElementById("delete-post-photo-button").addEventListener("click", async (e)=> {
-    let result = await JSON.stringify(e.currentTarget.value);
-    console.log(result);
-    fetch("/deleteTimelinePhoto", {
+document.getElementById("delete-post-photo-button").addEventListener("click", (e)=> {
+
+    console.log(e.currentTarget.value);
+    let parcel = {postID: e.currentTarget.value, path: '',};
+    for(let i =0; i < currentImageContainer.childNodes.length; i++) {
+        if(currentImageContainer.childNodes[i].classList.contains("image-selected")) {
+            parcel.path = currentImageContainer.childNodes[i].src.match(/img\/[a-zA-Z0-9.\/]+/gm)[0];
+        }
+    }
+    console.log(parcel);
+
+    if(parcel.path.length > 0) {
+        fetch("/deleteTimelinePhoto", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify(e.currentTarget.value),
-    }).then(
+        body: JSON.stringify(parcel),
+    }).then( res => {
         res.json().then(
             data => {
                 console.log(data.msg);
+                loadPostContent(parcel.path.postID, submitPostEditButton.value);
             }
         )
-    )
-    
-
+    }   
+    )}
 } );
+
+// adds a post photo //
+addPhotoButton.addEventListener("click", uploadPostPhoto);
+
+function uploadPostPhoto() {
+
+    console.log("create a post");
+    let newBody = new FormData();
+    let imageUpload = document.getElementById("image-edit-upload-input");
+    newBody.append("postID", deletePhotoButton.value);
+
+    for( let i =0; i < imageUpload.files.length; i++) {
+        newBody.append("photos", imageUpload.files[i]);
+        console.log(imageUpload.files[i]);
+    }
+
+    fetch("/addTimelinePhoto", {
+        method: 'POST',
+        body: newBody
+    }).then(
+        function (res) {
+            const data = res.json().then(
+                data => {
+                    console.log(data.msg);
+                    loadPostContent(deletePhotoButton.value, submitPostEditButton.value);
+                })
+        }
+    )
+}

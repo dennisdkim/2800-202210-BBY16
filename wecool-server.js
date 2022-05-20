@@ -591,16 +591,16 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
     let curDateTime = currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getDate() + " " + currentDate.getHours()
         + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
     let pictures = [];
-    for(let i=0; i < req.files.length; i++) {
+    for (let i = 0; i < req.files.length; i++) {
         pictures.push("/img/timelinePhotos/" + req.files[i].filename);
     }
     connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) VALUES (?, ?, ?, ?, ?, ?);',
         [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID, JSON.stringify(pictures)],
         function (error, result, fields) {
-            if (error) {                
+            if (error) {
                 console.log(error);
             }
-            res.send({status: "success", msg: "Post submitted"});
+            res.send({ status: "success", msg: "Post submitted" });
         });
 });
 
@@ -611,29 +611,29 @@ app.post("/getTimelinePosts", function (req, res) {
     let timelineData = [];
     connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID, BBY_16_timeline.postID `
         + `FROM BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID ORDER BY postTime DESC;`,
-    function (error, results, fields) {
-        console.log(results);
-        for (let i = 0; i < results.length; i++) {
-            let displayPic;
-            const avatarPath = "/img/userAvatars/avatar-user" + results[i].userID + ".png";
-            if (fs.existsSync("./public" + avatarPath)) {
-                displayPic = avatarPath;
-            } else {
-                displayPic = "/img/userAvatars/default.png"
+        function (error, results, fields) {
+            console.log(results);
+            for (let i = 0; i < results.length; i++) {
+                let displayPic;
+                const avatarPath = "/img/userAvatars/avatar-user" + results[i].userID + ".png";
+                if (fs.existsSync("./public" + avatarPath)) {
+                    displayPic = avatarPath;
+                } else {
+                    displayPic = "/img/userAvatars/default.png"
+                }
+                timelineData[i] = {
+                    displayName: results[i].displayName,
+                    avatar: displayPic,
+                    postTime: results[i].postTime,
+                    title: results[i].title,
+                    coolzoneID: results[i].coolzoneID,
+                    postID: results[i].postID
+                };
+                console.log(timelineData[i]);
             }
-            timelineData[i] = {
-                displayName: results[i].displayName,
-                avatar: displayPic,
-                postTime: results[i].postTime,
-                title: results[i].title,
-                coolzoneID: results[i].coolzoneID,
-                postID: results[i].postID
-            };
-            console.log(timelineData[i]);
-        }
-        console.log(timelineData);
-        res.send(JSON.stringify(timelineData));
-    });
+            console.log(timelineData);
+            res.send(JSON.stringify(timelineData));
+        });
 
 });
 
@@ -643,67 +643,67 @@ app.post("/loadPostContent", function (req, res) {
     // A timeline post that links to a coolzone, it will load the coolzone traits as well as coolzone ID
     if (req.body.coolzoneID) {
         connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi' +
-        ' FROM ((BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID) ' + 
-        'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?;', req.body.postID,
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-            }
-            let displayPic;
-            const avatarPath = "/img/userAvatars/avatar-user" + results[0].userID + ".png";
-            if (fs.existsSync("./public" + avatarPath)) {
-                displayPic = avatarPath;
-            } else {
-                displayPic = "/img/userAvatars/default.png"
-            }
-            let postData = {
-                postID: results[0].postID,
-                displayName: results[0].displayName,
-                avatar: displayPic,
-                postTime: results[0].postTime,
-                title: results[0].title,
-                description: results[0].description,
-                pictures: results[0].pictures,
-                coolzoneID: results[0].coolzoneID,
-                aircon: results[0].aircon,
-                freedrinks: results[0].freedrinks,
-                waterpark: results[0].waterpark,
-                pool: results[0].pool,
-                outdoors: results[0].outdoors,
-                wifi: results[0].wifi,
-                editPermissions: (results[0].userID == req.session.userID) ? true : false
-            };
-            console.log(postData);
-            res.send(JSON.stringify(postData));
-        });
-    // A regular timeline post not associated to any coolzone, it will only load post info
+            ' FROM ((BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID) ' +
+            'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?;', req.body.postID,
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                let displayPic;
+                const avatarPath = "/img/userAvatars/avatar-user" + results[0].userID + ".png";
+                if (fs.existsSync("./public" + avatarPath)) {
+                    displayPic = avatarPath;
+                } else {
+                    displayPic = "/img/userAvatars/default.png"
+                }
+                let postData = {
+                    postID: results[0].postID,
+                    displayName: results[0].displayName,
+                    avatar: displayPic,
+                    postTime: results[0].postTime,
+                    title: results[0].title,
+                    description: results[0].description,
+                    pictures: results[0].pictures,
+                    coolzoneID: results[0].coolzoneID,
+                    aircon: results[0].aircon,
+                    freedrinks: results[0].freedrinks,
+                    waterpark: results[0].waterpark,
+                    pool: results[0].pool,
+                    outdoors: results[0].outdoors,
+                    wifi: results[0].wifi,
+                    editPermissions: (results[0].userID == req.session.userID) ? true : false
+                };
+                console.log(postData);
+                res.send(JSON.stringify(postData));
+            });
+        // A regular timeline post not associated to any coolzone, it will only load post info
     } else {
         connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName FROM BBY_16_timeline ' +
-        'INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID WHERE BBY_16_timeline.postID = ?;', req.body.postID,
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-            }
-            let displayPic;
-            const avatarPath = "/img/userAvatars/avatar-user" + results[0].userID + ".png";
-            if (fs.existsSync("./public" + avatarPath)) {
-                displayPic = avatarPath;
-            } else {
-                displayPic = "/img/userAvatars/default.png"
-            }
-            let postData = {
-                postID: results[0].postID,
-                displayName: results[0].displayName,
-                avatar: displayPic,
-                postTime: results[0].postTime,
-                title: results[0].title,
-                description: results[0].description,
-                pictures: results[0].pictures,
-                editPermissions: (results[0].userID == req.session.userID) ? true : false
-            };
-            console.log(postData);
-            res.send(JSON.stringify(postData));
-        });
+            'INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID WHERE BBY_16_timeline.postID = ?;', req.body.postID,
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                let displayPic;
+                const avatarPath = "/img/userAvatars/avatar-user" + results[0].userID + ".png";
+                if (fs.existsSync("./public" + avatarPath)) {
+                    displayPic = avatarPath;
+                } else {
+                    displayPic = "/img/userAvatars/default.png"
+                }
+                let postData = {
+                    postID: results[0].postID,
+                    displayName: results[0].displayName,
+                    avatar: displayPic,
+                    postTime: results[0].postTime,
+                    title: results[0].title,
+                    description: results[0].description,
+                    pictures: results[0].pictures,
+                    editPermissions: (results[0].userID == req.session.userID) ? true : false
+                };
+                console.log(postData);
+                res.send(JSON.stringify(postData));
+            });
     }
 });
 
@@ -713,32 +713,39 @@ app.post("/loadPostContent", function (req, res) {
 
 // Allows user to delete timeline photo when editing post by removing the image in the file system and remove its reference in the database
 app.post("/deleteTimelinePhoto", function (req, res) {
+    console.log("REQ.BODY: " + req.body.path);
     if (fs.existsSync("./public/" + req.body.path)) {
-        fs.unlink("./public/" + req.body.path);
-        connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
-            function (error, results, fields) {
-                let pictureArray = JSON.parse(results[0].pictures);
-                let index = pictureArray.indexOf(req.body.path);
-                if (index != -1) {
-                    pictureArray.splice(index);
-                }
-                connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
+        fs.unlink("./public/" + req.body.path, err => {
+            if (err) { console.log(err) }
+            else {
+                connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
                     function (error, results, fields) {
-                        if (error) {
-                            console.log(error);
+                        let pictureArray = JSON.parse(results[0].pictures);
+                        let index = pictureArray.indexOf(req.body.path);
+                        if (index != -1) {
+                            pictureArray.splice(index);
                         }
-                        res.send({status: "success", msg: "Photo deleted"});
+                        connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
+                            function (error, results, fields) {
+                                if (error) {
+                                    console.log(error);
+                                }
+                                res.send({ status: "success", msg: "Photo deleted" });
+                            });
                     });
-            });
+            }
+
+        });
+
     } else {
-        res.send({status: "fail", msg: "Photo could not be deleted"});
+        res.send({ status: "fail", msg: "Photo could not be deleted" });
     }
 });
 
 // Allows user to add more timeline photos when editing post by adding the image in the file system and adding its reference in the database
 app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res) {
     let pictures = [];
-    for(let i=0; i < req.files.length; i++) {
+    for (let i = 0; i < req.files.length; i++) {
         pictures.push("/img/timelinePhotos/" + req.files[i].filename);
     }
     connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
@@ -750,7 +757,7 @@ app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res
                     if (error) {
                         console.log(error);
                     }
-                    res.send({status: "success", msg: "Photo(s) added"});
+                    res.send({ status: "success", msg: "Photo(s) added" });
                 });
         });
 });
@@ -760,7 +767,7 @@ app.post("/getCoolzoneSuggestions", (req, res) => {
     console.log(req.body.query);
     connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE "%${req.body.query}%" OR LOCATION LIKE "%${req.body.query}%";`, (error, results, fields) => {
         console.log(results);
-        if(error) {
+        if (error) {
             console.log(error);
         } else {
             res.send(JSON.stringify(results));
