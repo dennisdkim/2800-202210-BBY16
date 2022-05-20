@@ -1,6 +1,22 @@
 
 'use strict';
 
+//global searched location longitude
+let myLong;
+//global searched location latitude
+let myLat;
+
+function initGoogle() {
+  const autocomplete = new google.maps.places.Autocomplete(document.getElementById("location"));
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+    myLat = place.geometry.location.lat();
+    myLong = place.geometry.location.lng();
+  });
+}
+
+window.onload = initGoogle;
+
 //Sends input field data to server to be inserted into db.
 async function submitCoolzone(data) {
   try {
@@ -53,6 +69,8 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     dateTag: document.getElementById("dateTag").value,
     enddateTag: document.getElementById("enddateTag").value,
     description: document.getElementById("description").value,
+    longitude: myLong,
+    latitude: myLat,
     acTag: document.getElementById("aircon").value,
     fdTag: document.getElementById("freeWater").value,
     wpTag: document.getElementById("waterParks").value,
