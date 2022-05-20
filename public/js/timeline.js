@@ -43,6 +43,11 @@ function togglePostEdit(input) {
 // retrieves timeline posts and puts them onto the timeline list. //
 function loadPostList() {
 
+    while (postListContainer.firstChild) {
+        postListContainer.removeChild(postListContainer.firstChild);
+    };
+
+
     fetch("/getTimelinePosts", {
         method: 'POST',
         headers: {
@@ -310,3 +315,32 @@ function uploadPostPhoto() {
         }
     )
 }
+
+// submits the changes to the timeline post //
+
+submitPostEditButton.addEventListener("click", (e) => {
+
+    fetch("/editTimelinePost", {
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            title: document.getElementById("post-edit-form-title").value,
+            description: document.getElementById("post-edit-form-description").value,
+            postID: deletePhotoButton.value})
+    }).then(
+        res => {
+            res.json().then(
+                data => {
+                    console.log(data.msg);
+                    console.log(deletePhotoButton.value);
+                    console.log(submitPostEditButton.value);
+                    loadPostContent(deletePhotoButton.value, submitPostEditButton.value);
+                    loadPostList();
+                }
+            )
+        }
+    )
+})

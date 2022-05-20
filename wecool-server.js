@@ -641,7 +641,7 @@ app.post("/getTimelinePosts", function (req, res) {
 // coolzone vs. a regular post (not associated with coolzone)
 app.post("/loadPostContent", function (req, res) {
     // A timeline post that links to a coolzone, it will load the coolzone traits as well as coolzone ID
-    if (req.body.coolzoneID) {
+    if (req.body.coolzoneID == !false) {
         connection.query('SELECT BBY_16_timeline.*, BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi' +
             ' FROM ((BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID) ' +
             'INNER JOIN BBY_16_coolzones ON BBY_16_timeline.coolzoneID = BBY_16_coolzones.eventID) WHERE BBY_16_timeline.postID = ?;', req.body.postID,
@@ -760,9 +760,19 @@ app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res
         pictures.push("/img/timelinePhotos/" + req.files[i].filename);
     }
     connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
-        function (error, results, fields) {
-            let pictureArray = JSON.parse(results[0].pictures);
-            pictureArray.push(...pictures);
+         function (error, results, fields) {
+
+            // following breaks the server when results is null
+            //let pictureArray = JSON.parse(results[0].pictures);
+            //pictureArray.push(...pictures);
+            let pictureArray;
+            if(results.length > 0) {
+                let oldpics = JSON.parse(results[0].pictures);
+                pictureArray = oldpics.concat(pictures);
+            } else {
+                pictureArray = pictures;
+            }
+
             connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
                 function (error, results, fields) {
                     if (error) {
