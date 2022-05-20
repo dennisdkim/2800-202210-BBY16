@@ -76,7 +76,7 @@ CREATE TABLE bby_16_user (
 INSERT INTO `bby_16_user` (`userID`, `fname`, `lname`, `email`, `displayName`, `password`, `admin`) VALUES
 (1, 'dennis', 'kim', 'dennis@test.com', 'dennis123', 'password123', 0),
 (2, 'buck', 'sin', 'buck@sin.com', 'bucksin', 'bucksin', 1),
-(3, 'arron', 'ferguson', 'arron@test.com', 'arron123', 'passwordabc', 0),
+(3, 'arron', 'ferguson', 'arron@test.com', 'arron123', 'passwordabc', 1),
 (4, 'andy', 'tran', 'andy@test.com', 'andy111', 'password', 0);
 
 --
@@ -145,16 +145,16 @@ INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, endd
 VALUES (3, 4, "Coquitlam Center", "2929 Barnet Hwy, Coquitlam, BC V3B 5R5", "2022-05-18 8:00:00", "2022-05-18 21:00:00", "Mall", 49.27757, -122.803093, 1, 0, 0, 0, 0, 1);
 
 INSERT INTO BBY_16_timeline (postID, userID, postTime, title, description, coolzoneID, pictures)
-VALUES (1, 2, '2022-05-18 10:03:21', "Starbucks on Barnet Now Open as a CoolZone", "Come by and
-enjoy our free air con and a free water!", 14, "[\"/img/timelinePhotos/1653069936894-986015475.jpg\", \"/img/timelinePhotos/1653070497296-8549561664.jpg\"]");
+VALUES (1, 3, '2022-05-18 10:03:21', "Starbucks on Barnet Now Open as a CoolZone", "Come by and
+enjoy our free air con and a free water!", 14, "[]");
 
 INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) 
 VALUES (3, '2022-05-18 14:51:12', "Misting station found at Lafarge Lake", "Hey everyone! I found
-a new misting station that the city set up at park just across from the picnic tables!", NULL, "[]");
+a new misting station that the city set up at park just across from the picnic tables!", NULL, "[\"/img/timelinePhotos/1653079699421-6422690431.jpg\", \"/img/timelinePhotos/1653070497296-8549561664.jpg\"]");
 
 INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) 
-VALUES (4, '2022-05-18 9:20:43', "Coquitlam Center Now Open as a CoolZone", "Come by and
-enjoy our free air con!", 3, '[\"img/timelinePhotos/post3photo1.png\"]');
+VALUES (3, '2022-05-18 9:20:43', "Coquitlam Center Now Open as a CoolZone", "Come by and
+enjoy our free air con!", 3, '[]');
 
 COMMIT;
 

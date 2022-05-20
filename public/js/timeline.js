@@ -1,3 +1,5 @@
+'use strict';
+
 let postContent = document.getElementById("post-content-container");
 let postListContainer = document.getElementById("post-list-container");
 let postForm = document.getElementById("timeline-post-form-container");
