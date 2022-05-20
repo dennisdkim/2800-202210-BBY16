@@ -50,17 +50,15 @@ function loadPostList() {
 
 
     fetch("/getTimelinePosts", {
-        method: 'POST',
-        headers: {
-            "Accept": 'application/json',
-            "Content-Type": 'application/json'
-        },
+        method: 'GET',
+        // headers: {
+        //     "Accept": 'application/json',
+        //     "Content-Type": 'application/json'
+        // },
     }).then(
         function (res) {
-            console.log(res);
             const userData = res.json().then(
                 data => {
-                    console.log(data);
 
                     for (let i = 0; i < data.length; i++) {
                         let newPostContainer = document.createElement("li");
@@ -80,7 +78,6 @@ function loadPostList() {
                         newPostContainer.querySelector(".poster-name").innerHTML = data[i].displayName;
                         newPostContainer.querySelector(".post-description").innerHTML = data[i].title;
                         
-                        console.log("postTime is a : " + typeof(data[i].postTime));
                         newPostContainer.querySelector(".post-date").innerHTML = data[i].postTime.substring(0,10);
                         newPostContainer.querySelector(".post-time").innerHTML = data[i].postTime.substring(11,16);
                         newPostContainer.value = data[i].postID;
@@ -105,7 +102,6 @@ submitPostButton.addEventListener("click", createPost);
 
 function createPost() {
 
-    console.log("create a post");
     let newBody = new FormData();
     let imageUpload = document.getElementById("image-upload-input");
 
@@ -114,7 +110,6 @@ function createPost() {
     newBody.append("coolzone", document.getElementById("selected-cz-id").value);
     for( let i =0; i < imageUpload.files.length; i++) {
         newBody.append("photos", imageUpload.files[i]);
-        console.log(imageUpload.files[i]);
     }
 
     fetch("/submitTimelinePost", {
@@ -151,7 +146,6 @@ document.getElementById("remove-selected-cz-button").addEventListener("click", (
 searchCoolzoneInput.addEventListener("keyup", generateSuggestions);
 
 function generateSuggestions () {
-    console.log(searchCoolzoneInput.value);
     while (suggestionBox.firstChild) {
         suggestionBox.removeChild(suggestionBox.firstChild);
     };
@@ -168,7 +162,6 @@ function generateSuggestions () {
             res => {
                 res.json().then(
                     data => {
-                        console.log(data);
                         let numOfSuggestions = 5;
     
                         if(data.length < 5) {
@@ -198,8 +191,7 @@ function generateSuggestions () {
 
 // loads post content //
 function loadPostContent (pID, czID) {
-    console.log(pID);
-    console.log(czID);
+
     togglePostContent(1);
     while (currentImageContainer.firstChild) {
         currentImageContainer.removeChild(currentImageContainer.firstChild);
@@ -218,25 +210,19 @@ function loadPostContent (pID, czID) {
         res => {
             res.json().then(
                 async data => {
-                    console.log(data);
                     document.getElementById("post-content-poster-display-picture").src = data.avatar;
                     document.getElementById("post-content-poster-name").innerHTML = data.displayName;
                     document.getElementById("post-content-post-title").innerHTML = data.title;
                     document.getElementById("post-content-post-date-time").innerHTML = "Posted " + data.postTime.substring(0,10) + " - " + data.postTime.substring(11,16);
-                    //console.log(data.pictures);
                     //adds images//
                     let editImageContainer = document.getElementById("current-image-container");
                     if(data.pictures) {
                         let pictureArray = await JSON.parse(data.pictures);
-                        console.log(pictureArray);
                         for (let i = 0; i < pictureArray.length; i++) {
                             let newImage = document.createElement("img");
                             newImage.src = pictureArray[i];
                             newImage.alt = "post pic";
-                            
                             imageSlider.appendChild(newImage);
-                            console.log(newImage.height);
-                            console.log(newImage.width);
                             let newImageDuplicate = newImage.cloneNode(true);
                             newImageDuplicate.addEventListener("click", (e) => {selectThumbnail(e)});
                             editImageContainer.appendChild(newImageDuplicate);
@@ -265,14 +251,13 @@ function selectThumbnail (e) {
         currentImageContainer.childNodes[i].classList.remove("image-selected");
     }
     e.currentTarget.classList.add("image-selected");
-    console.log(e.currentTarget.src.match(/img\/[a-zA-Z0-9.\/-]+/gm));
 }
 
 // deletes a post photo //
 document.getElementById("delete-post-photo-button").addEventListener("click", (e)=> {
 
-    console.log(e.currentTarget.value);
     let parcel = {postID: e.currentTarget.value, path: '',};
+    //identifies the selected photo and extracts the path of the file to be sent back to the server for deletion.//
     for(let i =0; i < currentImageContainer.childNodes.length; i++) {
         if(currentImageContainer.childNodes[i].classList.contains("image-selected")) {
             parcel.path = currentImageContainer.childNodes[i].src.match(/\/img\/[a-zA-Z0-9.\/-]+/gm)[0];
@@ -304,14 +289,12 @@ addPhotoButton.addEventListener("click", uploadPostPhoto);
 
 function uploadPostPhoto() {
 
-    console.log("create a post");
     let newBody = new FormData();
     let imageUpload = document.getElementById("image-edit-upload-input");
     newBody.append("postID", deletePhotoButton.value);
 
     for( let i =0; i < imageUpload.files.length; i++) {
         newBody.append("photos", imageUpload.files[i]);
-        console.log(imageUpload.files[i]);
     }
 
     fetch("/addTimelinePhoto", {
@@ -383,7 +366,7 @@ deletePostButton.addEventListener("click", () => {
                     document.getElementById("post-edit-form-title").value = "";
                     document.getElementById("post-edit-form-description").value = "";
                     togglePostEdit(0);
-
+                    togglePostContent(0);
                     //reloads post list and content//
                     loadPostList();
                 }

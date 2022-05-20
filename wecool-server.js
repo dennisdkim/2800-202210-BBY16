@@ -607,7 +607,7 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
 
 
 // Sends the information necessary to display the timeline "preview" cards on the timeline page
-app.post("/getTimelinePosts", function (req, res) {
+app.get("/getTimelinePosts", function (req, res) {
     let timelineData = [];
     connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID, BBY_16_timeline.postID `
         + `FROM BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID ORDER BY postTime DESC;`,
@@ -701,7 +701,6 @@ app.post("/loadPostContent", function (req, res) {
                     pictures: results[0].pictures,
                     editPermissions: (results[0].userID == req.session.userID) ? true : false
                 };
-                console.log(postData);
                 res.send(JSON.stringify(postData));
             });
     }
@@ -724,7 +723,6 @@ app.post("/editTimelinePost", function (req, res) {
 
 // Allows user to delete timeline photo when editing post by removing the image in the file system and remove its reference in the database
 app.post("/deleteTimelinePhoto", function (req, res) {
-    console.log("REQ.BODY: " + req.body.path);
     if (fs.existsSync("./public/" + req.body.path)) {
         fs.unlink("./public/" + req.body.path, err => {
             if (err) { console.log(err) }
@@ -732,12 +730,9 @@ app.post("/deleteTimelinePhoto", function (req, res) {
                 connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
                     function (error, results, fields) {
                         let pictureArray = JSON.parse(results[0].pictures);
-                        console.log(pictureArray);
                         let index = pictureArray.indexOf(req.body.path);
-                        console.log(index);
                         if (index != -1) {
                             pictureArray.splice(index, 1);
-                            console.log("Resulting array ", pictureArray);
                         }
                         connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
                             function (error, results, fields) {
@@ -792,14 +787,20 @@ app.post("/deleteTimelinePost", function (req, res) {
         function (error, results, fields) {
             if (error) {
                 console.log(error);
-            } else {
-                res.send({ status: "success", msg: "Post Deleted"});
-            }
+            } 
+            // else {
+            //     res.send({ status: "success", msg: "Post Deleted"});
+            // }
             let pictureArray = JSON.parse(results[0].pictures);
             for (let i = 0; i < pictureArray.length; i++) {
                 let path = "./public/" + pictureArray[i];
                 if (fs.existsSync(path)) {
-                    fs.unlink(path);
+                    fs.unlink(path, err => {
+                        if(err) {console.log(err);}
+                        else {
+                            console.log("photo deleted");
+                        }
+                    });
                 }
             }
             connection.query('DELETE FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
@@ -813,10 +814,8 @@ app.post("/deleteTimelinePost", function (req, res) {
 });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
-    console.log("route is activated");
-    console.log(req.body.query);
+
     connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE "%${req.body.query}%" OR LOCATION LIKE "%${req.body.query}%";`, (error, results, fields) => {
-        console.log(results);
         if (error) {
             console.log(error);
         } else {
