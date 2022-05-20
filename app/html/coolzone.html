@@ -8,58 +8,109 @@
   <title>Host a Coolzone</title>
   <link rel="stylesheet" type="text/css" href="/css/coolzone.css">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
+  <link rel="stylesheet"
+    href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </head>
 
 <body>
   <div id="navbar"></div>
 
   <div class="container">
-    <form class="topContainer" action="/">
-      <div class="labelContainer">
-        <label id="czName">Coolzone Name: </label>
-        <label id="loc">Location: </label>
-        <label id="date">Start Date: </label>
-        <label id="enddate">End Date: </label>
+
+    <div class="topContainer" >
+      <div class="containerName">
+        <span>Coolzone Information</span>
       </div>
-      <div class="inputContainer">
-        <input type="text" id="coolzoneName" name="coolzoneName">
-        <input type="text" id="location" name="location">
-        <input type="datetime-local" id="dateTag" name="dateTag">
-        <input type="datetime-local" id="enddateTag" name="enddateTag">
+      <div class="coolzoneInfo">
+        <div class="labelContainer">
+          <label id="czName">Coolzone Name: </label>
+          <label id="loc">Location: </label>
+          <label id="date">Start Date: </label>
+          <label id="enddate">End Date: </label>
+        </div>
+        <div class="inputContainer">
+          <input type="text" id="coolzoneName" name="coolzoneName">
+          <input type="text" id="location" name="location">
+          <input type="datetime-local" id="dateTag" name="dateTag">
+          <input type="datetime-local" id="enddateTag" name="enddateTag">
+        </div>
       </div>
-    </form>
-    <br>
+    </div>
+
     <div class="descriptionContainer">
       <div class="containerName">
         <span>Description</span>
       </div>
-      <br />
       <div class="descInputContainer">
-        <input type="text" id="description" name="description"
-          placeholder="Enter a small description about the CoolZone!">
+        <textarea id="description" name="description" rows="10" cols="50"
+          placeholder="Enter a small description about the CoolZone!"></textarea>
       </div>
     </div>
-    <br>
+
     <div class="amenitiesContainer">
       <div class="containerName">
         <span>Amenities</span>
       </div>
-      <div class="amenities">
-        <input type="checkbox" name="acTag" id="acTag">Air Conditioned
-        <input type="checkbox" name="fdTag" id="fdTag">Free Drinks
-        <input type="checkbox" name="wpTag" id="wpTag">Water Park
-        <input type="checkbox" name="poolTag" id="poolTag">Swimming Pools
-        <input type="checkbox" name="outdoorTag" id="outdoorTag">Outdoors
-        <input type="checkbox" name="wifiTag" id="wifiTag">Free Wifi
+      <div id="amenities">
+        <input type="checkbox" id="aircon" />
+        <label for="aircon">Air Conditioning
+          <span class="material-symbols-outlined">
+            ac_unit
+          </span>
+        </label>
+        <input type="checkbox" id="freeWater" />
+        <label for="freeWater">Free Water
+          <span class="material-symbols-outlined">
+            water_drop
+          </span>
+        </label>
+        <input type="checkbox" id="swimmingPool" />
+        <label for="swimmingPool">Swimming Pool
+          <span class="material-symbols-outlined">
+            pool
+
+          </span>
+        </label>
+        <input type="checkbox" id="waterParks" />
+        <label for="waterParks">Water Park
+          <span class="material-symbols-outlined">
+            sprinkler
+          </span>
+        </label>
+        <input type="checkbox" id="outdoor" />
+        <label for="outdoor">Outdoor
+          <span class="material-symbols-outlined">
+            location_away
+          </span></label>
+        <input type="checkbox" id="indoor" />
+        <label for="indoor">Indoor
+          <span class="material-symbols-outlined">
+            location_home
+          </span></label>
+        <input type="checkbox" id="freeWifi" />
+        <label for="freeWifi">Free Wi-Fi
+          <span class="material-symbols-outlined">
+            wifi
+          </span>
+        </label>
       </div>
     </div>
+
     <div class="picContainer">
-      <button id="picButton"> Change Picture </button>
+      <div class="containerName">
+        <span>Upload An Image</span>
+      </div>
+      <form id="upload-images-form">
+        <input id="coolzone-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" />
+        <input id="submit" type="submit" value="Submit" />
+      </form>
     </div>
+
     <div class="botContainer">
       <span id="errorMsg" class="errors"></span>
       <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
     </div>
+
   </div>
 
   <div id="footer"></div>

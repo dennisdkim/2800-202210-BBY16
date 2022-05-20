@@ -17,23 +17,17 @@ body{
   flex-direction: column;
 }
 
-.topContainer {
+.coolzoneInfo {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
-.addyContainer, .descriptionContainer, .amenitiesContainer {
+.topContainer, .descriptionContainer, .amenitiesContainer {
   display: flex;
   flex-direction: column;
   border: 2px solid rgb(105,134,157);
   border-radius: 10px;
-  border: 2px solid rgb(105,134,157);
-  border-radius: 10px;
-}
-
-.amenities{
-  display: flex;
-  flex-direction: column;
 }
 
 .infoContainer {
@@ -56,10 +50,11 @@ body{
 }
 
 
-.botContainer, .picContainer {
+.botContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: start;
 }
 
 input {
@@ -70,7 +65,7 @@ input {
   border-color: rgb(105,134,157);
 }
 
-#CoolzoneName, #location, #timeTag, #dateTag, #endtimeTag, #enddateTag{
+#coolzoneName, #location, #dateTag, #enddateTag{
   width: 80%;
   margin-bottom: 10px;
 }
@@ -89,12 +84,9 @@ input {
   font-size: 26px;
 }
 
-#picButton{
-  border-radius: 10px;
-}
-
 span {
   background-color: rgb(105,134,157);
+  border-color: rgb(105,134,157);
   border-bottom-right-radius: 5px;
   border-top-left-radius: 5px;
 }
@@ -111,12 +103,85 @@ span {
   background-color:  white;
 }
 
-#description {
-  width: 90%;
-  height: 100px;
+.containerName {
+  margin: 0;
+  padding: 0;
 }
 
-@media only screen and (min-width: 615px) {
+#description {
+  width: 95%;
+  height: auto;
+}
+
+input[type="checkbox"]{
+  display: none;
+}
+
+label{
+  display: inline-block;
+  padding: 2vh 2vw;
+  color: black;
+  opacity: 0.5;
+  justify-self: center;
+}
+
+label:hover{
+  opacity: 1;
+  cursor: pointer;
+}
+
+#aircon:checked ~label[for="aircon"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#freeWater:checked ~label[for="freeWater"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#swimmingPool:checked ~label[for="swimmingPool"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#waterParks:checked ~label[for="waterParks"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#outdoor:checked ~label[for="outdoor"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#indoor:checked ~label[for="indoor"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+#freeWifi:checked ~label[for="freeWifi"]{
+  opacity: 1;
+  background-color: #94bbdc;
+}
+
+label>span{
+  border-bottom-right-radius: 0px;
+  border-top-left-radius: 0px;
+  align-items: flex-end;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#errorMsg {
+  background-color: #94bbdc;
+}
+
+@media only screen and (min-width: 600px) {
 * {
   font-size: 24px;
 }
@@ -131,35 +196,65 @@ span {
   grid-row: 1 / 2;
 }
 
-.addyContainer {
-  grid-column: 2 / 3;
-  grid-row: 2 / 4;
+.labelContainer, .inputContainer {
+  display: grid;
+  grid-template-rows: repeat(8,12.5%);
 }
 
-.topContainer {
-  grid-column: 2 / 3;
+#czName {
   grid-row: 1 / 2;
+}
+#coolzoneName {
+  grid-row: 2 / 3;
+}
+#loc {
+  grid-row: 3 / 4;
+}
+#location {
+  grid-row: 4 / 5;
+}
+#date {
+  grid-row: 5 / 6;
+}
+#dateTag {
+  grid-row: 6 / 7;
+}
+#enddate {
+  grid-row: 7 / 8;
+}
+#enddateTag {
+  grid-row: 8 / 9;
 }
 
 .descriptionContainer{
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
 }
 
 .amenitiesContainer {
   grid-column: 3 / 4;
-  grid-row: 2 / 4;
+  grid-row: 1 / 3;
+}
+
+#amenities {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .picContainer{
   grid-column: 3 / 4;
-  grid-row: 4 / 5;
-  align-self: center;
+  grid-row: 3 / 4;
+  width: 100%; 
+  height: 100%; 
+  border: 2px rgb(105,134,157) solid ;
+  /* justify-content: center; */
 }
 
 .botContainer{
   grid-column: 1 / end;
-  grid-row: 5 / end;
+  grid-row: 4 / 5;
+  align-items: center;
 }
 
 }
