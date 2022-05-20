@@ -592,7 +592,7 @@ app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, r
         + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
     let pictures = [];
     for (let i = 0; i < req.files.length; i++) {
-        pictures.push("img/timelinePhotos/" + req.files[i].filename);
+        pictures.push("/img/timelinePhotos/" + req.files[i].filename);
     }
     connection.query('INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) VALUES (?, ?, ?, ?, ?, ?);',
         [req.session.userID, curDateTime, req.body.title, req.body.description, coolzoneID, JSON.stringify(pictures)],
@@ -723,8 +723,8 @@ app.post("/editTimelinePost", function (req, res) {
 
 // Allows user to delete timeline photo when editing post by removing the image in the file system and remove its reference in the database
 app.post("/deleteTimelinePhoto", function (req, res) {
-    if (fs.existsSync("./public/" + req.body.path)) {
-        fs.unlink("./public/" + req.body.path, err => {
+    if (fs.existsSync("./public" + req.body.path)) {
+        fs.unlink("./public" + req.body.path, err => {
             if (err) { console.log(err) }
             else {
                 connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
@@ -755,7 +755,7 @@ app.post("/deleteTimelinePhoto", function (req, res) {
 app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res) {
     let pictures = [];
     for (let i = 0; i < req.files.length; i++) {
-        pictures.push("img/timelinePhotos/" + req.files[i].filename);
+        pictures.push("/img/timelinePhotos/" + req.files[i].filename);
     }
     connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
          function (error, results, fields) {
@@ -793,7 +793,7 @@ app.post("/deleteTimelinePost", function (req, res) {
             // }
             let pictureArray = JSON.parse(results[0].pictures);
             for (let i = 0; i < pictureArray.length; i++) {
-                let path = "./public/" + pictureArray[i];
+                let path = "./public" + pictureArray[i];
                 if (fs.existsSync(path)) {
                     fs.unlink(path, err => {
                         if(err) {console.log(err);}
