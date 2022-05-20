@@ -38,6 +38,7 @@ function loadEmailAndIcon(){
           let icon = document.getElementById("avatar-icon");
           icon.src = userInfo.avatar;
           document.getElementById("user-email").innerHTML = userInfo.email;
+          document.getElementById("user-displayName").innerHTML = userInfo.displayName;
         }
       );
     }
