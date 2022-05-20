@@ -732,10 +732,13 @@ app.post("/deleteTimelinePhoto", function (req, res) {
                 connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
                     function (error, results, fields) {
                         let pictureArray = JSON.parse(results[0].pictures);
+                        console.log(pictureArray);
                         let index = pictureArray.indexOf(req.body.path);
+                        console.log(index);
                         if (index != -1) {
                             pictureArray.splice(index);
                         }
+                        console.log(pictureArray);
                         connection.query('UPDATE BBY_16_timeline SET pictures = ? WHERE postID = ?', [JSON.stringify(pictureArray), req.body.postID],
                             function (error, results, fields) {
                                 if (error) {
@@ -780,6 +783,16 @@ app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res
                     }
                     res.send({ status: "success", msg: "Photo(s) added" });
                 });
+        });
+});
+
+// Allows user to delete their timeline post, it should also delete the associated photos as well. 
+app.post("/deleteTimelinePost", function (req, res) {
+    connection.query('DELETE FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
         });
 });
 
