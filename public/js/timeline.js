@@ -5,6 +5,8 @@ let searchCoolzoneInput = document.getElementById("post-form-coolzone-id");
 let submitPostButton = document.getElementById("submit-post-button");
 let suggestionBox = document.getElementById("coolzone-suggestion-box");
 let imageSlider = document.getElementById("image-slider");
+let postEditForm = document.getElementById("timeline-post-edit-form-container");
+let submitPostEditButton = document.getElementById("submit-post-edit-button");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
@@ -22,6 +24,16 @@ function togglePostForm(input) {
         postForm.hidden = false;
     } else if (input == 0) {
         postForm.hidden = true;
+    }
+};
+
+// shows/hides post-edit-form. Input parameter 1 for showing, 0 for hiding. //
+function togglePostEdit(input) {
+
+    if (input == 1) {
+        postEditForm.hidden = false;
+    } else if (input == 0) {
+        postEditForm.hidden = true;
     }
 };
 
@@ -170,7 +182,7 @@ function loadPostContent (pID, czID) {
     console.log(pID);
     console.log(czID);
     togglePostContent(1);
-    fetch("/", {
+    fetch("/loadPostContent", {
         method: 'POST',
         headers: {
             "Accept": 'application/json',
@@ -180,27 +192,62 @@ function loadPostContent (pID, czID) {
     }).then(
         res => {
             res.json().then(
-                data => {
+                async data => {
                     console.log(data);
-                    // document.getElementById("post-content-poster-display-picture").src = data.avatar;
-                    // document.getElementById("post-content-poster-name").src = data.avatar;
-                    // document.getElementById("post-content-post-title").src = data.title;
-                    // document.getElementById("post-content-post-date-time").src = data.title;
-
-                    // //adds images//
-                    // if(data.pictures) {
-                    //     for (let i = 0; i < data.pictures.length; i++) {
-                    //         let newImage = document.createElement("img");
-                    //         newImage.src = data.pictures[i];
-                    //         newImage.alt = "post pic";
-                    //         imageSlider.appendChild(newImage);
-                    //     }
-                    // }
-
-                    // document.getElementById("post-content-post-description").innerHTML = data.description;
+                    document.getElementById("post-content-poster-display-picture").src = data.avatar;
+                    document.getElementById("post-content-poster-name").innerHTML = data.displayName;
+                    document.getElementById("post-content-post-title").innerHTML = data.title;
+                    document.getElementById("post-content-post-date-time").innerHTML = "Posted " + data.postTime.substring(0,10) + " - " + data.postTime.substring(11,16);
+                    //console.log(data.pictures);
+                    //adds images//
+                    let editImageContainer = document.getElementById("current-image-container");
+                    if(data.pictures) {
+                        let pictureArray = await JSON.parse(data.pictures);
+                        console.log(pictureArray);
+                        for (let i = 0; i < pictureArray.length; i++) {
+                            let newImage = document.createElement("img");
+                            newImage.src = pictureArray[i];
+                            newImage.alt = "post pic";
+                            imageSlider.appendChild(newImage);
+                            let newImageDuplicate = newImage.cloneNode(true);
+                            newImageDuplicate.addEventListener("click", () => {
+                                document.getElementById("delete-post-photo-button").value = {postID: pID, path:pictureArray[i]};
+                            })
+                            editImageContainer.appendChild(newImageDuplicate);
+                        }
+                    }
+                    document.getElementById("post-content-post-description").innerHTML = data.description;
+                    console.log(data.editPermissions);
+                    submitPostEditButton.value = pID;
                     
+                    document.getElementById("post-edit-form-title").value = data.title;
+                    document.getElementById("post-edit-form-description").value = data.description;
+
+
                 }
             )
         }
     )
 }
+
+// deletes a post photo //
+document.getElementById("delete-post-photo-button").addEventListener("click", async (e)=> {
+    let result = await JSON.stringify(e.currentTarget.value);
+    console.log(result);
+    fetch("/deleteTimelinePhoto", {
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(e.currentTarget.value),
+    }).then(
+        res.json().then(
+            data => {
+                console.log(data.msg);
+            }
+        )
+    )
+    
+
+} );
