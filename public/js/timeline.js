@@ -4,7 +4,7 @@ let postForm = document.getElementById("timeline-post-form-container");
 let searchCoolzoneInput = document.getElementById("post-form-coolzone-id");
 let submitPostButton = document.getElementById("submit-post-button");
 let suggestionBox = document.getElementById("coolzone-suggestion-box");
-
+let imageSlider = document.getElementById("image-slider");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
@@ -62,10 +62,13 @@ function loadPostList() {
                         console.log("postTime is a : " + typeof(data[i].postTime));
                         newPostContainer.querySelector(".post-date").innerHTML = data[i].postTime.substring(0,10);
                         newPostContainer.querySelector(".post-time").innerHTML = data[i].postTime.substring(11,16);
+                        newPostContainer.value = data[i].postID;
 
                         postListContainer.appendChild(newPostContainer);
 
-                        //continue filling in the data, then append into post list container //
+                        newPostContainer.addEventListener("click", (e) => {
+                            loadPostContent(data[i].postID, data[i].coolzoneID);
+                        });
                     }
                 }
             )
@@ -74,26 +77,6 @@ function loadPostList() {
 }
 
 loadPostList();
-
-function loadPostContent(num) {
-    post = {postID: num};
-    fetch("/loadPostContent", {
-        method: 'POST',
-        headers: {
-            "Accept": 'application/json',
-            "Content-Type": 'application/json'
-        },
-        body: JSON.stringify(post)
-    }).then(
-        function (res) {
-            const userData = res.json().then(
-                data => {
-                    console.log(data);
-                }
-            );
-        }
-    );
-}
 
 // submits the creation of timeline posts into the server //
 submitPostButton.addEventListener("click", createPost);
@@ -182,3 +165,42 @@ function generateSuggestions () {
     }       
 }
 
+// loads post content //
+function loadPostContent (pID, czID) {
+    console.log(pID);
+    console.log(czID);
+    togglePostContent(1);
+    fetch("/", {
+        method: 'POST',
+        headers: {
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({postID: pID, coolzoneID: czID,})
+    }).then(
+        res => {
+            res.json().then(
+                data => {
+                    console.log(data);
+                    // document.getElementById("post-content-poster-display-picture").src = data.avatar;
+                    // document.getElementById("post-content-poster-name").src = data.avatar;
+                    // document.getElementById("post-content-post-title").src = data.title;
+                    // document.getElementById("post-content-post-date-time").src = data.title;
+
+                    // //adds images//
+                    // if(data.pictures) {
+                    //     for (let i = 0; i < data.pictures.length; i++) {
+                    //         let newImage = document.createElement("img");
+                    //         newImage.src = data.pictures[i];
+                    //         newImage.alt = "post pic";
+                    //         imageSlider.appendChild(newImage);
+                    //     }
+                    // }
+
+                    // document.getElementById("post-content-post-description").innerHTML = data.description;
+                    
+                }
+            )
+        }
+    )
+}
