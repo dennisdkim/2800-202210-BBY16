@@ -69,8 +69,6 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     dateTag: document.getElementById("dateTag").value,
     enddateTag: document.getElementById("enddateTag").value,
     description: document.getElementById("description").value,
-    longitude: myLong,
-    latitude: myLat,
     acTag: document.getElementById("aircon").value,
     fdTag: document.getElementById("freeWater").value,
     wpTag: document.getElementById("waterParks").value,
