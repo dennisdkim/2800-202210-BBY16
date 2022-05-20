@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Home Page</title>
-  <link rel="stylesheet" href="./css/home.css">
-  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
 </head>
 
 <body>
@@ -13,42 +13,22 @@
   <div id="content">
     <div id="welcome-screen">
       <div id="greeting-messages">
-        <h3 id="greeting-message-1">Welcome back <span id="greeting-message-username">username</span></h3>
+        <h3 id="greeting-message-1">Welcome back, <span id="greeting-message-username">username</span></h3>
         <h3 id="greeting-message-2">We found <span id="greeting-message-coolzonenum">#</span> of coolzones near you.
         </h3>
       </div>
       <div id="welcome-screen-buttons">
-        <a class="button" href="./map.html">Find one</a>
-        <a class="button" href="">Host one</a>
+        <a class="button" href="/map">Find one</a>
+        <a class="button" href="/coolzone">Host one</a>
       </div>
 
     </div>
   </div>
 
   <div id="footer"></div>
-  <script>
-
-    // loads users first and last name in a greeting on home page
-    // temporary function placement.
-    loadGreetingName();
-
-    function loadGreetingName(){
-      const option = {
-        method: 'GET',
-      }
-      fetch("/getGreetingName", option).then(
-        function (res) {
-          const result = res.json().then(
-            greetingName => {
-              document.getElementById("greeting-message-username").innerHTML = greetingName.name;
-            }
-          )
-        }
-      )
-    }
-  </script>
+  <script src="/js/homeLanding.js"></script>
   <script src="/js/nav_footer_loader.js"></script>
-  
+
 </body>
 
 </html>

@@ -1,22 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
-  <title>Document</title>
+  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
+  <link rel="stylesheet" href="/css/timeline.css">
+  <title>Timeline</title>
 </head>
+
 <body>
-  <div>
-    <h1>Timeline page!</h1>
+  <div id="navbar"></div>
+  <div id="content">
+    <div id="open-new-post-button" onclick=togglePostForm(1)>New Post +</div>
+    <!--"post-list-container" is the left "list" section-->
+    <div id="post-list-container">
+      <!--following "post-containers" to be generated with JS-->
+    </div>
+    <!--"post-content-container" is the right "content" section-->
+    <!--content inside to be generated with JS-->
+    <div id="post-content-container" hidden>
+      <div id="edit-post-button" onclick=togglePostEdit(1)>Edit Post</div>
+      <div id="close-edit-user-button" class="close-button" onclick=togglePostContent(0)>X</div>
+      <div id="post-content-header">
+        <div id="poster-name-container">
+          <img class="poster-display-pic" id="post-content-poster-display-picture"
+            src="/img/userAvatars/avatar-user1.png" alt="">
+          <h3 id="post-content-poster-name">City of Vancouver</h3>
+        </div>
+        <h3 id="post-content-post-title">New Water Fountain at Broadway and Main St.</h3>
+        <h3 id="post-content-post-date-time">Posted April 27 2022 <span class="post-time">2:55pm</span></h3>
+      </div>
+      <div id="image-slider"></div>
+      <div id="post-content-post-info">
+        <div id="post-content-post-amenities">
+          Amenities: <button class="find-on-map-button">Find on Map</button>
+        </div>
+        <div id="post-content-post-description">
+          The City of Vancouver is happy to present a new water fountain at the Broadway and Main St. as a part of a
+          new hydrate the public initiative.
+
+          The fountain is located at the southeast corner of Roger Park. Drink up!
+        </div>
+      </div>
+    </div>
+
+    <div id="timeline-post-form-container" hidden>
+      <h3 id="post-form-header">
+        Create a new post
+      </h3>
+      <div class="close-button" onclick=togglePostForm(0)>X</div>
+      <div class="post-form-input">
+        <p>Post Title</p> <input id="post-form-title" type="text" maxlength="50">
+      </div>
+      <div class="post-form-input">
+        <p>Description</p> <textarea id="post-form-description" type="text" maxlength="1000"></textarea>
+      </div>
+      <div class="post-form-input" id="post-image-upload-container">
+        <p>Upload Photo</p>
+        <input id="image-upload-input" type="file" class="input-field" value="Upload Image"
+          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple" />
+      </div>
+      <div class="post-form-input" id="coolzone-selection-box">
+        <p>Link a coolzone</p>
+        <div><span id="selected-cz-id">None Selected</span> - <span id="selected-coolzone"></span> <button
+            id="remove-selected-cz-button">Remove</button></div>
+        <input type="text" placeholder="Search name or address..." id="post-form-coolzone-id">
+        <ul id="coolzone-suggestion-box"></ul>
+      </div>
+      <button id="submit-post-button">Submit Post</button>
+
+    </div>
+
+    <div id="timeline-post-edit-form-container" hidden>
+      <h3 id="post-form-header">
+        Edit your post
+      </h3>
+      <div class="close-button" onclick=togglePostEdit(0)>X</div>
+      <div class="post-form-input">
+        <p>Post Title</p> <input id="post-edit-form-title" type="text" maxlength="50">
+      </div>
+      <div class="post-form-input">
+        <p>Description</p> <textarea id="post-edit-form-description" type="text" maxlength="1000"></textarea>
+      </div>
+      <div class="post-form-input" id="post-edit-image-upload-container">
+        <p>Add/Delete Photos</p>
+        <div id="current-image-container"></div>
+        <button id="delete-post-photo-button">Delete Photo</button>
+        <input id="image-edit-upload-input" type="file" class="input-field" value="Upload Image"
+          accept="image/png, image/gif, image/jpeg" placeholder="Upload Images" multiple="multiple" />
+        <button id="add-post-photo-button">Add Photo</button>
+      </div>
+      <div id="edit-buttons-container">
+        <button id="delete-post-edit-button">Delete Post</button>
+        <button id="submit-post-edit-button">Submit Changes</button>
+      </div>
+    </div>
   </div>
-  <div class="navbar">
-    <a class="navButton" href="./home.html">Home</a>
-    <a class="navButton" href="./settings.html">Settings</a>
-    <a class="navButton" href="./profile.html">Profile</a>
-    <a class="navButton" href="./timeline.html">Timeline</a>
-    <a class="navButton" href="./map.html">Map</a>
-  </div>
+
+  <div id="footer"></div>
+  <script src="/js/nav_footer_loader.js"></script>
+  <script src="/js/timeline.js"></script>
+
 </body>
+
 </html>

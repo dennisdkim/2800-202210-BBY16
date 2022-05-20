@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Signin</title>
-  <link rel="stylesheet" href="/css/buttons.css">
+  <title>Login</title>
   <link rel="stylesheet" href="/css/login.css">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
 </head>
@@ -12,22 +11,21 @@
 <body>
   <div class="container">
     <div class="logoContainer">
-      <img id="logoImg" src="/img/logo/logo.jpg" alt="logo">
+      <img id="fanImg" src="/img/logo/fan.png" alt="logo" onclick=spinFan()>
+      <img id="logoImg" src="/img/logo/logo-text.png" alt="logo">
     </div>
 
     <!--Form for users to put login credentials-->
     <div class="login-form">
       <input type="email" id="email" name="email" placeholder="Email" />
-      <br />
+
       <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
         required="required" />
-      <br />
+
       <span id="errorMsg" class="errors"></span>
-      <input type="button" id="loginButton" name="signin" value="Sign In" />
-      <br />
-      <div id="noacc">
-        Don't have an account? <a href="/signUp">Sign Up Here</a>
-      </div>
+      <button type="button" id="loginButton" name="signin" value="Sign In"> Sign In </button>
+
+      <div id="noacc"><p>Don't have an account?</p> <a href="/signUp">Sign Up Here</a></div>
     </div>
   </div>
   <script src="/js/login.js"></script>

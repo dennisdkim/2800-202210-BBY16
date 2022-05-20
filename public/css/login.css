@@ -2,43 +2,193 @@
 
 * {
   font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 400px;
+  min-height: 700px;
+  height: 98vh;
+  background-image: url("/img/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
 }
 
 .container {
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 20vh 10vh 30vh;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255,255,255,0.5);
 }
 
 .logoContainer {
+  height: 30%;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#logoImg{
+  width: 200px;
+}
+
+#fanImg{
+  width: 100px;
+}
+
+#fanImg:hover{
+  cursor: pointer;
+}
+
+.spinnable {
+  animation: rotateFan 1.5s infinite linear;
+}
+
+
+/* animation for easter egg objective  */
+@keyframes rotateFan {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.login-form {
+  height: 70%;
+  background-color: rgba(185, 200, 223, 0.288);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 10vh;
+}
+
+.login-form input {
+  width: 350px;
+  height: 50px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  font-size: 1.3em;
+  padding-left: 50px;
+  border: none;
+}
+
+#loginButton {
+  width: 350px;
+  height: 50px;
+  font-size: 1.3em;
+  border: none;
+  cursor: pointer;
+  background-color: rgb(105,134,157);
+  border-radius: 10px;
+  color: white;
+}
+
+#noacc {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  text-align: center;
+  margin-top: 80px;
+  font-size: 1.3em;
+
+
+}
+
+@media only screen and (min-width: 600px) {
+
+  .login-form input,  #noacc, #loginButton {
+    font-size: 1.0em;
+
+  }
+
+}
+
+/*
+* {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 400px;
+  background-color: rgb(213,220,227);
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 20vh 60vh 20vh;
+}
+
+.logoContainer {
+    grid-row: 1/1;
     background-color: white;
-    width: 100vw;
+    width: 100%;
+    border: red solid 1px;
+    display: flex;
     align-items: center;
+
 }
 
   #logoImg{
-    width: 350px;
+    width: 250px;
     margin: auto;
     display: block;
   }
 
   .login-form {
-    grid-row: 3 / 4;
-    margin: auto;
-    width: 100vw;
+    height: 100%;
+    grid-row: 2 / 3;
+    width: 100%;
+    border: black 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20% 0 0 0;
   }
 
-  input{
-    margin: auto;
-  }
-
-  .login-form > div {
+  .login-form input {
+    height: 40px;
+    width: 400px;
+    display: block;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 0px;
+    font-size: 1em;
+    cursor: pointer;
     text-align: center;
+    margin: 10px 0;
   }
 
-  .buttonsContainer {
-    grid-row: 4 / 5;
-    background-image: url(public\img\background.jpg);
+  #loginButton {
+    height: 60px;
+    width: 50%;
+    background-color: rgb(105,134,157);
+    color: rgb(213,220,227);
+    border-radius: 10px;
+    margin-top: 15px;
+    font-size: 1.5em;
+    border: none;
+  }
+
+  #noacc {
+    width: 100%;
+    text-align: center;
   }
 
   .errors {
@@ -47,17 +197,11 @@
     margin: auto;
   }
   
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 600px) {
   .container {
     display: grid;
     height:100vh;
     grid-template-rows: 20vh 10vh 30vh;
-  }
-
-  .logoContainer {
-    background-color: white;
-    width: 100vw;
-    align-items: center;
   }
 
   #logoImg{
@@ -72,11 +216,13 @@
     width: 60%;
   }
 
-  input{
-    margin: auto;
+  .login-form input{
+    width: 400px;
   }
 
   .login-form > div {
     text-align: center;
   }
 }
+
+*/

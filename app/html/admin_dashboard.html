@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin_dashboard.css">
+    <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
+    <title>Admin</title>
+</head>
+
+<body>
+    <div id="navbar"></div>
+    <div id="content">
+        <div id="user-list-header">
+            <h4 id="users-displayed-indicator">Showing all users</h4><button id="new-user-button">Add New User</button>
+        </div>
+        <div id="search-container">
+            <input type="text" id="search-user-bar" placeholder="Search User" maxlength="20">
+        </div>
+        <div id="user-list-container">
+
+        </div>
+        <div id="userEditMenu">
+            <div class="profile-form">
+                <div id="close-edit-user-button" class="close-button" onclick=toggleEditUserMenu(0)>X</div>
+                <h4 class="form-title">Edit Existing User</h4>
+                <img id="profile-form-pic" src="img/userAvatars/default.png" alt="profile">
+                <div id="profile-title">
+                    <h4>User ID: <span id="profile-id">1</span></h4>
+                    <h4 id="profile-name">Dennis Kim</h4>
+                </div>
+                <div class="input-field">
+                    <p>Username</p>
+                    <input type="text" id="displayName" name="displayName" />
+                </div>
+                <div class="input-field">
+                    <p>First Name</p>
+                    <input type="text" id="fname" name="fname" />
+                </div>
+                <div class="input-field">
+                    <p>Last Name</p>
+                    <input type="text" id="lname" name="lname" />
+                </div>
+                <div class="input-field">
+                    <p>Email</p>
+                    <input type="email" id="email" name="email" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <p>Password</p>
+                    <input type="password" id="newPassword" name="password" placeholder="New Password"
+                        pattern="[A-Z0-9a-z]{8,20}" />
+                </div>
+                <div class="input-field">
+                    <p>Administrator</p>
+                    <input type="checkbox" id="adminStatus" name="isAdmin" />
+                </div>
+
+                <div id="delete-user-inputs">
+                    <input type="text" id="confirm-delete-code" placeholder="Enter Username to Delete">
+                    <button type="button" id="deleteButton" disabled>Delete User</button>
+
+                </div>
+                <div id="avatarMsg" class="response-message"></div>
+                <div class="profile-buttons">
+                    <button type="button" class="profile-button" id="deleteAviButton">Delete Display Picture</button>
+                    <button type="button" class="profile-button" id="revertButton">Revert Changes</button>
+                    <button type="button" class="profile-button" id="saveButton">Save Changes</button>
+                </div>
+                <div class="response-message" id="errorMessage"></div>
+            </div>
+
+        </div>
+        <div id="newUserMenu">
+            <div class="profile-form">
+                <div id="close-edit-user-button" class="close-button" onclick=toggleNewUserMenu(0)>X</div>
+                <h4 class="form-title">Add New User</h4>
+                <div class="input-field">
+                    <p>Username</p>
+                    <input type="text" id="newUser-DisplayName" class="newUser-input" name="displayName" />
+                </div>
+                <div class="input-field">
+                    <p>First Name</p>
+                    <input type="text" id="newUser-fname" class="newUser-input" name="fname" />
+                </div>
+                <div class="input-field">
+                    <p>Last Name</p>
+                    <input type="text" id="newUser-lname" class="newUser-input" name="lname" />
+                </div>
+                <div class="input-field">
+                    <p>Email</p>
+                    <input type="email" id="newUser-Email" class="newUser-input" name="email" placeholder="Email" />
+                </div>
+                <div class="input-field">
+                    <p>Password</p>
+                    <input type="password" id="newUser-Password" class="newUser-input" name="password"
+                        placeholder="New Password" pattern="[A-Z0-9a-z]{8,20}" />
+                </div>
+                <div class="input-field">
+                    <p>Administrator</p>
+                    <input type="checkbox" id="newUser-adminStatus" name="isAdmin" />
+                </div>
+                <div class="input-field">
+                    <p>Picture</p><br>
+                    <input class="avatar-upload" type="file" value="Upload Image"
+                        accept="image/png, image/gif, image/jpeg" placeholder="" />
+                </div>
+
+                <div class="profile-buttons">
+                    <button type="button" class="profile-button" id="clearButton">Clear Fields</button>
+                    <button type="button" class="profile-button" id="addUserButton">Add User</button>
+                </div>
+
+                <div class="response-message" id="newUser-errorMessage"></div>
+            </div>
+
+        </div>
+    </div>
+    <div id="footer"></div>
+    <script src="/js/nav_footer_loader.js"></script>
+    <script src="/js/admin.js"></script>
+
+</body>
+
+</html>

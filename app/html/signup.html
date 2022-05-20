@@ -5,14 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
-    <link rel="stylesheet" href="/css/buttons.css">
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/signup.css">
     <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico"> 
 </head>
 <body>
   <div class="container">
     <div class="logoContainer">
-      <img id="logoImg" src="/img/logo/logo.jpg" alt="logo">
+      <img id="fanImg" src="/img/logo/fan.png" alt="logo" onclick=spinFan()>
+      <img id="logoImg" src="/img/logo/logo-text.png" alt="logo">
     </div>
 
     <!--Sign up form for new users to input their information-->
@@ -23,15 +23,13 @@
       <br />
       <input type="displayName" id="displayName" name="displayName" placeholder="Display Name" />
       <br />
-      <span id="errorMsgDisplay" class="errors"></span>
       <input type="email" id="email" name="email" placeholder="Email" />
       <br />
-      <span id="errorMsgEmail" class="errors"></span>
       <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
         required="required" />
       <br />
       <span id="errorMsg" class="errors"></span>
-      <input type="button" id="signUpButton" name="signup" value="Sign Up" />
+      <button id="signUpButton">Sign Up</button>
       <br />
       <div id="noacc">
         Have an account? <a href="/">Sign In Here</a>

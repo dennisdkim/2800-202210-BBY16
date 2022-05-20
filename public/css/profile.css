@@ -1,0 +1,116 @@
+/* ----import font---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* ---- Universal Selectors ---- */
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ---- Page Sizing ---- */
+body {
+  min-width: 400px;
+  width: 100vw;
+  height: 100vh;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+/* ---- Content window ---- */
+#content {
+  min-height: 500px;
+  height: calc(100vh - 180px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+}
+
+#avatar {
+  max-width: 140px;
+  clip-path: circle(40% at center);
+}
+
+#profile-info {
+  text-align: center;
+  font-size: 1.0em;
+  height: 30%;
+}
+
+#profile-form {
+  height: 70%;
+  width: 80%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#profile-form > div {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+.input-field {
+  display: flex;
+  justify-content: space-around;
+
+  line-height: 30px;
+  font-size: 10pt;
+}
+
+input {
+  height: 30px;
+  border-radius: 5px;
+  border: #69869D 1px solid;
+}
+
+
+#avatar-upload {
+  border: #69869D 2px solid;
+  height: 40px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 40px;
+}
+
+.button {
+  height: 35px;
+  width: 100px;
+  border-radius: 5px;
+  background-color: #728EA5;
+  border-width: 0;
+  color: white;
+  margin: 20px 30px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+#pwAuth {
+  margin-top: 10px;
+  width: 350px;
+  font-size: 9pt;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#errorMessage {
+  text-align: center;
+}
