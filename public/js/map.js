@@ -33,6 +33,18 @@ function initMap() {
       zoom: 14
     });
 
+    // style options to display or hide points of interest
+    const styles = {
+      default: [],
+      hide: [
+        {
+          featureType: "poi",
+          stylers: [{ visibility: "off" }],
+        },
+      ],
+    };
+    map.setOptions({styles: styles["hide"]});
+
     // creates a button re-center map to current location
     const locationButton = document.createElement("button");
     locationButton.textContent = "Return to current location";
@@ -43,7 +55,7 @@ function initMap() {
         (pos) => {
           let curPos = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
           displayCenterPos(curPos);
-          displayRadius(curPos, 2);
+          displayRadius(curPos, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
         }
       );
       map.setZoom(14);
@@ -72,29 +84,63 @@ function initMap() {
         }
         if (places.length == 1){
           displayCenterPos(places[0].geometry.location);
-          // displayRadius(places[0].geometry.location, document.getElementById("radiusInput").value);
-          displayRadius(places[0].geometry.location, 2);
+          displayRadius(places[0].geometry.location, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
         }
       });
-
+      
     });
 
-    const radiusInput = document.createElement("input");
-    radiusInput.defaultValue = "2";
+    const radiusOptions = [{number: 100, multiplier: 0.001, unit: "m"}, {number: 300, multiplier: 0.001, unit: "m"}, {number: 1, multiplier: 1, unit: "km"}, {number: 2, multiplier: 1, unit: "km"}, {number: 3, multiplier: 1, unit: "km"}, {number: 4, multiplier: 1, unit: "km"},{number: 5, multiplier: 1, unit: "km"}, {number: 10, multiplier: 1, unit: "km"}];
+    const radiusInput = document.createElement("select");
     radiusInput.id = "radiusInput";
-    radiusInput.min = "1";
-    radiusInput.min = "10";
+    radiusInput.addEventListener("change", ()=>{
+      displayRadius(currentLatLong, radiusInput.options[radiusInput.selectedIndex].value);
+      displayCenterPos(currentLatLong);
+    });
+    for (const val of radiusOptions)
+    {
+        var option = document.createElement("option");
+        option.value = val.number * val.multiplier;
+        option.text = val.number + val.unit;
+        radiusInput.appendChild(option);
+    }
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(radiusInput);
 
     let currentLatLong = new google.maps.LatLng(location.lat, location.long);
-    
-    displayRadius(currentLatLong, radiusInput.defaultValue);
-    displayCenterPos(currentLatLong);
 
   }, error, options);
 }
 
-window.onload = initMap;
+function waitForElm(selector) {
+  return new Promise(resolve => {
+      if (document.querySelector(selector)) {
+          return resolve(document.querySelector(selector));
+      }
+
+      const observer = new MutationObserver(mutations => {
+          if (document.querySelector(selector)) {
+              resolve(document.querySelector(selector));
+              observer.disconnect();
+          }
+      });
+
+      observer.observe(document.body, {
+          childList: true,
+          subtree: true
+      });
+  });
+}
+
+async function loadMap(){
+  initMap;
+  
+  const elm = await waitForElm("#radiusInput");
+  
+  displayRadius(currentLatLong, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
+  displayCenterPos(currentLatLong);
+}
+
+window.onload = loadMap;
 
 //takes a longitude and latitude value and displays an icon 
 function displayCenterPos(myLatLong){
@@ -119,7 +165,7 @@ function displayCenterPos(myLatLong){
 
   const myLng = myLatLong.lng();
   const myLat = myLatLong.lat();
-  const myRad = 2 * 0.621371192;
+  const myRad = document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value * 0.621371192;
 
   const lng_min = myLng - myRad / Math.abs(Math.cos(myLat * (Math.PI/180)) * 69);
   const lng_max = myLng + myRad / Math.abs(Math.cos(myLat* (Math.PI/180)) * 69);
@@ -133,7 +179,14 @@ function displayCenterPos(myLatLong){
     minLng: lng_min,
     maxLng: lng_max,
     minLat: lat_min,
-    maxLat: lat_max
+    maxLat: lat_max,
+    aircon: document.getElementById("aircon").checked,
+    freeWater: document.getElementById("freeWater").checked,
+    swimmingPool: document.getElementById("swimmingPool").checked,
+    waterPark: document.getElementById("waterParks").checked,
+    outdoor: document.getElementById("outdoor").checked,
+    indoor: document.getElementById("indoor").checked,
+    freeWifi: document.getElementById("freeWifi").checked
   });
 }
 
@@ -154,14 +207,18 @@ function displayRadius(myLatLong, myRad){
   });
 }
 
+// takes the results array of /loadCoolzones and creates a marker 
+// for each result which is displayed on our map
 function createMarker(resultsArray){
-  resultsArray.forEach((coolzone)=>{
-    markers.push(new google.maps.Marker({
-      position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
-      title: coolzone.czname,
-      map: map
-    }));
-  });
+  if(resultsArray){
+    resultsArray.forEach((coolzone)=>{
+      markers.push(new google.maps.Marker({
+        position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
+        title: coolzone.czname,
+        map: map
+      }));
+    });
+  }
 }
 
 async function displayCoolzones(data){
@@ -176,7 +233,7 @@ async function displayCoolzones(data){
       body: JSON.stringify(data)
     });
     let parsedJSON = await response.json();
-    createMarker(parsedJSON.coolzones);
+      createMarker(parsedJSON.coolzones);
   } catch (e){
     console.log(e);
   }

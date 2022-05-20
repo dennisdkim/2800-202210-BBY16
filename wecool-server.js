@@ -581,10 +581,10 @@ app.post("/loadCoolzones", function(req, res){
             console.log(error);
         }
         else if(results.length == 0){
-            res.send({status: "success", msg: "no coolzones in your search area"});
+            res.send({status: "success", msg: "no coolzones"});
         } else {
             res.send({status: "success", 
-            msg: "here are the coolzones in your area",
+            msg: "yes coolzones",
             coolzones: results
         });
         }
