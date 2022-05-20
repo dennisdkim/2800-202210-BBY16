@@ -46,8 +46,7 @@ CREATE TABLE `bby_16_coolzones` (
   `pool` tinyint(4) DEFAULT 0,
   `outdoors` tinyint(4) DEFAULT 0,
   `indoors` tinyint(4) DEFAULT 0,
-  `wifi` tinyint(4) DEFAULT 0,
-  `open` tinyint(4) DEFAULT 0
+  `wifi` tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -124,9 +123,6 @@ ALTER TABLE `bby_16_user`
 ALTER TABLE `bby_16_coolzones`
   ADD CONSTRAINT `bby_16_coolzones_ibfk_1` FOREIGN KEY (`hostid`) REFERENCES `bby_16_user` (`userID`);
 
-ALTER TABLE bby_16_coolzones
-  ADD COLUMN longitude DECIMAL(9,6) AFTER description,
-  ADD COLUMN latitude DECIMAL(8,6) AFTER description;
 
 COMMIT;
 
