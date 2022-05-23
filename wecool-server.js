@@ -66,24 +66,24 @@ app.use(session({
 }));
 
 //heroku db configuration. Use only for hosting. //
-/*
+
 const dbConfigHeroku = {
     host: "us-cdbr-east-05.cleardb.net",
     user: "b3823a53995411",
     password: "762e1d0a",
-    database:"heroku_c99a07a4f72e738"
+    database: "heroku_c99a07a4f72e738"
 }
 
-//let connection = mysql.createPool(dbConfigHeroku);
-*/
+let connection = mysql.createPool(dbConfigHeroku);
+
 
 //local connection configuration object. //
-const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "COMP2800"
-});
+// const connection = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "",
+//     database: "COMP2800"
+// });
 
 //Root route//
 app.get("/", function (req, res) {
@@ -128,7 +128,7 @@ app.post("/newSignUp", function (req, res) {
                         res.send({ status: "fail", msg: "The email is taken" });
                     }
                 }
-            // If email and display name is not taken, then create account
+                // If email and display name is not taken, then create account
             } else {
                 connection.query('INSERT INTO BBY_16_user(fname, lname, displayName, email, password) VALUES (?, ?, ?, ?, ?);', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password],
                     function (error, results, fields) {
@@ -146,13 +146,13 @@ app.post("/tryCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
     connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
-    function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        res.send({ status: "success", msg: "Coolzone created."});
-    });
+        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({ status: "success", msg: "Coolzone created." });
+        });
 });
 
 //loads the profile page//
@@ -746,44 +746,45 @@ app.post("/deleteUserAvatar", function (req, res) {
             if (error) {
                 console.log(error);
             }
-            res.send({status: "success", msg: "Display picture deleted"});
+            res.send({ status: "success", msg: "Display picture deleted" });
         });
     } else {
-        res.send({status: "fail", msg: "This user does not have a display picture"});
+        res.send({ status: "fail", msg: "This user does not have a display picture" });
     }
 });
 
 //loads all coolzones within search radius
-app.post("/loadCoolzones", function(req, res){
+app.post("/loadCoolzones", function (req, res) {
     connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
-    [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat], 
-    function(error, results){
-        if (error){
-            console.log(error);
-        }
-        else if(results.length == 0){
-            res.send({status: "success", msg: "no coolzones"});
-        } else {
-            res.send({status: "success", 
-            msg: "yes coolzones",
-            coolzones: results
+        [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
+        function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+            else if (results.length == 0) {
+                res.send({ status: "success", msg: "no coolzones" });
+            } else {
+                res.send({
+                    status: "success",
+                    msg: "yes coolzones",
+                    coolzones: results
+                });
+            }
         });
-        }
-    });
 });
 
 // Updates the timeline table with the edited values in the post title and post description
 app.post("/editTimelinePost", function (req, res) {
     if (req.body.title == "" || req.body.description == "") {
-        res.send({status: "fail", msg: "Title and description must not be empty"});
+        res.send({ status: "fail", msg: "Title and description must not be empty" });
     } else {
-    connection.query("UPDATE BBY_16_timeline SET title = ?, description = ? WHERE postID = ?", [req.body.title, req.body.description, req.body.postID],
-        function (error, results, fields) {
-            if (error) {
-                console.log(error);
-            }
-            res.send({status: "success", msg: "Post updated"});
-        });
+        connection.query("UPDATE BBY_16_timeline SET title = ?, description = ? WHERE postID = ?", [req.body.title, req.body.description, req.body.postID],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                res.send({ status: "success", msg: "Post updated" });
+            });
     }
 });
 
@@ -824,13 +825,13 @@ app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res
         pictures.push("/img/timelinePhotos/" + req.files[i].filename);
     }
     connection.query('SELECT pictures FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
-         function (error, results, fields) {
+        function (error, results, fields) {
 
             // following breaks the server when results is null
             //let pictureArray = JSON.parse(results[0].pictures);
             //pictureArray.push(...pictures);
             let pictureArray;
-            if(results.length > 0) {
+            if (results.length > 0) {
                 let oldpics = JSON.parse(results[0].pictures);
                 pictureArray = oldpics.concat(pictures);
             } else {
@@ -849,11 +850,11 @@ app.post("/addTimelinePhoto", timelineUpload.array("photos"), function (req, res
 
 // Allows user to delete their timeline post, it should also delete the associated photos as well. 
 app.post("/deleteTimelinePost", function (req, res) {
-    connection.query('SELECT pictures FROM BBY_16_timeline where postID = ?', req.body.postID, 
+    connection.query('SELECT pictures FROM BBY_16_timeline where postID = ?', req.body.postID,
         function (error, results, fields) {
             if (error) {
                 console.log(error);
-            } 
+            }
             // else {
             //     res.send({ status: "success", msg: "Post Deleted"});
             // }
@@ -862,7 +863,7 @@ app.post("/deleteTimelinePost", function (req, res) {
                 let path = "./public" + pictureArray[i];
                 if (fs.existsSync(path)) {
                     fs.unlink(path, err => {
-                        if(err) {console.log(err);}
+                        if (err) { console.log(err); }
                         else {
                             console.log("photo deleted");
                         }
@@ -870,12 +871,12 @@ app.post("/deleteTimelinePost", function (req, res) {
                 }
             }
             connection.query('DELETE FROM BBY_16_timeline WHERE postID = ?', req.body.postID,
-            function (error, results, fields) {
-                if (error) {
-                    console.log(error);
-                }
-                res.send({status: "success", msg: "Post delete successful"});
-            });
+                function (error, results, fields) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    res.send({ status: "success", msg: "Post delete successful" });
+                });
         });
 });
 
