@@ -97,6 +97,8 @@
     z-index: 50;
     padding-bottom: 30px;
     padding-top: 20px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 
@@ -111,8 +113,13 @@
     padding: 20px 20px;
     border-radius: 10px;
     margin: 10px 0;
-    color: black;
+    color: #4E4E4E;
     text-decoration: none;
+}
+
+#profile-menu a:hover {
+    color: white;
+    background-color: #69869D;
 }
 
 .extra-links {

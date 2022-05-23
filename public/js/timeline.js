@@ -222,12 +222,21 @@ function loadPostContent (pID, czID) {
                         let pictureArray = await JSON.parse(data.pictures);
                         for (let i = 0; i < pictureArray.length; i++) {
                             let newImage = document.createElement("img");
+
+                            // sets the sizes of all images, only when the last pic has been loaded. //
+                            if(i == pictureArray.length - 1) {
+                                newImage.addEventListener("load", setImageSizes);
+                            }
                             newImage.src = pictureArray[i];
                             newImage.alt = "post pic";
                             imageSlider.appendChild(newImage);
+
+                            
+
                             let newImageDuplicate = newImage.cloneNode(true);
                             newImageDuplicate.addEventListener("click", (e) => {selectThumbnail(e)});
                             editImageContainer.appendChild(newImageDuplicate);
+
                         }
                     }
                     document.getElementById("post-content-post-description").innerHTML = data.description;
@@ -240,7 +249,6 @@ function loadPostContent (pID, czID) {
                     deletePhotoButton.value = pID;
                     document.getElementById("post-edit-form-title").value = data.title;
                     document.getElementById("post-edit-form-description").value = data.description;
-
                 }
             )
         }
@@ -265,7 +273,6 @@ document.getElementById("delete-post-photo-button").addEventListener("click", (e
             parcel.path = currentImageContainer.childNodes[i].src.match(/\/img\/[a-zA-Z0-9.\/-]+/gm)[0];
         }
     }
-    console.log(parcel);
 
     if(parcel.path.length > 0) {
         fetch("/deleteTimelinePhoto", {
@@ -377,3 +384,56 @@ deletePostButton.addEventListener("click", () => {
     )
 })
 
+// sets the size of the images in the image slider //
+
+window.addEventListener("resize", setImageSizes);
+
+function setImageSizes () {
+    if (imageSlider.children.length > 0) {
+
+        imageSlider.childNodes.forEach(image => {
+
+            if(image.height >= image.width) {
+                image.style.height = "100%";
+                image.style.width = "";
+                image.style.paddingLeft = `calc( ( ${imageSlider.clientWidth}px - ${image.width}px) / 2 )`;
+                image.style.paddingRight = `calc( ( ${imageSlider.clientWidth}px - ${image.width}px) / 2 )`;
+
+            } else if (image.height < image.width) {
+                image.style.width = "100%";
+                image.style.height = "";
+                image.style.paddingLeft = `calc( ( ${imageSlider.clientWidth}px - ${image.width}px) / 2 )`;
+                image.style.paddingRight = `calc( ( ${imageSlider.clientWidth}px - ${image.width}px) / 2 )`;
+            }
+
+        })
+    }
+};
+
+// sets the position of the image slider scroll on the same image when resizing the window //
+window.addEventListener("resize", setScrollBar);
+
+function setScrollBar () {
+    let numImg;
+    if(imageSlider.scrollLeft > 10) {
+        numImg = Math.ceil(imageSlider.scrollLeft / imageSlider.clientWidth);
+    }
+    imageSlider.scrollLeft = imageSlider.clientWidth * numImg;
+}
+
+// snaps the slider onto a selected image //
+imageSlider.addEventListener("scroll", setScrollSnap);
+
+function setScrollSnap () {
+    let numImg = Math.round(imageSlider.scrollLeft / imageSlider.clientWidth);
+    imageSlider.scrollLeft = imageSlider.clientWidth * numImg;
+}
+
+// allows the next picture button to select the next photo //
+document.getElementById("next-picture").addEventListener("click", () => {
+    imageSlider.scrollLeft += imageSlider.clientHeight;
+})
+
+document.getElementById("previous-picture").addEventListener("click", () => {
+    imageSlider.scrollLeft -= imageSlider.clientHeight;
+})

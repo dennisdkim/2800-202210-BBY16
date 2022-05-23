@@ -20,6 +20,16 @@ function loadNavbarFooter() {
           document.getElementById("logoHomeButton").addEventListener("click", function () {
             window.location = "/home";
           });
+
+          //changes the mobile page title into the current page title. //
+          document.getElementById("current-page").innerHTML = document.title;
+
+          //underlines the current page link in the desktop navbar. //
+          document.querySelectorAll(".navlink").forEach(link => { 
+            if(link.innerText == document.title) {
+            link.classList.add("selected");
+          }});
+
           loadEmailAndIcon();
         }
       )
@@ -39,6 +49,9 @@ function loadEmailAndIcon(){
           icon.src = userInfo.avatar;
           document.getElementById("user-email").innerHTML = userInfo.email;
           document.getElementById("user-displayName").innerHTML = userInfo.displayName;
+          
+
+          
         }
       );
     }
