@@ -114,6 +114,7 @@ function initMap() {
   }, error, options);
 }
 
+// function to elements before completing another function
 function waitForElm(selector) {
   return new Promise(resolve => {
       if (document.querySelector(selector)) {
