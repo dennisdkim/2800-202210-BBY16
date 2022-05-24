@@ -46,6 +46,7 @@ function togglePostEdit(input) {
     }
 };
 
+// shows/hides the confirm delete post pop up menu. Input parameter 1 for showing, 0 for hiding. // 
 function toggleDeletePost(input) {
     if (input == 1) {
         confirmDeleteContainer.hidden = false;
