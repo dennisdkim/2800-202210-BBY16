@@ -240,7 +240,8 @@ function loadPostContent (pID, czID) {
                         }
                     }
                     document.getElementById("post-content-post-description").innerHTML = data.description;
-                    if(data.editPermissions) {
+                    if(data.editPermissions || data.admin) {
+                        console.log(data.admin);
                         document.getElementById("edit-post-button").hidden = false;
                     } else {
                         document.getElementById("edit-post-button").hidden = true;
