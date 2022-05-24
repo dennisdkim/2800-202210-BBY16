@@ -67,23 +67,22 @@ app.use(session({
 
 //heroku db configuration. Use only for hosting. //
 
-const dbConfigHeroku = {
-    host: "us-cdbr-east-05.cleardb.net",
-    user: "b3823a53995411",
-    password: "762e1d0a",
-    database: "heroku_c99a07a4f72e738"
-}
-
-let connection = mysql.createPool(dbConfigHeroku);
+// const dbConfigHeroku = {
+//     host: "us-cdbr-east-05.cleardb.net",
+//     user: "b3823a53995411",
+//     password: "762e1d0a",
+//     database: "heroku_c99a07a4f72e738"
+// }
+// let connection = mysql.createPool(dbConfigHeroku);
 
 
 //local connection configuration object. //
-// const connection = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "COMP2800"
-// });
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "COMP2800"
+});
 
 //Root route//
 app.get("/", function (req, res) {
@@ -170,6 +169,16 @@ app.get("/coolzone", function (req, res) {
     if (req.session.loggedIn) {
         let coolzone = fs.readFileSync("./app/html/coolzone.html", "utf8");
         res.send(coolzone);
+    } else {
+        res.redirect("/");
+    }
+});
+
+//loads the mycoolzones page//
+app.get("/mycoolzones", function (req, res) {
+    if (req.session.loggedIn) {
+        let mycoolzones = fs.readFileSync("./app/html/mycoolzones.html", "utf8");
+        res.send(mycoolzones);
     } else {
         res.redirect("/");
     }
@@ -640,7 +649,22 @@ app.get("/getTimelinePosts", function (req, res) {
             console.log(timelineData);
             res.send(JSON.stringify(timelineData));
         });
+});
 
+// Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
+app.get("/getmycoolzones", function (req, res) {
+    let coolzoneDate = [];
+    connection.query(`SELECT * FROM BBY_16_COOLZONES WHERE hostid = ?;`, [req.body.userID],
+        function (error, results, fields) {
+            console.log(results);
+            for (let i = 0; i < results.length; i++) {
+                coolzoneData[i] = {
+                    eventid: results[i].eventid,
+                };
+                console.log(coolzoneData[i]);
+            }
+            res.send({ status: "success" });
+        });
 });
 
 // Loads the content page for each timeline post. It will load slightly different information, depending on if the post is associated with a
@@ -881,7 +905,6 @@ app.post("/deleteTimelinePost", function (req, res) {
 });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
-
     connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE "%${req.body.query}%" OR LOCATION LIKE "%${req.body.query}%";`, (error, results, fields) => {
         if (error) {
             console.log(error);
@@ -890,7 +913,6 @@ app.post("/getCoolzoneSuggestions", (req, res) => {
         }
     })
 })
-
 
 //Run server on port 8000
 let port = 8000;
