@@ -244,3 +244,7 @@ async function displayCoolzones(data){
     console.log(e);
   }
 } 
+
+function filter(){
+  
+}
