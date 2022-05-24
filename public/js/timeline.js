@@ -12,7 +12,9 @@ let submitPostEditButton = document.getElementById("submit-post-edit-button");
 let currentImageContainer = document.getElementById("current-image-container");
 let deletePhotoButton = document.getElementById("delete-post-photo-button");
 let addPhotoButton = document.getElementById("add-post-photo-button");
-let deletePostButton = document.getElementById("delete-post-edit-button");
+let deleteConfirmScreenButton = document.getElementById("delete-post-edit-button");
+let confirmDeleteContainer = document.getElementById("delete-confirmation-container");
+let deletePostButton = document.getElementById("delete-post-confirm-screen-button");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
@@ -40,8 +42,17 @@ function togglePostEdit(input) {
         postEditForm.hidden = false;
     } else if (input == 0) {
         postEditForm.hidden = true;
+        toggleDeletePost(0);
     }
 };
+
+function toggleDeletePost(input) {
+    if (input == 1) {
+        confirmDeleteContainer.hidden = false;
+    } else if (input == 0) {
+        confirmDeleteContainer.hidden = true;
+    }
+}
 
 // retrieves timeline posts and puts them onto the timeline list. //
 function loadPostList() {
