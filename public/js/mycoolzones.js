@@ -1,7 +1,23 @@
 'use strict'
 
 const coolzoneItem = document.getElementsByClassName("coolzone-container");
-const coolzoneDescription = document.getElementsByClassName("container")
+const coolzoneDescription = document.getElementsByClassName("container");
+
+
+//global searched location longitude
+let myLong;
+//global searched location latitude
+let myLat;
+
+function initGoogle() {
+  const autocomplete = new google.maps.places.Autocomplete(document.getElementById("location"));
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+    myLat = place.geometry.location.lat();
+    myLong = place.geometry.location.lng();
+  });
+}
+window.onload = initGoogle;
 
 async function showMyCoolzones() {
   let response = await fetch("/getMyCoolzones", {
@@ -110,7 +126,7 @@ async function showMyCoolzones() {
             </div>
             <div class="botContainer">
               <span id="errorMsg" class="errors"></span>
-              <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
+              <input type="button" id="saveChanges" name="saveChanges" value="Save Changes" />
             </div>`;
 
 
@@ -130,6 +146,61 @@ async function showMyCoolzones() {
             // myCoolzoneContainer.addEventListener("click", (e) => {
             //   myCoolzoneContainer.style.backgroundColor = "red";
             // });
+
+            //Sends input field data to server to be inserted into db.
+            async function saveChanges(data) {
+              try {
+                let response = await fetch("/changeCoolzone", {
+                  method: 'POST',
+                  headers: {
+                    "Accept": 'application/json',
+                    "Content-Type": 'application/json'
+                  },
+                  body: JSON.stringify(data)
+                });
+                let parsedJSON = await response.json();
+                document.getElementById("errorMsg").innerHTML = "";
+                if (parsedJSON.status == "success") {
+                  document.getElementById("errorMsg").innerHTML = parsedJSON.msg;
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            };
+
+            let acTag = document.getElementById("aircon");
+            let fdTag = document.getElementById("freeWater");
+            let wpTag = document.getElementById("waterParks");
+            let poolTag = document.getElementById("swimmingPool");
+            let outdoorTag = document.getElementById("outdoor");
+            let indoorTag = document.getElementById("indoor");
+            let wifiTag = document.getElementById("freeWifi");
+            //event listener to call saveChanges method upon button click.
+            document.getElementById("saveChanges").addEventListener("click", function (e) {
+              checkBoxes(acTag);
+              checkBoxes(fdTag);
+              checkBoxes(wpTag);
+              checkBoxes(poolTag);
+              checkBoxes(outdoorTag);
+              checkBoxes(indoorTag);
+              checkBoxes(wifiTag);
+              saveChanges({
+                coolzoneName: document.getElementById("coolzoneName").value,
+                location: document.getElementById("location").value,
+                dateTag: document.getElementById("dateTag").value,
+                enddateTag: document.getElementById("enddateTag").value,
+                description: document.getElementById("description").value,
+                acTag: acTag.value,
+                fdTag: fdTag.value,
+                wpTag: wpTag.value,
+                poolTag: poolTag.value,
+                outdoorTag: outdoorTag.value,
+                indoorTag: indoorTag.value,
+                wifiTag: wifiTag.value,
+                longitude: myLong,
+                latitude: myLat
+              });
+            });
           }
         }
       )
@@ -152,4 +223,3 @@ if (document.readyState === 'loading') {
 else if (document.readyState === 'interactive' || document.readyState === 'complete') {
   showMyCoolzones();
 }
-

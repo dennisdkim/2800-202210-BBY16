@@ -150,7 +150,21 @@ app.post("/tryCoolzone", function (req, res) {
             if (error) {
                 console.log(error);
             }
-            res.send({ status: "success", msg: "Coolzone created." });
+            res.send({ status: "success", msg: "Coolzone Created!" });
+        });
+});
+
+//modifies coolzones in database table//
+app.post("/changeCoolzone", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    // Checking for coolzone exists
+    connection.query('UPDATE bby_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?',
+        [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({ status: "success", msg: "Coolzone Changes Saved!." });
         });
 });
 
