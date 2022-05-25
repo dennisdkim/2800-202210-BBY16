@@ -759,25 +759,26 @@ app.post("/loadCoolzones", function (req, res) {
 
     // BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi
     let selectStatement = 'SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?';
-    if (req.body.aircon.checked){
+    console.log(req.body.aircon);
+    if (req.body.aircon){
         selectStatement = selectStatement + " AND aircon = 1"
     }
-    if (req.body.freeWater.checked){
+    if (req.body.freeWater){
         selectStatement = selectStatement + " AND freedrinks = 1"
     }
-    if (req.body.swimmingPool.checked){
+    if (req.body.swimmingPool){
         selectStatement = selectStatement + " AND waterpark = 1"
     }
-    if (req.body.waterPark.checked){
+    if (req.body.waterPark){
         selectStatement = selectStatement + " AND pool = 1"
     }
-    if (req.body.outdoor.checked){
+    if (req.body.outdoor){
         selectStatement = selectStatement + " AND outdoors = 1"
     }
-    if (req.body.indoor.checked){
+    if (req.body.indoor){
         selectStatement = selectStatement + " AND indoors = 1"
     }
-    if (req.body.freeWifi.checked){
+    if (req.body.freeWifi){
         selectStatement = selectStatement + " AND wifi = 1"
     }
 

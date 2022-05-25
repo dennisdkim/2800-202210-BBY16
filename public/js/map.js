@@ -23,6 +23,7 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
+// adds event listeners to all filter buttons to display coolzones based on filter requirements
 document.getElementById("aircon").addEventListener("click", ()=>{
   displayCenterPos(centerPosMarker.position);
 });
@@ -204,6 +205,8 @@ function displayCenterPos(myLatLong){
   const lat_min = myLat - (myRad / 69);
   const lat_max = myLat + (myRad / 69);
 
+ 
+
   displayCoolzones({
     radius: myRad,
     latitude: myLat,
@@ -250,14 +253,16 @@ function createMarker(resultsArray){
         map: map
       }));
     });
-    // markers.forEach((marker)=>{
-    //   marker.addEventListener("click", ()=>{
-    //     displayAside();
-    //   })
-    // })
+    // creates event listeners for each marker displayed on map
+    markers.forEach((marker)=>{
+      marker.addListener("click", ()=>{
+        console.log("marker event listener working");
+      })
+    })
   }
 }
 
+// displays all coolzones within provided arguments
 async function displayCoolzones(data){
   // post request for all coolzones 
   try {
@@ -276,11 +281,7 @@ async function displayCoolzones(data){
   }
 } 
 
-// document.getElementById("go-to-coolzone-button").addEventListener("click", ()=>{
-//   goToMap();
-// });
-
-
+// redirects users to google maps with driving instructions to their chosen location
 function goToMap(latLong){
   let destination = "&destination=" + latLong;
   let url = "https://www.google.com/maps/dir/?api=1" + destination;
@@ -308,7 +309,3 @@ function toggleFilter(input) {
   }
 };
 
-// Retrieves specific coolzone information. Passes in a coolzone id.//
-function getCoolzoneData (czID) {
-  
-}
