@@ -1,6 +1,5 @@
 'use strict';
 
-//Initialization//
 const postContent = document.getElementById("post-content-container");
 const postListContainer = document.getElementById("post-list-container");
 const postForm = document.getElementById("timeline-post-form-container");
@@ -13,7 +12,9 @@ const submitPostEditButton = document.getElementById("submit-post-edit-button");
 const currentImageContainer = document.getElementById("current-image-container");
 const deletePhotoButton = document.getElementById("delete-post-photo-button");
 const addPhotoButton = document.getElementById("add-post-photo-button");
-const deletePostButton = document.getElementById("delete-post-edit-button");
+const deleteConfirmScreenButton = document.getElementById("delete-post-edit-button");
+const confirmDeleteContainer = document.getElementById("delete-confirmation-container");
+const deletePostButton = document.getElementById("delete-post-confirm-screen-button");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {
@@ -41,8 +42,18 @@ function togglePostEdit(input) {
         postEditForm.hidden = false;
     } else if (input == 0) {
         postEditForm.hidden = true;
+        toggleDeletePost(0);
     }
 };
+
+// shows/hides the confirm delete post pop up menu. Input parameter 1 for showing, 0 for hiding. // 
+function toggleDeletePost(input) {
+    if (input == 1) {
+        confirmDeleteContainer.hidden = false;
+    } else if (input == 0) {
+        confirmDeleteContainer.hidden = true;
+    }
+}
 
 // retrieves timeline posts and puts them onto the timeline list. //
 function loadPostList() {
@@ -241,7 +252,8 @@ function loadPostContent (pID, czID) {
                         }
                     }
                     document.getElementById("post-content-post-description").innerHTML = data.description;
-                    if(data.editPermissions) {
+                    if(data.editPermissions || data.admin) {
+                        console.log(data.admin);
                         document.getElementById("edit-post-button").hidden = false;
                     } else {
                         document.getElementById("edit-post-button").hidden = true;

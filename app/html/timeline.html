@@ -99,12 +99,18 @@
         <button id="add-post-photo-button">Add Photo</button>
       </div>
       <div id="edit-buttons-container">
-        <button id="delete-post-edit-button">Delete Post</button>
+        <button id="delete-post-edit-button" onclick=toggleDeletePost(1)>Delete Post</button>
         <button id="submit-post-edit-button">Submit Changes</button>
       </div>
     </div>
+    <div id="delete-confirmation-container" hidden>
+      <div id="confirm-buttons">
+      <p>Are you sure you want to delete this post?</p>
+      <button id="delete-post-confirm-screen-button">Delete</button>
+      <button id="close-confirm-screen-button" onclick=toggleDeletePost(0)>Close</button>
+      </div>
+    </div>
   </div>
-
   <div id="footer"></div>
   <script src="/js/nav_footer_loader.js"></script>
   <script src="/js/timeline.js"></script>

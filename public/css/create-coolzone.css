@@ -1,0 +1,218 @@
+/* ----import font---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* ----universal selectors---- */
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+  width: 100%;
+  height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+#coolzone-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+}
+
+.topContainer, .descriptionContainer, .amenitiesContainer, .picContainer {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(105,134,157);
+  border-radius: 10px;
+}
+
+.botContainer {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.containerName > span {
+  background-color: rgb(105,134,157);
+  color: white;
+  border-radius: 10px 0px;
+  padding: 1px 10px 1px 10px;
+}
+
+.input-field {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input-field > input{
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.coolzoneInfo {
+  padding: 10px 20px 10px 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  overflow: hidden;
+  color: #3E4D58;
+}
+
+.descInputContainer {
+  margin-top: 20px;
+}
+
+#description {
+  width: 100%;
+  border: hidden;
+}
+
+#amenities {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+#amenities > label{
+  display: flex;
+  align-items: center;
+  width: 60%;
+  color: black;
+  opacity: 0.5;
+  border: 1px solid;
+  border-radius: 5px;
+  justify-content: space-between;
+  padding: 0px 15px 0px 15px;
+}
+
+#amenities > label:hover{
+  opacity: 1;
+  cursor: pointer;
+}
+
+input[type="checkbox"]{
+  display: none;
+}
+
+#aircon:checked ~label[for="aircon"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#freeWater:checked ~label[for="freeWater"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#swimmingPool:checked ~label[for="swimmingPool"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#waterParks:checked ~label[for="waterParks"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#outdoor:checked ~label[for="outdoor"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#indoor:checked ~label[for="indoor"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#freeWifi:checked ~label[for="freeWifi"]{
+  opacity: 1;
+  background-color: #a1bad0;
+  color: white;
+}
+
+#upload-images-form {
+  margin: 15px auto 15px auto;
+} 
+
+#errorMsg {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#createCoolzone {
+  background-color: rgb(105,134,157);
+  color: rgb(255, 255, 255);
+  border: 1px solid #3E4D58;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-size: 15pt;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+}
+
+/* ---- Media Query for Desktop ---- */
+
+@media only screen and (min-width: 600px) {
+  .container {
+    width: 100%;
+    height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  #coolzone-form {
+    height: 70%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 20% 20% 20% 20% 20%;
+    gap: 10px 20px;
+  }
+
+  .topContainer {
+    grid-column: 1;
+    grid-row: 1 / 3;
+  }
+
+  .descriptionContainer {
+    grid-column: 1;
+    grid-row: 3 / 6;
+  }
+
+  .amenitiesContainer {
+    grid-column: 2;
+    grid-row: 1 / 5;
+  }
+
+  .picContainer {
+    grid-column: 2;
+    grid-row: 5;
+  }
+}
