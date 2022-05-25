@@ -17,13 +17,13 @@
 
     <!--Sign up form for new users to input their information-->
     <div class="login-form">
-      <input type="fname" id="fname" name="fname" placeholder="First Name" />
+      <input type="fname" id="fname" name="fname" placeholder="First Name" required="required"/>
       <br />
-      <input type="lname" id="lname" name="lname" placeholder="Last Name" />
+      <input type="lname" id="lname" name="lname" placeholder="Last Name" required="required"/>
       <br />
-      <input type="displayName" id="displayName" name="displayName" placeholder="Display Name" />
+      <input type="displayName" id="displayName" name="displayName" placeholder="Display Name" required="required"/>
       <br />
-      <input type="email" id="email" name="email" placeholder="Email" />
+      <input type="email" id="email" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="required"/>
       <br />
       <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
         required="required" />
