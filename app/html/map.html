@@ -53,7 +53,7 @@
     <div id="coolzone-details-window">
       
       <div id="coolzone-images-window">
-        <img src="/img/coolzones/coffee-shop.jpg" alt="czImg">
+        <img id="coolzone-image" src="/img/coolzones/coffee-shop.jpg" alt="czImg">
       </div>
       <div class="close-button" onclick = toggleCoolzoneInfo(0)>X</div>
       <div id="coolzone-name">
@@ -62,19 +62,43 @@
       <div id="coolzone-address">
         1800 Granville Ave. Vancouver BC
       </div>
-      <div id="description">
+      <div id="coolzone-description">
         Neo Coffee Bar is holding a fun and exciting event with free water and air conditioning for everyone to chill
         out. We partnered with Parlor Icecream and will be giving out free desserts too! Come by and say hi! Stay cool
         friends.
       </div>
-      <div id="amenities">
-        <span class="material-symbols-outlined">ac_unit</span>
-        <span class="material-symbols-outlined">water_drop</span>
-        <span class="material-symbols-outlined">pool</span>
-        <span class="material-symbols-outlined">location_away</span>
+      <div id="coolzone-amenities">
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">ac_unit</span>
+          <p>A/C</p>
+        </div>
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">pool</span>
+          <p>Pool</p>
+        </div>
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">sprinkler</span>
+          <p>Waterpark</p>
+        </div>
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">water_drop</span>
+          <p>Free Drinks</p>
+        </div>
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">location_home</span>
+          <p>Indoor</p>
+        </div>
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">location_away</span>
+          <p>Outdoor</p>
+        </div>
+        <div class="coolzone-amenity">
+          <span class="material-symbols-outlined">wifi</span>
+          <p>Wifi</p>
+        </div>
       </div>
 
-      <button id="go-to-coolzone-button">Go</button>
+      <button id="go-to-coolzone-button" >Go</button>
     </div>
 
   </div>
