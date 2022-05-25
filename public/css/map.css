@@ -12,15 +12,59 @@ body {
   overflow: hidden;
 }
 
+/* ---- Main Content Window ---- */
 #content{
   width: 100%;
-  height: calc(100% - 200px);
+  height: calc(100% - 180px);
   position: relative;
 }
 
 #map {
   height: 100%;
   width: 100%;
+}
+
+#radiusInput {
+  background-color: white;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: none;
+}
+
+#location-input-field {
+  background-color: white;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  margin-top: 10px;
+  width: 300px;
+  padding-left: 20px;
+}
+
+#center-my-location-button {
+  background-color: white;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#open-filter-button {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  bottom: 200px;
+  right: 10px;
+  background-color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 8px;
 }
 
 /* ---- Filter Window ---- */
@@ -35,6 +79,11 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: rgba(255,255,255,0.9);
+  transition: 0.3s;
+}
+
+#closed {
+  display: none;
 }
 
 #filterOptions{
@@ -43,9 +92,10 @@ body {
   align-items: left;
 }
 
+
 #mapFilterText{
   width: 100%;
-  padding: 25px;
+  padding: 25px 50px;
   font-size: 1.3em;
   font-weight: 300;
   color: #69869D;
@@ -57,12 +107,17 @@ input[type="checkbox"]{
 }
 
 label{
+  width: 100%;
   display: inline-block;
-  padding: 15px 25px;
+  padding: 15px 50px;
   color: black;
   opacity: 0.5;
   display: flex;
   justify-content: space-between;
+}
+
+label span {
+  margin-left: 5px;
 }
 
 label:hover{

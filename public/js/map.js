@@ -29,6 +29,8 @@ function initMap() {
     location.lat = pos.coords.latitude;
     location.long = pos.coords.longitude;
     map = new google.maps.Map(document.getElementById("map"), {
+      mapTypeControl: false,
+      fullscreenControl: false,
       center: { lat: location.lat, lng: location.long},
       zoom: 14
     });
@@ -47,9 +49,10 @@ function initMap() {
 
     // creates a button re-center map to current location
     const locationButton = document.createElement("button");
-    locationButton.textContent = "Return to current location";
+    locationButton.textContent = "Current location";
     locationButton.classList.add("custom-map-control-button");
-    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(locationButton);
+    locationButton.setAttribute("id", "center-my-location-button");
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationButton);
     locationButton.addEventListener("click", () => {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -62,9 +65,10 @@ function initMap() {
     });
 
     const locationInput = document.createElement("input");
-    locationInput.placeholder = "Enter a location";
+    locationInput.placeholder = "Search a location";
+    locationInput.setAttribute('id', "location-input-field");
     const searchBox = new google.maps.places.SearchBox(locationInput);
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationInput);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationInput);
 
     map.addListener("bounds_changed", () => {
       searchBox.setBounds(map.getBounds());
@@ -253,3 +257,36 @@ async function displayCoolzones(data){
 // document.getElementById("go-to-coolzone-button").addEventListener("click", ()=>{
 //   goToMap();
 // });
+
+
+function goToMap(latLong){
+  let destination = "&destination=" + latLong;
+  let url = "https://www.google.com/maps/dir/?api=1" + destination;
+  window.open(url, "_blank").focus;
+}
+
+// shows/hides the maps aside window. Input parameter 1 for showing, 0 for hiding. //
+let coolzoneWindow = document.getElementById("coolzone-details-window");
+function toggleCoolzoneInfo(input) {
+  if (input == 1) {
+    coolzoneWindow.hidden = false;
+  } else if (input == 0) {
+    coolzoneWindow.hidden = true;
+  }
+};
+
+// shows/hides the maps aside window. Input parameter 1 for showing, 0 for hiding. //
+let filterWindow = document.getElementById("closed");
+let filterContent = document.getElementById("filterOptions");
+function toggleFilter(input) {
+  if (input == 1) {
+    filterWindow.setAttribute("id", "filters");
+  } else if (input == 0) {
+    filterWindow.setAttribute("id", "closed");
+  }
+};
+
+// Retrieves specific coolzone information. Passes in a coolzone id.//
+function getCoolzoneData (czID) {
+  
+}
