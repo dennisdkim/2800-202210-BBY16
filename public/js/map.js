@@ -23,27 +23,27 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
-    document.getElementById("aircon").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("freeWater").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("swimmingPool").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("waterParks").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("outdoor").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("indoor").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("freeWifi").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
+document.getElementById("aircon").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("freeWater").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("swimmingPool").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("waterParks").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("outdoor").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("indoor").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("freeWifi").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
 
 // displays map based on current location
 function initMap() {
@@ -120,8 +120,8 @@ function initMap() {
     const radiusInput = document.createElement("select");
     radiusInput.id = "radiusInput";
     radiusInput.addEventListener("change", ()=>{
-      displayRadius(currentLatLong, radiusInput.options[radiusInput.selectedIndex].value);
-      displayCenterPos(currentLatLong);
+      displayRadius(centerPosMarker.position, radiusInput.options[radiusInput.selectedIndex].value);
+      displayCenterPos(centerPosMarker.position);
     });
     for (const val of radiusOptions)
     {
