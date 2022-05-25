@@ -9,8 +9,8 @@
 
 body {
   min-width: 400px;
-  min-height: 700px;
-  height: 98vh;
+  min-height: 600px;
+  height: 100vh;
   background-image: url("/img/background.jpg");
   background-position: center;
   background-repeat: no-repeat;
@@ -49,6 +49,26 @@ body {
   animation: rotateFan 1.5s infinite linear;
 }
 
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(175, 175, 175); 
+  border-radius: 3px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(133, 133, 133); 
+}
 
 /* animation for easter egg objective  */
 @keyframes rotateFan {
@@ -94,12 +114,17 @@ body {
 }
 
 #noacc {
-  position: absolute;
-  bottom: 40px;
+  position: relative;
+  height: 30%;
   width: 100%;
   text-align: center;
   margin-top: 80px;
   font-size: 1.3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
 
 
 }

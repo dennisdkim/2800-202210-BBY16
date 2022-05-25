@@ -83,7 +83,7 @@ function loadUserList() {
             "Accept": 'application/json',
             "Content-Type": 'application/json'
         },
-        body: JSON.stringify({query: document.getElementById("search-user-bar").value,})
+        body: JSON.stringify({ query: document.getElementById("search-user-bar").value, })
     }
 
     fetch("/getUserList", option).then(
@@ -222,6 +222,15 @@ deleteUserButton.addEventListener("click", (e) => {
                 data => {
                     editUserResponseMsg.innerHTML = data.msg;
                     loadUserList();
+                    document.getElementById("profile-id").innerHTML = "";
+                    document.getElementById("profile-name").innerHTML = "";
+                    document.getElementById("displayName").value = "";
+                    document.getElementById("fname").value = "";
+                    document.getElementById("lname").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("newPassword").value = "";
+                    document.getElementById("adminStatus").checked = false;
+                    
                 }
             )
         }
@@ -265,15 +274,15 @@ deleteAviButton.addEventListener("click", function (e) {
 });
 
 // Allows admin to delete user display pictures in the case it violets site rules
-async function deleteUserPicture(e){
+async function deleteUserPicture(e) {
     try {
-        let deleteResponse = await fetch ("/deleteUserAvatar", {
+        let deleteResponse = await fetch("/deleteUserAvatar", {
             method: 'POST',
             headers: {
                 "Accept": 'application/json',
                 "Content-Type": 'application/json'
             },
-            body: JSON.stringify({userID: e.currentTarget.value})
+            body: JSON.stringify({ userID: e.currentTarget.value })
         });
         let parsedResponse = await deleteResponse.json();
         if (parsedResponse.status == "success") {
