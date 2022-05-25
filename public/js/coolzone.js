@@ -17,16 +17,32 @@ function initGoogle(){
 
 window.onload = initGoogle;
 
-//Sends input field data to server to be inserted into db.
+//Sends input field data and picture to server to be inserted into db and file system (for picture).
 async function submitCoolzone(data) {
+  let coolzoneBody = new FormData();
+  const imageUpload = document.getElementById("coolzone-upload");
+
+  coolzoneBody.append("coolzoneName", data.coolzoneName);
+  coolzoneBody.append("location", data.location);
+  coolzoneBody.append("dateTag", data.dateTag);
+  coolzoneBody.append("enddateTag", data.enddateTag);
+  coolzoneBody.append("description", data.description);
+  coolzoneBody.append("longitude", data.longitude);
+  coolzoneBody.append("latitude", data.latitude);
+  coolzoneBody.append("acTag", data.acTag);
+  coolzoneBody.append("fdTag", data.fdTag);
+  coolzoneBody.append("wpTag", data.wpTag);
+  coolzoneBody.append("poolTag", data.poolTag);
+  coolzoneBody.append("outdoorTag", data.outdoorTag);
+  coolzoneBody.append("indoorTag", data.indoorTag);
+  coolzoneBody.append("wifiTag", data.wifiTag);
+
+  coolzoneBody.append("files", imageUpload.files[0]);
+
   try {
     let response = await fetch("/tryCoolzone", {
       method: 'POST',
-      headers: {
-        "Accept": 'application/json',
-        "Content-Type": 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: coolzoneBody
     });
     let parsedJSON = await response.json();
     document.getElementById("errorMsg").innerHTML = "";
@@ -80,28 +96,3 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     latitude: myLat
   });
 });
-
-const uploadCoolzone = document.getElementById("upload-images-form");
-uploadCoolzone.addEventListener("submit", uploadImages);
-function uploadImages(e) {
-  e.preventDefault();
-
-  const coolzoneUpload = document.querySelector('#coolzone-upload');
-  const formData = new FormData();
-
-  for (let i = 0; i < coolzoneUpload.files.length; i++) {
-    // put the images from the input into the form data
-    formData.append("files", coolzoneUpload.files[i]);
-  }
-
-  const options = {
-    method: 'POST',
-    body: formData,
-  };
-
-  fetch("/upload-coolzone", options
-  ).then(function (res) {
-    console.log(res);
-  }).catch(function (err) { ("Error:", err) }
-  );
-}

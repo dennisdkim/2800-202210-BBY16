@@ -51,7 +51,8 @@ const coolzoneStorage = multer.diskStorage({
         callback(null, "./public/img/coolzones/")
     },
     filename: function (req, file, callback) {
-        callback(null, "coolzone-user" + req.session.userID + ".png");
+        const photoCode = Date.now() + "-" + Math.round(Math.random() * Math.pow(10, 10));
+        callback(null, "coolzone-" + photoCode + ".png");
     }
 });
 const coolzoneUpload = multer({
@@ -141,12 +142,16 @@ app.post("/newSignUp", function (req, res) {
         });
 });
 
-//inputs into the coolzone database table//
-app.post("/tryCoolzone", function (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    // Checking for coolzone exists
-    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
+//inputs into the coolzone database table and saves the path to the uploaded coolzone image into the 'picture' column//
+app.post("/tryCoolzone", coolzoneUpload.single("files"), function (req, res) {
+    let path;
+    if (req.file) {
+        path = "/img/coolzones/" + req.file.filename;
+    } else {
+        path = "/img/coolzones/default.png";
+    }
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi, picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, path],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
@@ -708,12 +713,6 @@ app.post("/loadPostContent", function (req, res) {
                 res.send(JSON.stringify(postData));
             });
     }
-});
-
-// Uploads coolzone image to file system
-app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res) {
-    req.file.filename = req.file.originalname;
-    res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
 });
 
 //loads all coolzones within search radius

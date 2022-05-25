@@ -157,14 +157,7 @@ input[type="checkbox"]{
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#upload-images-form > #submit {
-  background-color: rgb(105,134,157);
-  color: rgb(255, 255, 255);
-  border: 1px solid #3E4D58;
-  border-radius: 10px;
-}
+} 
 
 #errorMsg {
   padding-top: 10px;
