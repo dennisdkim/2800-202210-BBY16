@@ -23,6 +23,133 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
+    document.getElementById("aircon").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+    document.getElementById("freeWater").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+    document.getElementById("swimmingPool").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+    document.getElementById("waterParks").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+    document.getElementById("outdoor").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+    document.getElementById("indoor").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+    document.getElementById("freeWifi").addEventListener("click", ()=>{
+      displayCoolzones({
+        radius: myRad,
+        latitude: myLat,
+        longitude: myLng,
+        minLng: lng_min,
+        maxLng: lng_max,
+        minLat: lat_min,
+        maxLat: lat_max,
+        aircon: document.getElementById("aircon").checked,
+        freeWater: document.getElementById("freeWater").checked,
+        swimmingPool: document.getElementById("swimmingPool").checked,
+        waterPark: document.getElementById("waterParks").checked,
+        outdoor: document.getElementById("outdoor").checked,
+        indoor: document.getElementById("indoor").checked,
+        freeWifi: document.getElementById("freeWifi").checked
+      });
+    });
+
 // displays map based on current location
 function initMap() {
   navigator.geolocation.getCurrentPosition(function(pos){
