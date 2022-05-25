@@ -1,18 +1,19 @@
 'use strict';
 
-let postContent = document.getElementById("post-content-container");
-let postListContainer = document.getElementById("post-list-container");
-let postForm = document.getElementById("timeline-post-form-container");
-let searchCoolzoneInput = document.getElementById("post-form-coolzone-id");
-let submitPostButton = document.getElementById("submit-post-button");
-let suggestionBox = document.getElementById("coolzone-suggestion-box");
-let imageSlider = document.getElementById("image-slider");
-let postEditForm = document.getElementById("timeline-post-edit-form-container");
-let submitPostEditButton = document.getElementById("submit-post-edit-button");
-let currentImageContainer = document.getElementById("current-image-container");
-let deletePhotoButton = document.getElementById("delete-post-photo-button");
-let addPhotoButton = document.getElementById("add-post-photo-button");
-let deletePostButton = document.getElementById("delete-post-edit-button");
+//Initialization//
+const postContent = document.getElementById("post-content-container");
+const postListContainer = document.getElementById("post-list-container");
+const postForm = document.getElementById("timeline-post-form-container");
+const searchCoolzoneInput = document.getElementById("post-form-coolzone-id");
+const submitPostButton = document.getElementById("submit-post-button");
+const suggestionBox = document.getElementById("coolzone-suggestion-box");
+const imageSlider = document.getElementById("image-slider");
+const postEditForm = document.getElementById("timeline-post-edit-form-container");
+const submitPostEditButton = document.getElementById("submit-post-edit-button");
+const currentImageContainer = document.getElementById("current-image-container");
+const deletePhotoButton = document.getElementById("delete-post-photo-button");
+const addPhotoButton = document.getElementById("add-post-photo-button");
+const deletePostButton = document.getElementById("delete-post-edit-button");
 
 // shows/hides post-content-container. Input parameter 1 for showing, 0 for hiding. //
 function togglePostContent(input) {

@@ -24,6 +24,8 @@ function error(err) {
 }
 
     document.getElementById("aircon").addEventListener("click", ()=>{
+      //test//
+      console.log("centerPosMarker.position: " + centerPosMarker.position);
       displayCenterPos(centerPosMarker.position);
     });
     document.getElementById("freeWater").addEventListener("click", ()=>{
@@ -176,6 +178,8 @@ window.onload = initMap;
 
 //takes a longitude and latitude value and displays an icon 
 function displayCenterPos(myLatLong){
+  console.log("displayCenterPos - myLatLong: " + myLatLong);
+
   centerPosMarker = new google.maps.Marker({
     position: myLatLong,
     map: map,
@@ -241,26 +245,31 @@ function displayRadius(myLatLong, myRad){
 
 // takes the results array of /loadCoolzones and creates a marker 
 // for each result which is displayed on our map
-function createMarker(resultsArray){
+async function createMarker(resultsArray){
   if(resultsArray){
-    resultsArray.forEach((coolzone)=>{
+    await resultsArray.forEach((coolzone)=>{
+      //console.log("coolzone element in resultsArray: " + JSON.stringify(coolzone));
       markers.push(new google.maps.Marker({
         position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
         title: coolzone.czname,
-        map: map
+        map: map,
+        eventid: coolzone.eventid,
+        czname: coolzone.czname,
+        description: coolzone.description
       }));
     });
-    // markers.forEach((marker)=>{
-    //   marker.addEventListener("click", ()=>{
-    //     displayAside();
-    //   })
-    // })
+
   }
 }
 
 async function displayCoolzones(data){
   // post request for all coolzones 
   try {
+    //test//
+    console.log("displayCoolzones - data: " + data);
+    console.log("displayCoolzones - JSON.stringify(data): " + JSON.stringify(data));
+
+    console.log
     let response = await fetch("/loadCoolzones", {
       method: 'POST',
       headers: {
@@ -270,6 +279,10 @@ async function displayCoolzones(data){
       body: JSON.stringify(data)
     });
     let parsedJSON = await response.json();
+
+    //test//
+    console.log("displayCoolzones - parsedJSON.coolzones: " + parsedJSON.coolzones);
+
       createMarker(parsedJSON.coolzones);
   } catch (e){
     console.log(e);

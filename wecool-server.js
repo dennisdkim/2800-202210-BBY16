@@ -760,26 +760,34 @@ app.post("/loadCoolzones", function (req, res) {
     // BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi
     let selectStatement = 'SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?';
     if (req.body.aircon.checked){
-        selectStatement = selectStatement + " AND aircon = 1"
+        selectStatement = selectStatement + " AND aircon = 1";
     }
     if (req.body.freeWater.checked){
-        selectStatement = selectStatement + " AND freedrinks = 1"
+        selectStatement = selectStatement + " AND freedrinks = 1";
     }
     if (req.body.swimmingPool.checked){
-        selectStatement = selectStatement + " AND waterpark = 1"
+        selectStatement = selectStatement + " AND waterpark = 1";
     }
     if (req.body.waterPark.checked){
-        selectStatement = selectStatement + " AND pool = 1"
+        selectStatement = selectStatement + " AND pool = 1";
     }
     if (req.body.outdoor.checked){
-        selectStatement = selectStatement + " AND outdoors = 1"
+        selectStatement = selectStatement + " AND outdoors = 1";
     }
     if (req.body.indoor.checked){
-        selectStatement = selectStatement + " AND indoors = 1"
+        selectStatement = selectStatement + " AND indoors = 1";
     }
     if (req.body.freeWifi.checked){
-        selectStatement = selectStatement + " AND wifi = 1"
+        selectStatement = selectStatement + " AND wifi = 1";
     }
+
+    console.log("req.body.aircon.checked: " + req.body.aircon.checked);
+    console.log("req.body.freewater.checked: " + req.body.freeWater.checked);
+    console.log("req.body.swimmingPool.checked: " + req.body.swimmingPool.checked);
+    console.log("req.body.waterPark.checked: " + req.body.waterPark.checked);
+    console.log("req.body.outdoor.checked: " + req.body.outdoor.checked);
+
+    console.log(selectStatement);
 
     connection.query(selectStatement,
         [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
@@ -790,6 +798,7 @@ app.post("/loadCoolzones", function (req, res) {
             else if (results.length == 0) {
                 res.send({ status: "success", msg: "no coolzones" });
             } else {
+                console.log(results);
                 res.send({
                     status: "success",
                     msg: "yes coolzones",
