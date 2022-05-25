@@ -249,8 +249,12 @@ async function displayCoolzones(data){
   }
 } 
 
-function filter(){
-  
+
+
+function goToMap(latLong){
+  let destination = "&destination=" + latLong;
+  let url = "https://www.google.com/maps/dir/?api=1" + destination;
+  window.open(url, "_blank").focus;
 }
 
 // shows/hides the maps aside window. Input parameter 1 for showing, 0 for hiding. //
