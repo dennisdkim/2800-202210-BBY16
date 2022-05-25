@@ -17,16 +17,16 @@
 
     <!--Sign up form for new users to input their information-->
     <div class="login-form">
-      <input type="fname" id="fname" name="fname" placeholder="First Name" required="required"/>
+      <input class = "signup-input" type="fname" id="fname" name="fname" placeholder="First Name" onkeypress="return event.charCode != 32" pattern="^\S{2,30}$" maxlength="30" required="required"/>
       <br />
-      <input type="lname" id="lname" name="lname" placeholder="Last Name" required="required"/>
+      <input class = "signup-input" type="lname" id="lname" name="lname" placeholder="Last Name" onkeypress="return event.charCode != 32" pattern="^\S{2,30}$" maxlength="30" required="required"/>
       <br />
-      <input type="displayName" id="displayName" name="displayName" placeholder="Display Name" required="required"/>
+      <input class = "signup-input" type="displayName" id="displayName" name="displayName" placeholder="Display Name" onkeypress="return event.charCode != 32" pattern="^\S{2,30}$" maxlength="30" required="required"/>
       <br />
-      <input type="email" id="email" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required="required"/>
+      <input class = "signup-input" type="email" id="email" name="email" placeholder="Email" onkeypress="return event.charCode != 32" pattern="^\S{2,30}$" maxlength="30" required="required"/>
       <br />
-      <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
-        required="required" />
+      <input class = "signup-input" type="password" id="password" name="password" onkeypress="return event.charCode != 32" placeholder="Password" pattern="^\S{2,30}$"
+       maxlength="30" required="required" />
       <br />
       <span id="errorMsg" class="errors"></span>
       <button id="signUpButton">Sign Up</button>

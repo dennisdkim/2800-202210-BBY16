@@ -347,7 +347,7 @@ async function createMarker(resultsArray) {
         }
 
         document.getElementById("go-to-coolzone-button").value = marker.latitude + "," + marker.longitude;
-        document.getElementById("go-to-coolzone-button").addEventListener("click", (e) => { console.log(e.currentTarget.value) })
+        document.getElementById("go-to-coolzone-button").addEventListener("click", (e) => { goToMap(e.currentTarget.value); })
       })
     })
   }

@@ -23,15 +23,15 @@ async function submitSignUp(data){
 //event listener to call submitSignUp method upon button click.
 document.getElementById("signUpButton").addEventListener("click", function (e) {
   submitSignUp({
-    fname: document.getElementById("fname").value,
-    lname: document.getElementById("lname").value,
-    email: document.getElementById("email").value,
-    displayName: document.getElementById("displayName").value,
-    password: document.getElementById("password").value
+    fname: document.getElementById("fname").value.replace(/\s+/g, ''),
+    lname: document.getElementById("lname").value.replace(/\s+/g, ''),
+    email: document.getElementById("email").value.replace(/\s+/g, ''),
+    displayName: document.getElementById("displayName").value.replace(/\s+/g, ''),
+    password: document.getElementById("password").value.replace(/\s+/g, '')
   });
 });
 
-// Easter Egg on Login Page 
+// Easter Egg on Signup Page 
 var animationToggle = false;
 var windSound = new Audio('/sounds/wind.mp3');
 windSound.loop = true;

@@ -13,7 +13,7 @@
 <body>
   <div id="navbar"></div>
   <div id="content">
-    <div id="open-new-post-button" onclick=togglePostForm(1)>New Post +</div>
+    <div id="open-new-post-button" onclick="togglePostForm(1)">New Post +</div>
     <!--"post-list-container" is the left "list" section-->
     <div id="post-list-container">
       <!--following "post-containers" to be generated with JS-->
@@ -21,8 +21,8 @@
     <!--"post-content-container" is the right "content" section-->
     <!--content inside to be generated with JS-->
     <div id="post-content-container" hidden>
-      <div id="edit-post-button" onclick=togglePostEdit(1)>Edit Post</div>
-      <div id="close-edit-user-button" class="close-button" onclick=togglePostContent(0)>X</div>
+      <div id="edit-post-button" onclick="togglePostEdit(1)">Edit Post</div>
+      <div id="close-edit-user-button" class="close-button" onclick="togglePostContent(0)">X</div>
       <div id="post-content-header">
         <div id="poster-name-container">
           <img class="poster-display-pic" id="post-content-poster-display-picture"
@@ -56,7 +56,7 @@
       <h3 id="post-form-header">
         Create a new post
       </h3>
-      <div class="close-button" onclick=togglePostForm(0)>X</div>
+      <div class="close-button" onclick="togglePostForm(0)">X</div>
       <div class="post-form-input">
         <p>Post Title</p> <input id="post-form-title" type="text" maxlength="50">
       </div>
@@ -80,10 +80,10 @@
     </div>
 
     <div id="timeline-post-edit-form-container" hidden>
-      <h3 id="post-form-header">
+      <h3 id="post-edit-form-header">
         Edit your post
       </h3>
-      <div class="close-button" onclick=togglePostEdit(0)>X</div>
+      <div class="close-button" onclick="togglePostEdit(0)">X</div>
       <div class="post-form-input">
         <p>Post Title</p> <input id="post-edit-form-title" type="text" maxlength="50">
       </div>
