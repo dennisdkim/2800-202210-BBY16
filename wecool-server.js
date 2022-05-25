@@ -652,18 +652,31 @@ app.get("/getTimelinePosts", function (req, res) {
 });
 
 // Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
-app.get("/getmycoolzones", function (req, res) {
-    let coolzoneDate = [];
-    connection.query(`SELECT * FROM BBY_16_COOLZONES WHERE hostid = ?;`, [req.body.userID],
+app.get("/getMyCoolzones", function (req, res) {
+    let coolzoneData = [];
+    //TEH QUERY WAS WRONG FIX SO DYNAMIC PLEASE ANDY
+    connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
         function (error, results, fields) {
             console.log(results);
             for (let i = 0; i < results.length; i++) {
                 coolzoneData[i] = {
                     eventid: results[i].eventid,
+                    czname: results[i].czname,
+                    location: results[i].location,
+                    startdate: results[i].startdate,
+                    enddate: results[i].enddate,
+                    description: results[i].description,
+                    aircon: results[i].aircon,
+                    freedrinks: results[i].freedrinks,
+                    waterpark: results[i].waterpark,
+                    pool: results[i].pool,
+                    outdoors: results[i].outdoors,
+                    indoors: results[i].indoors,
+                    wifi: results[i].wifi
                 };
                 console.log(coolzoneData[i]);
             }
-            res.send({ status: "success" });
+            res.send(JSON.stringify(coolzoneData));
         });
 });
 
@@ -739,6 +752,7 @@ app.post("/loadPostContent", function (req, res) {
 // Uploads coolzone image to file system
 app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res) {
     req.file.filename = req.file.originalname;
+
     res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
 });
 

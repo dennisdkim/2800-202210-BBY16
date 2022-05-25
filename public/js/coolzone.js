@@ -6,9 +6,9 @@ let myLong;
 //global searched location latitude
 let myLat;
 
-function initGoogle(){
+function initGoogle() {
   const autocomplete = new google.maps.places.Autocomplete(document.getElementById("location"));
-  autocomplete.addListener("place_changed", ()=>{
+  autocomplete.addListener("place_changed", () => {
     const place = autocomplete.getPlace();
     myLat = place.geometry.location.lat();
     myLong = place.geometry.location.lng();
