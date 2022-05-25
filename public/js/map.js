@@ -55,7 +55,7 @@ function initMap() {
       mapTypeControl: false,
       fullscreenControl: false,
       center: { lat: location.lat, lng: location.long},
-      zoom: 14
+      zoom: 12
     });
 
     // style options to display or hide points of interest
@@ -117,7 +117,7 @@ function initMap() {
       
     });
 
-    const radiusOptions = [{number: 300, multiplier: 0.001, unit: "m"}, {number: 1, multiplier: 1, unit: "km"}, {number: 2, multiplier: 1, unit: "km"}, {number: 3, multiplier: 1, unit: "km"}, {number: 4, multiplier: 1, unit: "km"},{number: 5, multiplier: 1, unit: "km"}, {number: 10, multiplier: 1, unit: "km"}];
+    const radiusOptions = [{number: 300, multiplier: 0.001, unit: "m", zoom: 17}, {number: 1, multiplier: 1, unit: "km", zoom: 15}, {number: 2, multiplier: 1, unit: "km", zoom: 14}, {number: 3, multiplier: 1, unit: "km", zoom: 13}, {number: 4, multiplier: 1, unit: "km", zoom: 13},{number: 5, multiplier: 1, unit: "km", zoom: 12}, {number: 10, multiplier: 1, unit: "km", zoom: 12}];
     const radiusInput = document.createElement("select");
     radiusInput.id = "radiusInput";
     radiusInput.addEventListener("change", ()=>{
@@ -132,11 +132,6 @@ function initMap() {
         radiusInput.appendChild(option);
     }
     map.controls[google.maps.ControlPosition.RIGHT_TOP].push(radiusInput);
-
-    let currentLatLong = new google.maps.LatLng(location.lat, location.long);
-
-    displayRadius(currentLatLong, radiusInput.options[radiusInput.selectedIndex].value);
-    displayCenterPos(currentLatLong);
 
   }, error, options);
 }
@@ -162,18 +157,22 @@ function waitForElm(selector) {
   });
 }
 
-// async function loadMap(){
-//   initMap;
+//initializes the map. Once map elements are generated, displays the radius and center position
+async function loadMap(){
+  initMap;
   
-//   const elm = await waitForElm("#radiusInput");
+  const elm = await waitForElm("#radiusInput");
+
+  navigator.geolocation.getCurrentPosition(function(pos){
+    let currentLatLong = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+    displayRadius(currentLatLong, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
+    displayCenterPos(currentLatLong);
+  });
   
-  // displayRadius(currentLatLong, document.getElementById("radiusInput").options[document.getElementById("radiusInput").selectedIndex].value);
-  // displayCenterPos(currentLatLong);
-// }
+}
 
-// window.onload = loadMap;
+window.onload = loadMap;
 
-window.onload = initMap;
 
 //takes a longitude and latitude value and displays an icon 
 function displayCenterPos(myLatLong){
@@ -240,17 +239,34 @@ function displayRadius(myLatLong, myRad){
     center: myLatLong,
     radius: myRad * 1300
   });
+  if(myRad == 0.3){
+    map.setZoom(17);
+  } else if(myRad == 1){
+    map.setZoom(15);
+  } else if(myRad == 2){
+    map.setZoom(14);
+  } else if(myRad == 3){
+    map.setZoom(13);
+  } else if(myRad == 4){
+    map.setZoom(13);
+  } else if(myRad == 5){
+    map.setZoom(12);
+  } else {
+    map.setZoom(12);
+  }
 }
 
 // takes the results array of /loadCoolzones and creates a marker 
 // for each result which is displayed on our map
 function createMarker(resultsArray){
   if(resultsArray){
+    const image = {url: "/img/icons/coolzoneMarker.png", scaledSize: new google.maps.Size(50, 50)};
     resultsArray.forEach((coolzone)=>{
       markers.push(new google.maps.Marker({
         position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
         title: coolzone.czname,
-        map: map
+        map: map,
+        icon: image
       }));
     });
     // creates event listeners for each marker displayed on map
