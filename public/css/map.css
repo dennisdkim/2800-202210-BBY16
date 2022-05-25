@@ -5,33 +5,85 @@
 }
 
 body {
+  min-width: 400px;
   width: 100vw;
   height: 100vh;
   min-height: 500px;
   overflow: hidden;
 }
 
-#mapFilterText{
-  font-weight: 300;
-  color: #69869D;
-}
-
+/* ---- Main Content Window ---- */
 #content{
-  display: flex;
-  flex-direction: row;
+  width: 100%;
+  height: calc(100% - 180px);
+  position: relative;
 }
 
 #map {
-  height: 80vh;
-  width: 85vw;
+  height: 100%;
+  width: 100%;
 }
 
+#radiusInput {
+  background-color: white;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  margin-right: 10px;
+  border: none;
+}
+
+#location-input-field {
+  background-color: white;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  margin-top: 10px;
+  width: 300px;
+  padding-left: 20px;
+}
+
+#center-my-location-button {
+  background-color: white;
+  width: 80px;
+  height: 50px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#open-filter-button {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  bottom: 200px;
+  right: 10px;
+  background-color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+/* ---- Filter Window ---- */
+
 #filters{
-  height: 80vh;
-  width: 15vw;
+  position: absolute;
+  top:0;
+  right:0;
+  height: 100%;
+  width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: rgba(255,255,255,0.9);
+  transition: 0.3s;
+}
+
+#closed {
+  display: none;
 }
 
 #filterOptions{
@@ -40,8 +92,14 @@ body {
   align-items: left;
 }
 
+
 #mapFilterText{
-  padding-bottom: 2vh;
+  width: 100%;
+  padding: 25px 50px;
+  font-size: 1.3em;
+  font-weight: 300;
+  color: #69869D;
+  cursor: pointer;
 }
 
 input[type="checkbox"]{
@@ -49,11 +107,17 @@ input[type="checkbox"]{
 }
 
 label{
+  width: 100%;
   display: inline-block;
-  padding: 2vh 2vw;
+  padding: 15px 50px;
   color: black;
   opacity: 0.5;
-  justify-self: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+label span {
+  margin-left: 5px;
 }
 
 label:hover{
@@ -63,41 +127,133 @@ label:hover{
 
 #aircon:checked ~label[for="aircon"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
 #freeWater:checked ~label[for="freeWater"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
 #swimmingPool:checked ~label[for="swimmingPool"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
 #waterParks:checked ~label[for="waterParks"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
 #outdoor:checked ~label[for="outdoor"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
 #indoor:checked ~label[for="indoor"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
 #freeWifi:checked ~label[for="freeWifi"]{
   opacity: 1;
-  background-color: #94bbdc;
+  background-color: #DBE2E7;
 }
 
-label>span{
-  align-items: flex-end;
+
+/* ---- Coolzone Info Window ---- */
+
+#coolzone-details-window {
+  height: 100%;
+  min-width: 300px;
+  max-width: 600px;
+  background-color: #DBE2E7;
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #3E4D58;
+}
+
+#coolzone-images-window img{
+  max-width: 100%;
+  max-height: 40%;
+}
+
+#coolzone-name {
+  font-size: 1.2em;
+  padding: 10px 20px;
+
+}
+
+#coolzone-address {
+  padding: 10px 20px;
+
+}
+
+#coolzone-name {
+  padding: 10px 20px;
+
+}
+
+#coolzone-description {
+  padding: 10px 20px;
+  width: 100%;
+}
+
+#coolzone-amenities {
+  padding: 10px 0px;
+  margin-left: 20px;
+  display: flex;
+  width: 100%;
+
+}
+
+.coolzone-amenity {
+  height: 50px;
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 5px;
+  border-right: 1px solid lightgray;
+}
+
+#coolzone-amenities span {
+  
+}
+
+.coolzone-amenity p {
+  margin-top: 10px;
+  font-size: 0.7em;
+  width: 64px;
+  text-align: center;
+}
+
+#go-to-coolzone-button {
+  background: white;
+  height: 50px;
+  width: 100px;
+  border-radius: 10px;
+  border: none;
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  height: 40px;
+  width: 40px;
+  color: #69869D;
+  background-color: white;
+  border: 1px solid #69869D;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 

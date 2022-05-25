@@ -21,24 +21,24 @@
     <div id="profile-form">
       <div class="input-field">
         <p>Username</p>
-        <input type="text" id="displayName" name="displayName" placeholder="Username" />
+        <input type="text" id="displayName" name="displayName" placeholder="Username" onkeypress="return event.charCode != 32" maxlength="30"/>
       </div>
       <div class="input-field">
         <p>First Name</p>
-        <input type="text" id="fname" name="fname" placeholder="First Name" />
+        <input type="text" id="fname" name="fname" placeholder="First Name" onkeypress="return event.charCode != 32" maxlength="30"/>
       </div>
       <div class="input-field">
         <p>Last Name</p>
-        <input type="text" id="lname" name="lname" placeholder="Last Name" />
+        <input type="text" id="lname" name="lname" placeholder="Last Name" onkeypress="return event.charCode != 32" maxlength="30"/>
       </div>
       <div class="input-field">
         <p>Email</p>
-        <input type="email" id="email" name="email" placeholder="Email" />
+        <input type="email" id="email" name="email" placeholder="Email" onkeypress="return event.charCode != 32" maxlength="30"/>
       </div>
       <div class="input-field">
         <p>Password</p>
         <input type="password" id="newPassword" name="password" placeholder="New Password"
-          pattern="[A-Z0-9a-z]{8,20}" />
+          pattern="[A-Z0-9a-z]{8,20}" onkeypress="return event.charCode != 32" maxlength="30"/>
       </div>
       <input id="avatar-upload" type="file" class="input-field" value="Upload Image"
         accept="image/png, image/gif, image/jpeg" placeholder="" />
@@ -46,13 +46,13 @@
       <div id="pwAuth">
         <p>For security purposes, please confirm your current password to confirm changes:</p>
         <input type="password" id="password" name="password" placeholder="Password" pattern="[A-Z0-9a-z]{8,20}"
-          required="required" class="input-field"/>
+          required="required" class="input-field" onkeypress="return event.charCode != 32" maxlength="30"/>
         <input type="password" id="passwordVerify" name="passwordVerify" placeholder="Re-enter Password"
-          pattern="[A-Z0-9a-z]{8,20}" required="required" class="input-field"/>
+          pattern="[A-Z0-9a-z]{8,20}" required="required" class="input-field" onkeypress="return event.charCode != 32" maxlength="30"/>
         <div id="pwMessage"></div>
       </div>
       <div id="buttons">
-        <button type="button" id="cancelButton" class="button">Cancel</button>
+        <button type="button" id="cancelButton" class="button">Revert Changes</button>
         <button type="button" id="saveButton" class="button">Save</button>
       </div>
     </div>

@@ -29,8 +29,8 @@
           <label id="enddate">End Date: </label>
         </div>
         <div class="inputContainer">
-          <input type="text" id="coolzoneName" name="coolzoneName">
-          <input type="text" id="location" name="location">
+          <input type="text" id="coolzoneName" name="coolzoneName" maxlength="30">
+          <input type="text" id="location" name="location" maxlength="100">
           <input type="datetime-local" id="dateTag" name="dateTag">
           <input type="datetime-local" id="enddateTag" name="enddateTag">
         </div>
@@ -43,7 +43,7 @@
       </div>
       <div class="descInputContainer">
         <textarea id="description" name="description" rows="10" cols="50"
-          placeholder="Enter a small description about the CoolZone!"></textarea>
+          placeholder="Enter a small description about the CoolZone!" maxlength="200"></textarea>
       </div>
     </div>
 

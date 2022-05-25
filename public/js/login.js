@@ -58,3 +58,9 @@ function spinFan() {
     animationToggle = true;
   }
 }
+
+// login input replaces spaces
+let loginInputs = document.getElementsByClassName("login-input");
+[].forEach.call(loginInputs, function (input) {
+  input.value.replace(/\s/g, "");
+});
