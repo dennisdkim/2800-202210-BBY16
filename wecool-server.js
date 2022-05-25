@@ -718,26 +718,26 @@ app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res)
     res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
 });
 
-//loads all coolzones within search radius
-app.post("/loadCoolzones", function (req, res) {
+// //loads all coolzones within search radius
+// app.post("/loadCoolzones", function (req, res) {
 
-    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
-        [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
-        function (error, results) {
-            if (error) {
-                console.log(error);
-            }
-            else if (results.length == 0) {
-                res.send({ status: "success", msg: "no coolzones" });
-            } else {
-                res.send({
-                    status: "success",
-                    msg: "yes coolzones",
-                    coolzones: results
-                });
-            }
-        });
-});
+//     connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+//         [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
+//         function (error, results) {
+//             if (error) {
+//                 console.log(error);
+//             }
+//             else if (results.length == 0) {
+//                 res.send({ status: "success", msg: "no coolzones" });
+//             } else {
+//                 res.send({
+//                     status: "success",
+//                     msg: "yes coolzones",
+//                     coolzones: results
+//                 });
+//             }
+//         });
+// });
 
 // Allows admin user to delete avatar from file system 
 app.post("/deleteUserAvatar", function (req, res) {
