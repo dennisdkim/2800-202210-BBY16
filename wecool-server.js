@@ -757,6 +757,7 @@ app.post("/deleteUserAvatar", function (req, res) {
 //loads all coolzones within search radius
 app.post("/loadCoolzones", function (req, res) {
 
+    
     // BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi
     let selectStatement = 'SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?';
     if (req.body.aircon.checked){
@@ -781,14 +782,6 @@ app.post("/loadCoolzones", function (req, res) {
         selectStatement = selectStatement + " AND wifi = 1";
     }
 
-    console.log("req.body.aircon.checked: " + req.body.aircon.checked);
-    console.log("req.body.freewater.checked: " + req.body.freeWater.checked);
-    console.log("req.body.swimmingPool.checked: " + req.body.swimmingPool.checked);
-    console.log("req.body.waterPark.checked: " + req.body.waterPark.checked);
-    console.log("req.body.outdoor.checked: " + req.body.outdoor.checked);
-
-    console.log(selectStatement);
-
     connection.query(selectStatement,
         [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
         function (error, results) {
@@ -798,7 +791,6 @@ app.post("/loadCoolzones", function (req, res) {
             else if (results.length == 0) {
                 res.send({ status: "success", msg: "no coolzones" });
             } else {
-                console.log(results);
                 res.send({
                     status: "success",
                     msg: "yes coolzones",

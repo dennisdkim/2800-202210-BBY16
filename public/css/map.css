@@ -165,7 +165,7 @@ label:hover{
 
 #coolzone-details-window {
   height: 100%;
-  min-width: 400px;
+  min-width: 300px;
   max-width: 600px;
   background-color: #DBE2E7;
   position: absolute;
@@ -176,6 +176,7 @@ label:hover{
 
 #coolzone-images-window img{
   max-width: 100%;
+  max-height: 40%;
 }
 
 #coolzone-name {
@@ -194,14 +195,37 @@ label:hover{
 
 }
 
-#description {
+#coolzone-description {
   padding: 10px 20px;
+  width: 100%;
+}
+
+#coolzone-amenities {
+  padding: 10px 0px;
+  display: flex;
+  width: 100%;
 
 }
 
-#amenities {
-  padding: 10px 20px;
+.coolzone-amenity {
+  height: 50px;
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 5px;
+  border-right: 1px solid lightgray;
+}
 
+#coolzone-amenities span {
+  
+}
+
+.coolzone-amenity p {
+  margin-top: 10px;
+  font-size: 0.7em;
+  width: 64px;
+  text-align: center;
 }
 
 #go-to-coolzone-button {

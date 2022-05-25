@@ -23,29 +23,28 @@ function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
-    document.getElementById("aircon").addEventListener("click", ()=>{
-      //test//
-      console.log("centerPosMarker.position: " + centerPosMarker.position);
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("freeWater").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("swimmingPool").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("waterParks").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("outdoor").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("indoor").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
-    document.getElementById("freeWifi").addEventListener("click", ()=>{
-      displayCenterPos(centerPosMarker.position);
-    });
+// adds event listeners to all filter buttons to display coolzones based on filter requirements
+document.getElementById("aircon").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("freeWater").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("swimmingPool").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("waterParks").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("outdoor").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("indoor").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
+document.getElementById("freeWifi").addEventListener("click", ()=>{
+  displayCenterPos(centerPosMarker.position);
+});
 
 // displays map based on current location
 function initMap() {
@@ -122,8 +121,8 @@ function initMap() {
     const radiusInput = document.createElement("select");
     radiusInput.id = "radiusInput";
     radiusInput.addEventListener("change", ()=>{
-      displayRadius(currentLatLong, radiusInput.options[radiusInput.selectedIndex].value);
-      displayCenterPos(currentLatLong);
+      displayRadius(centerPosMarker.position, radiusInput.options[radiusInput.selectedIndex].value);
+      displayCenterPos(centerPosMarker.position);
     });
     for (const val of radiusOptions)
     {
@@ -208,6 +207,8 @@ function displayCenterPos(myLatLong){
   const lat_min = myLat - (myRad / 69);
   const lat_max = myLat + (myRad / 69);
 
+ 
+
   displayCoolzones({
     radius: myRad,
     latitude: myLat,
@@ -251,17 +252,72 @@ async function createMarker(resultsArray){
       //console.log("coolzone element in resultsArray: " + JSON.stringify(coolzone));
       markers.push(new google.maps.Marker({
         position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
-        title: coolzone.czname,
+        czname: coolzone.czname,
+        location: coolzone.location,
+        startdate: coolzone.startdate,
+        enddate: coolzone.enddate,
+        latitude: coolzone.latitude,
+        longitude: coolzone.longitude,
         map: map,
         eventid: coolzone.eventid,
-        czname: coolzone.czname,
-        description: coolzone.description
+        description: coolzone.description,
+        amenities: {
+          aircon: coolzone.aircon,
+          freedrinks: coolzone.freedrinks,
+          waterpark: coolzone.waterpark,
+          pool: coolzone.pool,
+          outdoors: coolzone.outdoors,
+          indoors: coolzone.indoors,
+          wifi: coolzone.wifi
+        }
+
       }));
     });
+    // creates event listeners for each marker displayed on map
+    markers.forEach((marker)=>{
+      marker.addListener("click", ()=>{
+        toggleCoolzoneInfo(1);
+        document.getElementById("coolzone-name").innerHTML = marker.czname;
+        document.getElementById("coolzone-address").innerHTML = marker.location;
+        document.getElementById("coolzone-description").innerHTML = marker.description;
 
+        let amenityIndicator = document.getElementById("coolzone-amenities");
+        //amenityIndicator.innerHTML = "";
+
+        if(marker.amenities.aircon == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined">ac_unit</span>`;
+        }
+        if(marker.amenities.freedrinks == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined">water_drop</span>`;
+        }
+        if(marker.amenities.waterpark == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined">sprinkler</span>`;
+        }
+        if(marker.amenities.pool == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined">pool</span>`;
+        }
+        if(marker.amenities.outdoors == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined">
+          location_away
+        </span>`;
+        }
+        if(marker.amenities.indoors == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined">
+          location_home
+        </span>`;
+        }
+        if(marker.amenities.wifi == 1) {
+          amenityIndicator.innerHTML += `<span class="material-symbols-outlined"> wifi </span>`;
+        }
+
+        document.getElementById("go-to-coolzone-button").value = marker.latitude + "," + marker.longitude;
+        document.getElementById("go-to-coolzone-button").addEventListener("click", (e)=> {console.log(e.currentTarget.value)})
+      })
+    })
   }
 }
 
+// displays all coolzones within provided arguments
 async function displayCoolzones(data){
   // post request for all coolzones 
   try {
@@ -289,11 +345,7 @@ async function displayCoolzones(data){
   }
 } 
 
-// document.getElementById("go-to-coolzone-button").addEventListener("click", ()=>{
-//   goToMap();
-// });
-
-
+// redirects users to google maps with driving instructions to their chosen location
 function goToMap(latLong){
   let destination = "&destination=" + latLong;
   let url = "https://www.google.com/maps/dir/?api=1" + destination;
@@ -321,7 +373,3 @@ function toggleFilter(input) {
   }
 };
 
-// Retrieves specific coolzone information. Passes in a coolzone id.//
-function getCoolzoneData (czID) {
-  
-}
