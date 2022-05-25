@@ -720,6 +720,7 @@ app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res)
 
 //loads all coolzones within search radius
 app.post("/loadCoolzones", function (req, res) {
+
     connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
         [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
         function (error, results) {
@@ -755,7 +756,32 @@ app.post("/deleteUserAvatar", function (req, res) {
 
 //loads all coolzones within search radius
 app.post("/loadCoolzones", function (req, res) {
-    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+
+    // BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi
+    let selectStatement = 'SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?';
+    if (req.body.aircon.checked){
+        selectStatement = selectStatement + " AND aircon = 1"
+    }
+    if (req.body.freeWater.checked){
+        selectStatement = selectStatement + " AND freedrinks = 1"
+    }
+    if (req.body.swimmingPool.checked){
+        selectStatement = selectStatement + " AND waterpark = 1"
+    }
+    if (req.body.waterPark.checked){
+        selectStatement = selectStatement + " AND pool = 1"
+    }
+    if (req.body.outdoor.checked){
+        selectStatement = selectStatement + " AND outdoors = 1"
+    }
+    if (req.body.indoor.checked){
+        selectStatement = selectStatement + " AND indoors = 1"
+    }
+    if (req.body.freeWifi.checked){
+        selectStatement = selectStatement + " AND wifi = 1"
+    }
+
+    connection.query(selectStatement,
         [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
         function (error, results) {
             if (error) {

@@ -224,6 +224,11 @@ function createMarker(resultsArray){
         map: map
       }));
     });
+    // markers.forEach((marker)=>{
+    //   marker.addEventListener("click", ()=>{
+    //     displayAside();
+    //   })
+    // })
   }
 }
 
@@ -245,10 +250,6 @@ async function displayCoolzones(data){
   }
 } 
 
-
-
-function goToMap(latLong){
-  let destination = "&destination=" + latLong;
-  let url = "https://www.google.com/maps/dir/?api=1" + destination;
-  window.open(url, "_blank").focus;
-}
+// document.getElementById("go-to-coolzone-button").addEventListener("click", ()=>{
+//   goToMap();
+// });
