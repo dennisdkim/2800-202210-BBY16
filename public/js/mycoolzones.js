@@ -77,6 +77,7 @@ function loadcoolzones() {
             let czDiv = document.createElement("div");
             czDiv.classList.add("cz");
             czDiv.innerHTML = `
+              <img class="czImg" src=${coolzones[index].image}>
               <h2 class="czName" > ${coolzones[index].czname} </h2>
               <h2 class="czLocation"> ${coolzones[index].location} </h2>`;
             czDiv.addEventListener("click", () => {

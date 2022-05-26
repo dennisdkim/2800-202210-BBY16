@@ -78,7 +78,7 @@ const dbConfigHeroku = {
 let connection = mysql.createPool(dbConfigHeroku);
 
 
-//local connection configuration object. //
+// local connection configuration object. //
 // const connection = mysql.createConnection({
 //     host: "localhost",
 //     user: "root",
@@ -710,7 +710,6 @@ app.get("/getTimelinePosts", function (req, res) {
 // Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
 app.get("/getMyCoolzones", function (req, res) {
     let coolzoneData = [];
-    console.log(req.body);
     connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
         function (error, results, fields) {
             console.log(results);
@@ -731,7 +730,8 @@ app.get("/getMyCoolzones", function (req, res) {
                     pool: results[i].pool,
                     outdoors: results[i].outdoors,
                     indoors: results[i].indoors,
-                    wifi: results[i].wifi
+                    wifi: results[i].wifi,
+                    image: results[i].pictures
                 };
                 console.log(coolzoneData[i]);
             }

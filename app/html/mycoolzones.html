@@ -1,28 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
-  <link rel="stylesheet" type="text/css" href="/css/mycoolzones.css">
-  <title>My Coolzones</title>
-</head>
-
-<body>
-  <div id="navbar"></div>
-  <div>
-    <h1 class="my-coolzone"> My Coolzones </h1>
-  </div>
-  <div id="footer"></div>
-  <script src="/js/nav_footer_loader.js"></script>
-  <script src="/js/mycoolzones.js"></script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOqbqaS0oBq9r9N35OvJiD20aEvr__grI&libraries=places&callback=initGoogle"></script>
-</body>
-
-</html> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/mycoolzones.css">
-  <link rel="stylesheet" href="/css/admin_dashboard.css">
+  <!-- <link rel="stylesheet" href="/css/admin_dashboard.css"> -->
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
   <title>My Coolzones</title>
 </head>
@@ -40,21 +15,14 @@
 <body>
   <div id="navbar"></div>
   <div id="content">
-    <div id="user-list-header">
-      <h4 id="users-displayed-indicator">Showing all Coolzones</h4>
-    </div>
+
     <div id="coolzone-list-container">
 
     </div>
     <div id="userEditMenu">
       <div class="profile-form">
         <div id="close-edit-user-button" class="close-button" onclick=toggleEditUserMenu(0)>X</div>
-        <h4 class="form-title">Edit Existing User</h4>
-        <img id="profile-form-pic" src="img/userAvatars/default.png" alt="profile">
-        <div id="profile-title">
-          <h4>User ID: <span id="profile-id">1</span></h4>
-          <h4 id="profile-name">Dennis Kim</h4>
-        </div>
+        <h4 class="form-title">Edit Coolzone</h4>
         <div class="input-field">
           <p>Coolzone Name:</p>
           <input type="text" id="coolzoneName" name="coolzoneName">
@@ -76,39 +44,39 @@
           <textarea id="description" name="description" rows="10" cols="50"
             placeholder="Enter a small description about the CoolZone!"></textarea>
         </div>
-        <div class="input-field">
+        <div class="input-field-checkbox">
           <p>Air Conditioning</p>
           <input type="checkbox" id="aircon" />
         </div>
-        <div class="input-field">
-          <p>Air Conditioning</p>
+        <div class="input-field-checkbox">
+          <p>Free Drinks</p>
           <input type="checkbox" id="freeWater" />
         </div>
-        <div class="input-field">
+        <div class="input-field-checkbox">
           <p>Swimming Pool</p>
           <input type="checkbox" id="swimmingPool" />
         </div>
-        <div class="input-field">
+        <div class="input-field-checkbox">
           <p>Water Park</p>
           <input type="checkbox" id="waterParks" />
         </div>
-        <div class="input-field">
+        <div class="input-field-checkbox">
           <p>Outdoors</p>
           <input type="checkbox" id="outdoor" />
         </div>
-        <div class="input-field">
+        <div class="input-field-checkbox">
           <p>Indoors</p>
           <input type="checkbox" id="indoor" />
         </div>
-        <div class="input-field">
+        <div class="input-field-checkbox">
           <p>Free Wifi</p>
           <input type="checkbox" id="freeWifi" />
         </div>
 
         <div id="avatarMsg" class="response-message"></div>
         <div class="profile-buttons">
-          <button type="button" class="profile-button" id="deleteAviButton">Delete Display Picture</button>
-          <button type="button" class="profile-button" id="revertButton">Revert Changes</button>
+          <!-- <button type="button" class="profile-button" id="deleteAviButton">Delete Coolzone</button> -->
+          <!-- <button type="button" class="profile-button" id="revertButton">Revert Changes</button> -->
           <button type="button" class="profile-button" id="saveButton">Save Changes</button>
         </div>
         <div class="response-message" id="errorMessage"></div>
