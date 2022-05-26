@@ -362,8 +362,6 @@ async function displayCoolzones(data) {
     //test//
     console.log("displayCoolzones - data: " + data);
     console.log("displayCoolzones - JSON.stringify(data): " + JSON.stringify(data));
-
-    console.log
     let response = await fetch("/loadCoolzones", {
       method: 'POST',
       headers: {
