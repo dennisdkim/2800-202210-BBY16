@@ -360,6 +360,12 @@ async function displayCoolzones(data) {
   console.log(JSON.stringify(data.aircon));
   // post request for all coolzones 
   try {
+<<<<<<< HEAD
+=======
+    //test//
+    console.log("displayCoolzones - data: " + data);
+    console.log("displayCoolzones - JSON.stringify(data): " + JSON.stringify(data));
+>>>>>>> 1f0ff69071ffbe2eea236408f2ec6d59386e6a14
     let response = await fetch("/loadCoolzones", {
       method: 'POST',
       headers: {
