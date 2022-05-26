@@ -158,6 +158,8 @@ app.post("/tryCoolzone", function (req, res) {
 app.post("/changeCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
+    console.log(req.body);
+    console.log("The console log");
     connection.query('UPDATE bby_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?',
         [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
         function (error, results, fields) {
@@ -370,6 +372,26 @@ app.post("/loadUserData", function (req, res) {
     });
 });
 
+app.post("/loadCoolzoneData", function (req, res) {
+    connection.query('SELECT * FROM BBY_16_coolzones WHERE userID = ?;', req.session.userID, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        let user = results[0];
+        const userData = {
+            "userID": user.userID,
+            "fname": user.fname,
+            "lname": user.lname,
+            "displayName": user.displayName,
+            "email": user.email,
+            "password": user.password,
+            "admin": user.admin,
+            "avatar": displayPic
+        };
+        res.send(JSON.stringify(userData));
+    });
+});
+
 //returns the info for all users to be sent to admin//
 app.get("/getUserTable", function (req, res) {
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
@@ -502,6 +524,7 @@ app.post("/getUserList", function (req, res) {
     }
 });
 
+
 // Checks the database for the current user's password to verify identity before making changes
 app.post("/verifyPw", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -566,6 +589,21 @@ app.post("/editUserData", function (req, res) {
                 } else {
                     updateChanges(req, res, connection);
                 }
+            });
+    }
+});
+
+// Updates the user info and checks if display name and email is already in use, before setting values 
+app.post("/editCoolzoneData", function (req, res) {
+    if (req.body.czname == "" || req.body.location == "" || req.body.startdate == "" || req.body.enddate == "" || req.body.description == "") {
+        res.send({ status: "fail", msg: "Fields must not be empty!" });
+    } else {
+        connection.query('UPDATE BBY_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?', [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                res.send({ status: "success", msg: "Changes saved" });
             });
     }
 });
@@ -668,13 +706,13 @@ app.get("/getTimelinePosts", function (req, res) {
 // Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
 app.get("/getMyCoolzones", function (req, res) {
     let coolzoneData = [];
-    //TEH QUERY WAS WRONG FIX SO DYNAMIC PLEASE ANDY
     connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
         function (error, results, fields) {
             console.log(results);
             for (let i = 0; i < results.length; i++) {
                 coolzoneData[i] = {
                     eventid: results[i].eventid,
+                    hostid: results[i].hostid,
                     czname: results[i].czname,
                     location: results[i].location,
                     startdate: results[i].startdate,
