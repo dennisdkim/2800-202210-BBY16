@@ -156,7 +156,23 @@ app.post("/tryCoolzone", coolzoneUpload.single("files"), function (req, res) {
             if (error) {
                 console.log(error);
             }
-            res.send({ status: "success", msg: "Coolzone created." });
+            res.send({ status: "success", msg: "Coolzone Created!" });
+        });
+});
+
+//modifies coolzones in database table//
+app.post("/changeCoolzone", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    // Checking for coolzone exists
+    console.log(req.body);
+    console.log("The console log");
+    connection.query('UPDATE bby_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?',
+        [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({ status: "success", msg: "Coolzone Changes Saved!." });
         });
 });
 
@@ -175,6 +191,16 @@ app.get("/coolzone", function (req, res) {
     if (req.session.loggedIn) {
         let coolzone = fs.readFileSync("./app/html/coolzone.html", "utf8");
         res.send(coolzone);
+    } else {
+        res.redirect("/");
+    }
+});
+
+//loads the mycoolzones page//
+app.get("/mycoolzones", function (req, res) {
+    if (req.session.loggedIn) {
+        let mycoolzones = fs.readFileSync("./app/html/mycoolzones.html", "utf8");
+        res.send(mycoolzones);
     } else {
         res.redirect("/");
     }
@@ -352,6 +378,26 @@ app.post("/loadUserData", function (req, res) {
     });
 });
 
+app.post("/loadCoolzoneData", function (req, res) {
+    connection.query('SELECT * FROM BBY_16_coolzones WHERE userID = ?;', req.session.userID, function (error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        let user = results[0];
+        const userData = {
+            "userID": user.userID,
+            "fname": user.fname,
+            "lname": user.lname,
+            "displayName": user.displayName,
+            "email": user.email,
+            "password": user.password,
+            "admin": user.admin,
+            "avatar": displayPic
+        };
+        res.send(JSON.stringify(userData));
+    });
+});
+
 //returns the info for all users to be sent to admin//
 app.get("/getUserTable", function (req, res) {
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
@@ -484,6 +530,7 @@ app.post("/getUserList", function (req, res) {
     }
 });
 
+
 // Checks the database for the current user's password to verify identity before making changes
 app.post("/verifyPw", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -548,6 +595,23 @@ app.post("/editUserData", function (req, res) {
                 } else {
                     updateChanges(req, res, connection);
                 }
+            });
+    }
+});
+
+// Updates the user info and checks if display name and email is already in use, before setting values 
+app.post("/editCoolzonesData", function (req, res) {
+    console.log(req.body);
+    if (req.body.czname == "" || req.body.location == "" || req.body.startdate == "" || req.body.enddate == "" || req.body.description == "") {
+        res.send({ status: "fail", msg: "Fields must not be empty!" });
+    } else {
+        connection.query('UPDATE BBY_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?;',
+            [req.body.czname, req.body.location, req.body.startdate, req.body.enddate, req.body.description, req.body.longitude, req.body.latitude, req.body.aircon, req.body.freedrinks, req.body.waterpark, req.body.pool, req.body.outdoors, req.body.indoors, req.body.wifi, req.session.userID, req.body.eventid],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                res.send({ status: "success", msg: "Changes saved" });
             });
     }
 });
@@ -641,7 +705,38 @@ app.get("/getTimelinePosts", function (req, res) {
             }
             res.send(JSON.stringify(timelineData));
         });
+});
 
+// Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
+app.get("/getMyCoolzones", function (req, res) {
+    let coolzoneData = [];
+    console.log(req.body);
+    connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
+        function (error, results, fields) {
+            console.log(results);
+            for (let i = 0; i < results.length; i++) {
+                coolzoneData[i] = {
+                    eventid: results[i].eventid,
+                    hostid: results[i].hostid,
+                    czname: results[i].czname,
+                    location: results[i].location,
+                    startdate: results[i].startdate,
+                    enddate: results[i].enddate,
+                    description: results[i].description,
+                    longitude: results[i].longitude,
+                    latitude: results[i].latitude,
+                    aircon: results[i].aircon,
+                    freedrinks: results[i].freedrinks,
+                    waterpark: results[i].waterpark,
+                    pool: results[i].pool,
+                    outdoors: results[i].outdoors,
+                    indoors: results[i].indoors,
+                    wifi: results[i].wifi
+                };
+                console.log(coolzoneData[i]);
+            }
+            res.send(JSON.stringify(coolzoneData));
+        });
 });
 
 // Loads the content page for each timeline post. It will load slightly different information, depending on if the post is associated with a
@@ -713,6 +808,33 @@ app.post("/loadPostContent", function (req, res) {
                 res.send(JSON.stringify(postData));
             });
     }
+});
+
+// Uploads coolzone image to file system
+app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res) {
+    req.file.filename = req.file.originalname;
+
+    res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
+});
+
+//loads all coolzones within search radius
+app.post("/loadCoolzones", function (req, res) {
+    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+        [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
+        function (error, results) {
+            if (error) {
+                console.log(error);
+            }
+            else if (results.length == 0) {
+                res.send({ status: "success", msg: "no coolzones" });
+            } else {
+                res.send({
+                    status: "success",
+                    msg: "yes coolzones",
+                    coolzones: results
+                });
+            }
+        });
 });
 
 // Allows admin user to delete avatar from file system 
@@ -884,7 +1006,6 @@ app.post("/deleteTimelinePost", function (req, res) {
 });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
-
     connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE "%${req.body.query}%" OR LOCATION LIKE "%${req.body.query}%";`, (error, results, fields) => {
         if (error) {
             console.log(error);
@@ -893,7 +1014,6 @@ app.post("/getCoolzoneSuggestions", (req, res) => {
         }
     })
 })
-
 
 //Run server on port 8000
 let port = 8000;
