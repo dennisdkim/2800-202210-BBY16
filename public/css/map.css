@@ -260,4 +260,10 @@ label:hover{
   cursor: pointer;
 }
 
+@media screen and (min-width: 600px) {
 
+  #content {
+    height: calc(100vh - 100px);
+  }
+
+}

@@ -257,11 +257,13 @@ body {
     padding-left: calc((100% - 400px) / 2);
     padding-right: calc((100% - 400px) / 2);
     z-index: 15;
-    overflow-y: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
     
 }
 
 #post-form-header {
+    margin-top: 30px;
     margin-bottom: 30px;
 }
 
@@ -334,7 +336,12 @@ body {
     padding-left: calc((100% - 400px) / 2);
     padding-right: calc((100% - 400px) / 2);
     z-index: 15;
-    overflow-y: hidden;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#post-edit-form-header {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 #post-edit-form-title {
@@ -342,6 +349,7 @@ body {
     height: 40px;
     border: none;
     border-radius: 10px;
+
 }
 
 #post-edit-form-description {
@@ -412,6 +420,10 @@ justify-content: center;
 
 @media screen and (min-width: 600px){
 
+    #content {
+        height: calc(100vh - 100px);
+      }
+
     #post-list-container {
         min-width: 600px;
         max-width: 600px;
@@ -444,6 +456,4 @@ justify-content: center;
     }
 
 }
-
-
 
