@@ -114,6 +114,9 @@ ALTER TABLE `bby_16_coolzones`
 ALTER TABLE `bby_16_user`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE bby_16_coolzones
+  ADD COLUMN picture VARCHAR(80) AFTER wifi;
+
 --
 -- Constraints for dumped tables
 --
