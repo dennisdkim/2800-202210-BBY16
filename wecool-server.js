@@ -147,9 +147,10 @@ app.post("/tryCoolzone", coolzoneUpload.single("files"), function (req, res) {
     let path;
     if (req.file) {
         path = "/img/coolzones/" + req.file.filename;
-    } else {
-        path = "/img/coolzones/default.png";
     }
+    // else {
+    //     path = "/img/coolzones/default.png";
+    // }
     connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi, picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, path],
         function (error, results, fields) {
