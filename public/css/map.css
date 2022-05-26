@@ -31,6 +31,7 @@ body {
   border-radius: 5px;
   margin-right: 10px;
   border: none;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
 }
 
 #location-input-field {
@@ -41,6 +42,7 @@ body {
   margin-top: 10px;
   width: 300px;
   padding-left: 20px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
 }
 
 #center-my-location-button {
@@ -53,6 +55,7 @@ body {
   margin-right: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
 }
 
 #open-filter-button {
@@ -65,6 +68,7 @@ body {
   border-radius: 3px;
   cursor: pointer;
   padding: 8px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
 }
 
 /* ---- Filter Window ---- */

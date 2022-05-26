@@ -95,4 +95,54 @@ document.getElementById("createCoolzone").addEventListener("click", function (e)
     longitude: myLong,
     latitude: myLat
   });
+  createPost();
 });
+
+// creates a timeline post based on coolzone form data
+function createPost() {
+
+  let newBody = new FormData();
+  let imageUpload = document.getElementById("coolzone-upload");
+
+  newBody.append("title", document.getElementById("coolzoneName").value);
+  newBody.append("description", document.getElementById("description").value);
+  // newBody.append("coolzone", getNewestCz());
+  for( let i =0; i < imageUpload.files.length; i++) {
+      newBody.append("photos", imageUpload.files[i]);
+  }
+
+  fetch("/submitTimelinePost", {
+      method: 'POST',
+      body: newBody
+  }).then(
+      function (res) {
+          const data = res.json().then(
+              data => {
+                  //resets post form//
+                  document.getElementById("coolzoneName").value = "";
+                  document.getElementById("description").value = "";
+                  document.getElementById("location").value = "";
+                  document.getElementById("dateTag").value = "";
+                  document.getElementById("enddateTag").value = "";
+                  document.getElementById("coolzone-upload").value = "";
+                  document.getElementById("aircon").checked = false;
+                  document.getElementById("freeWater").checked = false;
+                  document.getElementById("waterParks").checked = false;
+                  document.getElementById("swimmingPool").checked = false;
+                  document.getElementById("outdoor").checked = false;
+                  document.getElementById("indoor").checked = false;
+                  document.getElementById("freeWifi").checked = false;
+              })
+      }
+  )
+}
+
+// function getNewestCz(){
+//   fetch("/getNewestCz", {
+//     method: 'GET'
+//   }).then(function(res){
+//     const data = res.json().then(
+//       res.id
+//     )
+//   })
+// }
