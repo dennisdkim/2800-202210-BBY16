@@ -594,11 +594,13 @@ app.post("/editUserData", function (req, res) {
 });
 
 // Updates the user info and checks if display name and email is already in use, before setting values 
-app.post("/editCoolzoneData", function (req, res) {
+app.post("/editCoolzonesData", function (req, res) {
+    console.log(req.body);
     if (req.body.czname == "" || req.body.location == "" || req.body.startdate == "" || req.body.enddate == "" || req.body.description == "") {
         res.send({ status: "fail", msg: "Fields must not be empty!" });
     } else {
-        connection.query('UPDATE BBY_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?', [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
+        connection.query('UPDATE BBY_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?;',
+            [req.body.czname, req.body.location, req.body.startdate, req.body.enddate, req.body.description, req.body.longitude, req.body.latitude, req.body.aircon, req.body.freedrinks, req.body.waterpark, req.body.pool, req.body.outdoors, req.body.indoors, req.body.wifi, req.session.userID, req.body.eventid],
             function (error, results, fields) {
                 if (error) {
                     console.log(error);
@@ -706,6 +708,7 @@ app.get("/getTimelinePosts", function (req, res) {
 // Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
 app.get("/getMyCoolzones", function (req, res) {
     let coolzoneData = [];
+    console.log(req.body);
     connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
         function (error, results, fields) {
             console.log(results);
@@ -718,6 +721,8 @@ app.get("/getMyCoolzones", function (req, res) {
                     startdate: results[i].startdate,
                     enddate: results[i].enddate,
                     description: results[i].description,
+                    longitude: results[i].longitude,
+                    latitude: results[i].latitude,
                     aircon: results[i].aircon,
                     freedrinks: results[i].freedrinks,
                     waterpark: results[i].waterpark,

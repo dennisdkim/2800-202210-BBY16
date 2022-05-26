@@ -1,17 +1,13 @@
-.post-container {
-    width: 100%;
-    padding: 20px 5%;
-    display: flex;
-    cursor: pointer;
-    color: #4E4E4E;
-    background-color: #cbd5dd9a;
-    border-bottom: rgba(0,0,0,0.1) 1px solid;
+.cz {
+  border: 1px black solid;
+  font-size: 10pt;
+  
 }
 
-.post-container:hover {
-    background-color: #cbd5dd;
+.czName {
+  
 }
 
-.container {
-  display: none;
+.czLocation {
+
 }
