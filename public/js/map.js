@@ -357,13 +357,9 @@ async function createMarker(resultsArray) {
 
 // displays all coolzones within provided arguments
 async function displayCoolzones(data) {
+  console.log(JSON.stringify(data.aircon));
   // post request for all coolzones 
   try {
-    //test//
-    console.log("displayCoolzones - data: " + data);
-    console.log("displayCoolzones - JSON.stringify(data): " + JSON.stringify(data));
-
-    console.log
     let response = await fetch("/loadCoolzones", {
       method: 'POST',
       headers: {
@@ -373,9 +369,6 @@ async function displayCoolzones(data) {
       body: JSON.stringify(data)
     });
     let parsedJSON = await response.json();
-
-    //test//
-    console.log("displayCoolzones - parsedJSON.coolzones: " + parsedJSON.coolzones);
 
     createMarker(parsedJSON.coolzones);
   } catch (e) {
