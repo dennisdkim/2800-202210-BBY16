@@ -46,7 +46,7 @@ body {
     width: 80%;
     border-radius: 10px;
     border: #69869D 2px solid;
-
+    margin-bottom: 20px;
 }
 
 #user-list-header {
@@ -71,8 +71,13 @@ body {
     color: #69869D;
     background-color: white;
     border: 1px solid #69869D;
-    margin-right: 20px;
+    margin-right: 0px;
     cursor: pointer;
+}
+
+#new-user-button:hover, .close-button:hover {
+    background-color: #69869D;
+    color: white;
 }
 
 #user-list-container {
@@ -168,6 +173,7 @@ body {
 }
 
 .form-title {
+    margin-top: 20px;
     margin-bottom: 10px;
     font-size: 1.4em;
 }

@@ -279,6 +279,7 @@ async function createMarker(resultsArray) {
         map: map,
         eventid: coolzone.eventid,
         description: coolzone.description,
+        image: coolzone.pictures,
         amenities: {
           aircon: coolzone.aircon,
           freedrinks: coolzone.freedrinks,
@@ -295,6 +296,7 @@ async function createMarker(resultsArray) {
     markers.forEach((marker) => {
       marker.addListener("click", () => {
         toggleCoolzoneInfo(1);
+        document.getElementById("coolzone-image").src = marker.image;
         document.getElementById("coolzone-name").innerHTML = marker.czname;
         document.getElementById("coolzone-address").innerHTML = marker.location;
         document.getElementById("coolzone-description").innerHTML = marker.description;

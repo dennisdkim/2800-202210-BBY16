@@ -46,7 +46,8 @@ CREATE TABLE bby_16_coolzones (
   pool tinyint(4) DEFAULT 0,
   outdoors tinyint(4) DEFAULT 0,
   indoors tinyint(4) DEFAULT 0,
-  wifi tinyint(4) DEFAULT 0
+  wifi tinyint(4) DEFAULT 0,
+  pictures varchar(100) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -137,11 +138,11 @@ FOREIGN KEY (coolzoneID) REFERENCES BBY_16_coolzones(eventid)
 );
 
 
-INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi)
-VALUES (14, 2, "Starbucks", "2929 Barnet Hwy #2600, Coquitlam, BC V3B 5R5", "2022-05-18 9:00:00", "2022-05-18 18:00:00", "Coffee Shop", 49.27757, -122.803093, 1, 1, 0, 0, 0, 1);
+INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi, pictures)
+VALUES (14, 2, "Starbucks", "2929 Barnet Hwy #2600, Coquitlam, BC V3B 5R5", "2022-05-18 9:00:00", "2022-05-18 18:00:00", "Coffee Shop", 49.27757, -122.803093, 1, 1, 0, 0, 0, 1, "/img/coolzones/default.png");
 
-INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi)
-VALUES (3, 4, "Coquitlam Center", "2929 Barnet Hwy, Coquitlam, BC V3B 5R5", "2022-05-18 8:00:00", "2022-05-18 21:00:00", "Mall", 49.27757, -122.803093, 1, 0, 0, 0, 0, 1);
+INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi, pictures)
+VALUES (3, 4, "Coquitlam Center", "2929 Barnet Hwy, Coquitlam, BC V3B 5R5", "2022-05-18 8:00:00", "2022-05-18 21:00:00", "Mall", 49.27757, -122.803093, 1, 0, 0, 0, 0, 1, "/img/coolzones/coffee-shop.jpg");
 
 INSERT INTO BBY_16_timeline (postID, userID, postTime, title, description, coolzoneID, pictures)
 VALUES (1, 3, '2022-05-18 10:03:21', "Starbucks on Barnet Now Open as a CoolZone", "Come by and
