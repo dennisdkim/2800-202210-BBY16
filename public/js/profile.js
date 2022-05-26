@@ -137,8 +137,8 @@ saveButton.addEventListener("click", function (e) {
       if (document.getElementById("avatar-upload").files.length == 1) {
         uploadAvatar(e);
       }
-      document.getElementById("password").value.replace(/\s+/g, '') = "";
-      document.getElementById("passwordVerify").value.replace(/\s+/g, '') = "";
+      document.getElementById("password").value = "";
+      document.getElementById("passwordVerify").value = "";
     }
   });
 });

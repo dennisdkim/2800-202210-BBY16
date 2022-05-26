@@ -14,7 +14,6 @@ body {
   width: 100vw;
   height: 100vh;
   min-height: 500px;
-  overflow: hidden;
 }
 
 /* ---- Content window ---- */
@@ -27,6 +26,8 @@ body {
   justify-content: flex-start;
   align-items: center;
   position: relative;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 #avatar {
@@ -37,7 +38,7 @@ body {
 #profile-info {
   text-align: center;
   font-size: 1.0em;
-  height: 30%;
+  height: fit-content;
 }
 
 #profile-form {
@@ -74,7 +75,7 @@ input {
 
 #avatar-upload {
   border: #69869D 2px solid;
-  height: 40px;
+  min-height: 40px;
   margin-bottom: 20px;
   margin-top: 10px;
   border-radius: 10px;
