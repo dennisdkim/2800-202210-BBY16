@@ -68,23 +68,23 @@ app.use(session({
 
 //heroku db configuration. Use only for hosting. //
 
-// const dbConfigHeroku = {
-//     host: "us-cdbr-east-05.cleardb.net",
-//     user: "b3823a53995411",
-//     password: "762e1d0a",
-//     database: "heroku_c99a07a4f72e738"
-// }
+const dbConfigHeroku = {
+    host: "us-cdbr-east-05.cleardb.net",
+    user: "b3823a53995411",
+    password: "762e1d0a",
+    database: "heroku_c99a07a4f72e738"
+}
 
-// let connection = mysql.createPool(dbConfigHeroku);
+let connection = mysql.createPool(dbConfigHeroku);
 
 
 //local connection configuration object. //
-const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "COMP2800"
-});
+// const connection = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "",
+//     database: "COMP2800"
+// });
 
 //Root route//
 app.get("/", function (req, res) {
@@ -855,28 +855,28 @@ app.post("/deleteUserAvatar", function (req, res) {
 //loads all coolzones within search radius
 app.post("/loadCoolzones", function (req, res) {
 
-    
+
     // BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi
     let selectStatement = 'SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?';
-    if (req.body.aircon.checked){
+    if (req.body.aircon.checked) {
         selectStatement = selectStatement + " AND aircon = 1";
     }
-    if (req.body.freeWater.checked){
+    if (req.body.freeWater.checked) {
         selectStatement = selectStatement + " AND freedrinks = 1";
     }
-    if (req.body.swimmingPool.checked){
+    if (req.body.swimmingPool.checked) {
         selectStatement = selectStatement + " AND waterpark = 1";
     }
-    if (req.body.waterPark.checked){
+    if (req.body.waterPark.checked) {
         selectStatement = selectStatement + " AND pool = 1";
     }
-    if (req.body.outdoor.checked){
+    if (req.body.outdoor.checked) {
         selectStatement = selectStatement + " AND outdoors = 1";
     }
-    if (req.body.indoor.checked){
+    if (req.body.indoor.checked) {
         selectStatement = selectStatement + " AND indoors = 1";
     }
-    if (req.body.freeWifi.checked){
+    if (req.body.freeWifi.checked) {
         selectStatement = selectStatement + " AND wifi = 1";
     }
 
