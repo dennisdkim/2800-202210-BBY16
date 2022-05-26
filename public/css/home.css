@@ -19,6 +19,7 @@ body {
     background-repeat: no-repeat;
     background-size: auto 100%;
     overflow: scroll;
+    overflow-x: hidden;
 }
 
 /* ----main content window----- */
