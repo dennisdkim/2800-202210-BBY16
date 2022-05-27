@@ -70,7 +70,7 @@ Root:
 │               navbar.html
 │               navbar_admin.html
 │
-├───node_modules (contains node modules)
+├───node_modules (contains module files)
 │     
 └───public
     ├───css
@@ -177,7 +177,7 @@ coolzones with different attributes will be shown.
 
 The create-coolzones page has a form that users can fill out to
 create a coolzone. Users can upload an image for that coolzone as
-well. newly created coolzones will automaticall update to the map
+well. newly created coolzones will automatically update to the map
 and the timeline.
 
 The mycoolzones page will show all the coolzones that the user
@@ -215,19 +215,19 @@ figure portrait PNG Designed By 588ku from
 <a href="https://pngtree.com"> Pngtree.com</a>
 https://pngtree.com/freepng/character-default-avatar_5407167.html
 
-Sample timeline photo file: public/img/timelinePhotos/
+Sample timeline photo file: public/img/timelinePhotos/1653070497296-8549561664.jpg
 Little asian boy drinking water in the public park
 Retrieved from shutterstock.com Vector ID: 645327073
 Photo contributor: Littlekidmoment
 https://www.shutterstock.com/image-photo/little-asian-boy-drinking-water-public-645327073
 
-Sample timeline photo file: public/img/timelinePhotos/
+Sample timeline photo file: public/img/timelinePhotos/1653079699421-6422690431.jpg
 Adorable Child Drinking From Outdoor Water Fountain
 Retrieved from shutterstock.com Vector ID: 97397987
 Photo contributor: D. Hammonds
 https://www.shutterstock.com/image-photo/adorable-child-drinking-outdoor-water-fountain-97397987
 
-Sample coolzone photo file: public/img/coolzones/
+Sample coolzone photo file: public/img/coolzones/1653079699421-6422690433.jpg
 small business, people and service concept - man or bartender 
 serving customer at coffee shop
 Retrieved from shutterstock.com Vector ID: 722609509
@@ -243,4 +243,4 @@ https://developers.google.com/fonts/docs/material_icons
 
  -----------------------CONTACT INFO---------------------------
 If you need more inforamtion about this project, you can contact 
-one of the authors Buck Sin at bsin3@bcit.ca
+one of the authors Buck Sin at bsin3@my.bcit.ca
