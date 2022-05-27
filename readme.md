@@ -1,5 +1,5 @@
 -----------------------COMP2800 PROJECT---------------------
-Application Name: WeCool
+Application Name: WeCool Release version 1.0
 School: BCIT
 Team: BBY-16
 Team Members:
@@ -10,6 +10,7 @@ Team Members:
 
 Github Repo Link: 
 https://github.com/dennisdkim/2800-202210-BBY16
+
 
 ---------------------PROJECT DESCRIPTION---------------------
 Our team, BBY-16 is developing a community-based application 
@@ -128,21 +129,23 @@ Root:
     └───sounds
             wind.mp3
 
-------------------HOW TO RUN WECOOL ON HEROKU-------------------
-To configure WECOOL via Heroku the following steps are required:
-- install the Heroku CLI.
-- login to Heroku account.
-- connect git repo to remote Heroku repo.
-- if using a remote database, connect to the remote database in the server side js.
-- push changes to Heroku repo.
-- use the link provided to open the Heroku hosted app.
 
 ------------------HOW TO RUN WECOOL LOCALLY-------------------
-WeCool is a full-stack web application that requires a 
-browser. Google Chrome is recommended as the application was
+WeCool is a full-stack web application that requires a front-
+end and back-end components. The front-end requires a browser
+to run it. Google Chrome is recommended as the application was
 tested with it.
 
-To run server-side code locally. The following is required.
+NOTE:
+This release of WeCool is currently configured to run off a 
+local server at Port: 8000.
+Lines 84-89 in wecool-server.js configure the app to run off
+this local server. Note that we also left in code to connect to 
+a remote server powered by Heroku on lines 75 to 81 in 
+weccol-server.js. Leave this commented out unless you wish to
+connect to the remote server.
+
+To run the server-side code locally. The following is required.
  - a console terminal
  - XAMPP web server software with MySQL installed.
  - NodeJS installed.
@@ -151,16 +154,32 @@ To run server-side code locally. The following is required.
  - extract file contents into a local folder 
  - run XAMPP and activate MySQL server
  - in the console terminal open MariaDB and paste in all 
- content from comp2800.sql to write database and tables
+   content from comp2800.sql to write database and tables
  - open the console terminal to the path where file contents 
-are located
+   are located
  - install the Express framework using "npm install express"
  - install the Express-sessions framework using "npm install 
- express-sessions" 
- -enter "node wecool-server.js" to run the server on PORT 8000
+   express-sessions" 
+ - enter "node wecool-server.js" to run the server on PORT 8000
  - enter localhost:8000 into the browser address field to 
- run WeCool
+   run WeCool
 
+
+------------------HOW TO RUN WECOOL ON HEROKU-------------------
+To configure WECOOL via Heroku the following steps are required:
+- install the Heroku CLI.
+- login to Heroku account.
+- connect git repo to remote Heroku repo.
+- if using a remote database, connect to the remote database in 
+  the server side js.
+- push changes to Heroku repo.
+- use the link provided to open the Heroku hosted app.
+
+Lines 84-89 in wecool-server.js configure the app to run off
+this local server. Comment out these lines of code, and uncomment
+lines 75 to 81 in weccol-server.js to connect to a remote server.
+You may need to configure remote connection object to connect to 
+your server.
 
  --------------------HOW TO USE WECOOL------------------------
 WeCool consists of main features:

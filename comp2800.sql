@@ -47,7 +47,7 @@ CREATE TABLE bby_16_coolzones (
   outdoors tinyint(4) DEFAULT 0,
   indoors tinyint(4) DEFAULT 0,
   wifi tinyint(4) DEFAULT 0,
-  pictures varchar(100) DEFAULT ''
+  pictures varchar(100) DEFAULT "/img/coolzones/default.png"
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -76,8 +76,8 @@ CREATE TABLE bby_16_user (
 INSERT INTO `bby_16_user` (`userID`, `fname`, `lname`, `email`, `displayName`, `password`, `admin`) VALUES
 (1, 'Dennis', 'Kim', 'testUser@email.com', 'DennisKim', 'bonusmarks', 0),
 (2, 'Buck', 'Sin', 'testAdmin@email.com', 'BuckSin', 'bonusmarks', 1),
-(3, 'Arron', 'Ferguson', 'testUser2@test.com', 'ArronFerguson', 'bonusmarks', 0),
-(4, 'Andy', 'Tran', 'testAdmin2@test.com', 'AndyTran', 'bonusmarks', 1);
+(3, 'Arron', 'Ferguson', 'testUser2@email.com', 'ArronFerguson', 'bonusmarks', 0),
+(4, 'Andy', 'Tran', 'testAdmin2@email.com', 'AndyTran', 'bonusmarks', 1);
 
 --
 -- Indexes for dumped tables
@@ -114,8 +114,6 @@ ALTER TABLE `bby_16_coolzones`
 ALTER TABLE `bby_16_user`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE bby_16_coolzones
-ADD COLUMN pictures VARCHAR(80) DEFAULT "/img/coolzones/default.png" AFTER wifi;
 
 --
 -- Constraints for dumped tables

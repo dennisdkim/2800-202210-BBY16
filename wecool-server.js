@@ -71,24 +71,23 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//heroku db configuration. Use only for hosting. //
-const dbConfigHeroku = {
-    host: "us-cdbr-east-05.cleardb.net",
-    user: "b3823a53995411",
-    password: "762e1d0a",
-    database: "heroku_c99a07a4f72e738"
-}
+//----heroku db configuration. Uncomment only for hosting.----//
+// const dbConfigHeroku = {
+//     host: "us-cdbr-east-05.cleardb.net",
+//     user: "b3823a53995411",
+//     password: "762e1d0a",
+//     database: "heroku_c99a07a4f72e738"
+// }
+// let connection = mysql.createPool(dbConfigHeroku);
 
-let connection = mysql.createPool(dbConfigHeroku);
 
-
-//local connection configuration object. //
-// const connection = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "COMP2800"
-// });
+//----local connection configuration object.---- //
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "COMP2800"
+});
 
 //Root route//
 app.get("/", function (req, res) {
@@ -380,28 +379,6 @@ app.post("/loadUserData", function (req, res) {
         res.send(JSON.stringify(userData));
     });
 });
-
-//returns the info for all users to be sent to admin//
-app.get("/getUserTable", function (req, res) {
-    connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        let user = results[0];
-        const userData = {
-            "userID": user.userID,
-            "fname": user.fname,
-            "lname": user.lname,
-            "displayName": user.displayName,
-            "email": user.email,
-            "password": user.password,
-            "admin": user.admin,
-            "avatar": displayPic
-        };
-        res.send(JSON.stringify(userData));
-    });
-});
-
 
 // Delete user from database on admin dashboard - the user must enter the correct display name to confirm the deletion,
 // they also cannot delete themselves which will also protect against deleting the last admin as well (as they can't delete
@@ -948,9 +925,6 @@ app.post("/deleteTimelinePost", function (req, res) {
                 if (fs.existsSync(path)) {
                     fs.unlink(path, err => {
                         if (err) { console.log(err); }
-                        else {
-                            console.log("photo deleted");
-                        }
                     });
                 }
             }
