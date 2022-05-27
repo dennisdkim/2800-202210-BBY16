@@ -128,6 +128,14 @@ Root:
     └───sounds
             wind.mp3
 
+------------------HOW TO RUN WECOOL ON HEROKU-------------------
+To configure WECOOL via Heroku the following steps are required:
+- install the Heroku CLI.
+- login to Heroku account.
+- connect git repo to remote Heroku repo.
+- if using a remote database, connect to the remote database in the server side js.
+- push changes to Heroku repo.
+- use the link provided to open the Heroku hosted app.
 
 ------------------HOW TO RUN WECOOL LOCALLY-------------------
 WeCool is a full-stack web application that requires a 
