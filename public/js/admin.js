@@ -1,28 +1,37 @@
+/*
+Notes about admin.js
+This file contains all the javascript for admin-dashboard.html
+Functions allow for admin users to see a list of all users and 
+change each of their attributes. Funtions also allow for admin 
+users to create or delete users.
+*/
+
 'use strict';
 
 // Page Initialization //
 window.addEventListener("load", loadUserList);
 
-let userEditMenu = document.getElementById("userEditMenu");
-let newUserMenu = document.getElementById("newUserMenu");
+const userEditMenu = document.getElementById("userEditMenu");
+const newUserMenu = document.getElementById("newUserMenu");
 userEditMenu.hidden = true;
 newUserMenu.hidden = true;
-let newUserButton = document.getElementById("new-user-button");
+const newUserButton = document.getElementById("new-user-button");
+const saveUserInfoButton = document.getElementById("saveButton");
+const deleteUserButton = document.getElementById("deleteButton");
+const deleteUserCode = document.getElementById("confirm-delete-code");
+const addUserButton = document.getElementById("addUserButton");
+const editUserResponseMsg = document.getElementById("errorMessage");
+const newUserResponseMsg = document.getElementById("newUser-errorMessage");
+const searchHeader = document.getElementById("users-displayed-indicator");
+const userSearchBar = document.getElementById("search-user-bar");
+const clearFieldButton = document.getElementById("clearButton");
+const revertChangesButton = document.getElementById("revertButton");
+const addUserMenuButton = document.getElementById("new-user-button");
+const deleteAviButton = document.getElementById("deleteAviButton");
+
 newUserButton.addEventListener('click', () => {
     toggleNewUserMenu(1);
 });
-let saveUserInfoButton = document.getElementById("saveButton");
-let deleteUserButton = document.getElementById("deleteButton");
-let deleteUserCode = document.getElementById("confirm-delete-code");
-let addUserButton = document.getElementById("addUserButton");
-let editUserResponseMsg = document.getElementById("errorMessage");
-let newUserResponseMsg = document.getElementById("newUser-errorMessage");
-let searchHeader = document.getElementById("users-displayed-indicator");
-let userSearchBar = document.getElementById("search-user-bar");
-let clearFieldButton = document.getElementById("clearButton");
-let revertChangesButton = document.getElementById("revertButton");
-let addUserMenuButton = document.getElementById("new-user-button");
-let deleteAviButton = document.getElementById("deleteAviButton");
 
 // shows/hides edit user menu. Input parameter 1 for showing, 0 for hiding. //
 function toggleEditUserMenu(input) {
@@ -230,7 +239,7 @@ deleteUserButton.addEventListener("click", (e) => {
                     document.getElementById("email").value = "";
                     document.getElementById("newPassword").value = "";
                     document.getElementById("adminStatus").checked = false;
-                    
+
                 }
             )
         }

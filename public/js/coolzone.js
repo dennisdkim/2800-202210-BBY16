@@ -1,3 +1,9 @@
+/*
+Notes about coolzone.js
+This file contains all the Javascript functions for mycoolzones.html
+functions below allow for users to see a list of their coolzones and 
+change each of their attributes.
+*/
 
 'use strict';
 
@@ -6,6 +12,7 @@ let myLong;
 //global searched location latitude
 let myLat;
 
+// converts input inside field with id="location" into lat/long coordinates using google's geocoding API //
 function initGoogle() {
   const autocomplete = new google.maps.places.Autocomplete(document.getElementById("location"));
   autocomplete.addListener("place_changed", () => {
@@ -14,7 +21,6 @@ function initGoogle() {
     myLong = place.geometry.location.lng();
   });
 }
-
 window.onload = initGoogle;
 
 //Sends input field data and picture to server to be inserted into db and file system (for picture).
@@ -107,42 +113,32 @@ function createPost() {
   newBody.append("title", document.getElementById("coolzoneName").value);
   newBody.append("description", document.getElementById("description").value);
   // newBody.append("coolzone", getNewestCz());
-  for( let i =0; i < imageUpload.files.length; i++) {
-      newBody.append("photos", imageUpload.files[i]);
+  for (let i = 0; i < imageUpload.files.length; i++) {
+    newBody.append("photos", imageUpload.files[i]);
   }
 
   fetch("/submitTimelinePost", {
-      method: 'POST',
-      body: newBody
+    method: 'POST',
+    body: newBody
   }).then(
-      function (res) {
-          const data = res.json().then(
-              data => {
-                  //resets post form//
-                  document.getElementById("coolzoneName").value = "";
-                  document.getElementById("description").value = "";
-                  document.getElementById("location").value = "";
-                  document.getElementById("dateTag").value = "";
-                  document.getElementById("enddateTag").value = "";
-                  document.getElementById("coolzone-upload").value = "";
-                  document.getElementById("aircon").checked = false;
-                  document.getElementById("freeWater").checked = false;
-                  document.getElementById("waterParks").checked = false;
-                  document.getElementById("swimmingPool").checked = false;
-                  document.getElementById("outdoor").checked = false;
-                  document.getElementById("indoor").checked = false;
-                  document.getElementById("freeWifi").checked = false;
-              })
-      }
+    function (res) {
+      const data = res.json().then(
+        data => {
+          //resets post form//
+          document.getElementById("coolzoneName").value = "";
+          document.getElementById("description").value = "";
+          document.getElementById("location").value = "";
+          document.getElementById("dateTag").value = "";
+          document.getElementById("enddateTag").value = "";
+          document.getElementById("coolzone-upload").value = "";
+          document.getElementById("aircon").checked = false;
+          document.getElementById("freeWater").checked = false;
+          document.getElementById("waterParks").checked = false;
+          document.getElementById("swimmingPool").checked = false;
+          document.getElementById("outdoor").checked = false;
+          document.getElementById("indoor").checked = false;
+          document.getElementById("freeWifi").checked = false;
+        })
+    }
   )
 }
-
-// function getNewestCz(){
-//   fetch("/getNewestCz", {
-//     method: 'GET'
-//   }).then(function(res){
-//     const data = res.json().then(
-//       res.id
-//     )
-//   })
-// }

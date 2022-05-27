@@ -1,3 +1,10 @@
+/*
+Notes about profile.js
+This file contains all the javascript for profile.html. 
+Functions retrieves existing user info, and inserts it 
+into the edit-profile form.
+*/
+
 'use strict';
 // Fields //
 var currentUID;

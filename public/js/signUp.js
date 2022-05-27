@@ -1,8 +1,14 @@
+/*
+Notes about signUp.js
+This file contains all the javascript for signUp.html. 
+Functions below sends sign-up input fields to the server
+for verification. Creates a new user account if verified.
+*/
 
 'use strict';
 
 //Sends input field data to server to be inserted into db.
-async function submitSignUp(data){
+async function submitSignUp(data) {
   try {
     let response = await fetch("/newSignUp", {
       method: 'POST',

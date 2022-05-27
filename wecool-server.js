@@ -1,3 +1,8 @@
+/*
+Notes about wecool-server.js
+This file contains all the back-end javascript code the entire application.
+*/
+
 'use strict';
 
 //Requires
@@ -67,24 +72,23 @@ app.use(session({
 }));
 
 //heroku db configuration. Use only for hosting. //
+// const dbConfigHeroku = {
+//     host: "us-cdbr-east-05.cleardb.net",
+//     user: "b3823a53995411",
+//     password: "762e1d0a",
+//     database: "heroku_c99a07a4f72e738"
+// }
 
-const dbConfigHeroku = {
-    host: "us-cdbr-east-05.cleardb.net",
-    user: "b3823a53995411",
-    password: "762e1d0a",
-    database: "heroku_c99a07a4f72e738"
-}
-
-let connection = mysql.createPool(dbConfigHeroku);
+// let connection = mysql.createPool(dbConfigHeroku);
 
 
-// local connection configuration object. //
-// const connection = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "COMP2800"
-// });
+//local connection configuration object. //
+const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "COMP2800"
+});
 
 //Root route//
 app.get("/", function (req, res) {
@@ -165,8 +169,6 @@ app.post("/tryCoolzone", coolzoneUpload.single("files"), function (req, res) {
 app.post("/changeCoolzone", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     // Checking for coolzone exists
-    console.log(req.body);
-    console.log("The console log");
     connection.query('UPDATE bby_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?',
         [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
         function (error, results, fields) {
@@ -361,26 +363,6 @@ app.post("/loadUserData", function (req, res) {
         displayPic = "/img/userAvatars/default.png"
     }
     connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        let user = results[0];
-        const userData = {
-            "userID": user.userID,
-            "fname": user.fname,
-            "lname": user.lname,
-            "displayName": user.displayName,
-            "email": user.email,
-            "password": user.password,
-            "admin": user.admin,
-            "avatar": displayPic
-        };
-        res.send(JSON.stringify(userData));
-    });
-});
-
-app.post("/loadCoolzoneData", function (req, res) {
-    connection.query('SELECT * FROM BBY_16_coolzones WHERE userID = ?;', req.session.userID, function (error, results, fields) {
         if (error) {
             console.log(error);
         }
@@ -602,7 +584,6 @@ app.post("/editUserData", function (req, res) {
 
 // Updates the user info and checks if display name and email is already in use, before setting values 
 app.post("/editCoolzonesData", function (req, res) {
-    console.log(req.body);
     if (req.body.czname == "" || req.body.location == "" || req.body.startdate == "" || req.body.enddate == "" || req.body.description == "") {
         res.send({ status: "fail", msg: "Fields must not be empty!" });
     } else {
@@ -713,7 +694,6 @@ app.get("/getMyCoolzones", function (req, res) {
     let coolzoneData = [];
     connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
         function (error, results, fields) {
-            console.log(results);
             for (let i = 0; i < results.length; i++) {
                 coolzoneData[i] = {
                     eventid: results[i].eventid,
@@ -734,7 +714,6 @@ app.get("/getMyCoolzones", function (req, res) {
                     wifi: results[i].wifi,
                     image: results[i].pictures
                 };
-                console.log(coolzoneData[i]);
             }
             res.send(JSON.stringify(coolzoneData));
         });
@@ -777,7 +756,6 @@ app.post("/loadPostContent", function (req, res) {
                     editPermissions: (results[0].userID == req.session.userID) ? true : false,
                     admin: (req.session.admin > 0) ? true : false
                 };
-                console.log(postData);
                 res.send(JSON.stringify(postData));
             });
         // A regular timeline post not associated to any coolzone, it will only load post info

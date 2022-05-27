@@ -1,3 +1,10 @@
+/*
+Notes about mycoolzones.js
+This file contains all the javascript for mycoolzone.html
+Functions allow for users to see a list of their coolzones and 
+change each of their attributes.
+*/
+
 'use strict';
 
 //global searched location longitude
@@ -14,10 +21,6 @@ function initGoogle() {
   });
 }
 window.onload = initGoogle;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 // Page Initialization //
 window.addEventListener("load", loadcoolzones);
@@ -47,20 +50,9 @@ function toggleEditUserMenu(input) {
   }
 };
 
-// clears the fields in the new user menu. //
-// clearFieldButton.addEventListener("click", () => {
-//   document.querySelectorAll(".newUser-input").forEach(input => {
-//     input.value = "";
-//     document.getElementById("newUser-adminStatus").checked = false;
-//   });
-// })
-
 function loadcoolzones() {
 
   let userList = document.getElementById("user-list-container");
-  // while (userList.firstChild) {
-  //   userList.removeChild(userList.firstChild);
-  // };
 
   const option = {
     method: 'GET',
@@ -70,8 +62,6 @@ function loadcoolzones() {
     function (res) {
       const result = res.json().then(
         coolzones => {
-          console.log(coolzones);
-
           let czContainer = document.getElementById("coolzone-list-container");
           for (let index = 0; index < coolzones.length; index++) {
             let czDiv = document.createElement("div");
@@ -104,11 +94,8 @@ function loadcoolzones() {
   )
 }
 
-
-
 //function to edit user data //
 saveUserInfoButton.addEventListener("click", (e) => {
-  console.log("are we in here");
   fetch("/editCoolzonesData", {
     method: 'POST',
     headers: {

@@ -1,3 +1,10 @@
+/*
+Notes about map.js
+This file contains all the javascript for map.html
+Functions load a mapping layer and interactive 
+elements onto the page.
+*/
+
 'use strict';
 
 // google.maps.Map object
@@ -175,7 +182,6 @@ window.onload = loadMap;
 
 //takes a longitude and latitude value and displays an icon 
 function displayCenterPos(myLatLong) {
-  console.log("displayCenterPos - myLatLong: " + myLatLong);
 
   centerPosMarker = new google.maps.Marker({
     position: myLatLong,
@@ -266,7 +272,6 @@ async function createMarker(resultsArray) {
     // sets the appearance of map markers. //
     const image = { url: "/img/icons/coolzoneMarker.png", scaledSize: new google.maps.Size(50, 50) };
     await resultsArray.forEach((coolzone) => {
-      //console.log("coolzone element in resultsArray: " + JSON.stringify(coolzone));
       markers.push(new google.maps.Marker({
         position: new google.maps.LatLng(Number(coolzone.latitude), Number(coolzone.longitude)),
         icon: image,
@@ -357,7 +362,6 @@ async function createMarker(resultsArray) {
 
 // displays all coolzones within provided arguments
 async function displayCoolzones(data) {
-  console.log(JSON.stringify(data.aircon));
   // post request for all coolzones 
   try {
     let response = await fetch("/loadCoolzones", {

@@ -1,7 +1,16 @@
+/*
+Notes about nav_footer_loader.js
+This file contains all the javascript for all HTML pages that
+use a navbar and footer. 
+Functions below retrieves the navbar and footer code from the 
+server and loads it into the HTML document.
+*/
+
 'use strict';
 
 loadNavbarFooter();
 
+// retrieves HTML code for navbar and footer from the server, then loads it into the page.//
 function loadNavbarFooter() {
   const option = {
     method: 'GET',
@@ -25,10 +34,11 @@ function loadNavbarFooter() {
           document.getElementById("current-page").innerHTML = document.title;
 
           //underlines the current page link in the desktop navbar. //
-          document.querySelectorAll(".navlink").forEach(link => { 
-            if(link.innerText == document.title) {
-            link.classList.add("selected");
-          }});
+          document.querySelectorAll(".navlink").forEach(link => {
+            if (link.innerText == document.title) {
+              link.classList.add("selected");
+            }
+          });
 
           loadEmailAndIcon();
         }
@@ -37,7 +47,8 @@ function loadNavbarFooter() {
   )
 }
 
-function loadEmailAndIcon(){
+// retrieves the user's avatar image path and other info from the server, then loads it into the navbar.//
+function loadEmailAndIcon() {
   const options = {
     method: 'GET'
   }
@@ -49,11 +60,9 @@ function loadEmailAndIcon(){
           icon.src = userInfo.avatar;
           document.getElementById("user-email").innerHTML = userInfo.email;
           document.getElementById("user-displayName").innerHTML = userInfo.displayName;
-          
 
-          
         }
       );
     }
-  ); 
+  );
 }

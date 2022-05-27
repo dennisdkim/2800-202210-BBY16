@@ -1,3 +1,10 @@
+/*
+Notes about login.js
+This file contains all the javascript for login.html
+Functions below sends user and password input to the 
+server for verification. 
+Functions also contain our animation of our logo.
+*/
 
 'use strict';
 
@@ -32,8 +39,8 @@ document.getElementById("loginButton").addEventListener("click", function (e) {
 });
 
 // Event listener for password input field. Allows users to press enter to log in.
-document.getElementById("password").addEventListener("keypress", function(e){
-  if (e.key === "Enter"){
+document.getElementById("password").addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
     submitLogin({
       email: document.getElementById("email").value,
       password: document.getElementById("password").value
