@@ -46,7 +46,8 @@ CREATE TABLE bby_16_coolzones (
   pool tinyint(4) DEFAULT 0,
   outdoors tinyint(4) DEFAULT 0,
   indoors tinyint(4) DEFAULT 0,
-  wifi tinyint(4) DEFAULT 0
+  wifi tinyint(4) DEFAULT 0,
+  pictures varchar(100) DEFAULT "/img/coolzones/default.png"
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -73,10 +74,10 @@ CREATE TABLE bby_16_user (
 --
 
 INSERT INTO `bby_16_user` (`userID`, `fname`, `lname`, `email`, `displayName`, `password`, `admin`) VALUES
-(1, 'dennis', 'kim', 'dennis@test.com', 'dennis123', 'password123', 0),
-(2, 'buck', 'sin', 'buck@sin.com', 'bucksin', 'bucksin', 1),
-(3, 'arron', 'ferguson', 'arron@test.com', 'arron123', 'passwordabc', 1),
-(4, 'andy', 'tran', 'andy@test.com', 'andy111', 'password', 0);
+(1, 'Dennis', 'Kim', 'testUser@email.com', 'DennisKim', 'bonusmarks', 0),
+(2, 'Buck', 'Sin', 'testAdmin@email.com', 'BuckSin', 'bonusmarks', 1),
+(3, 'Arron', 'Ferguson', 'testUser2@email.com', 'ArronFerguson', 'bonusmarks', 0),
+(4, 'Andy', 'Tran', 'testAdmin2@email.com', 'AndyTran', 'bonusmarks', 1);
 
 --
 -- Indexes for dumped tables
@@ -113,6 +114,7 @@ ALTER TABLE `bby_16_coolzones`
 ALTER TABLE `bby_16_user`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT;
 
+
 --
 -- Constraints for dumped tables
 --
@@ -137,23 +139,20 @@ FOREIGN KEY (coolzoneID) REFERENCES BBY_16_coolzones(eventid)
 );
 
 
-INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi)
-VALUES (14, 2, "Starbucks", "2929 Barnet Hwy #2600, Coquitlam, BC V3B 5R5", "2022-05-18 9:00:00", "2022-05-18 18:00:00", "Coffee Shop", 49.27757, -122.803093, 1, 1, 0, 0, 0, 1);
+INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi, pictures)
+VALUES (14, 2, "Starbucks", "2929 Barnet Hwy #2600, Coquitlam, BC V3B 5R5", "2022-05-18 9:00:00", "2022-05-18 18:00:00", "Coffee Shop", 49.27757, -122.803093, 1, 1, 0, 0, 0, 1, "/img/coolzones/1653079699421-6422690433.jpg");
 
-INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi)
-VALUES (3, 4, "Coquitlam Center", "2929 Barnet Hwy, Coquitlam, BC V3B 5R5", "2022-05-18 8:00:00", "2022-05-18 21:00:00", "Mall", 49.27757, -122.803093, 1, 0, 0, 0, 0, 1);
+INSERT INTO BBY_16_coolzones (eventid, hostid, czname, location, startdate, enddate, description, latitude, longitude, aircon, freedrinks, waterpark, pool, outdoors, wifi, pictures)
+VALUES (3, 4, "Coquitlam Center", "2925 Barnet Hwy, Coquitlam, BC V3B 5R5", "2022-05-18 8:00:00", "2022-05-18 21:00:00", "Mall", 49.27780, -122.803096, 1, 0, 0, 0, 0, 1, "/img/coolzones/default.png");
 
 INSERT INTO BBY_16_timeline (postID, userID, postTime, title, description, coolzoneID, pictures)
-VALUES (1, 3, '2022-05-18 10:03:21', "Starbucks on Barnet Now Open as a CoolZone", "Come by and
-enjoy our free air con and a free water!", 14, "[]");
+VALUES (1, 1, '2022-05-18 10:03:21', "Starbucks on Barnet Now Offering Free Coffees", "Come by and
+enjoy our free air con and a free iced coffee! We wanna help you beat the heat. Come while supplies last.", 14, "[\"/img/timelinePhotos/1653079699421-6422690433.jpg\"]");
 
 INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) 
-VALUES (3, '2022-05-18 14:51:12', "Misting station found at Lafarge Lake", "Hey everyone! I found
-a new misting station that the city set up at park just across from the picnic tables!", NULL, "[\"/img/timelinePhotos/1653079699421-6422690431.jpg\", \"/img/timelinePhotos/1653070497296-8549561664.jpg\"]");
+VALUES (2, '2022-05-18 14:51:12', "New water fountain at Lafarge Lake", "Hey everyone! I found
+a new water fountain that the city set up at park just across from the picnic tables! Thank you city! #staycool", NULL, "[\"/img/timelinePhotos/1653079699421-6422690431.jpg\", \"/img/timelinePhotos/1653070497296-8549561664.jpg\"]");
 
-INSERT INTO BBY_16_timeline (userID, postTime, title, description, coolzoneID, pictures) 
-VALUES (3, '2022-05-18 9:20:43', "Coquitlam Center Now Open as a CoolZone", "Come by and
-enjoy our free air con!", 3, '[]');
 
 COMMIT;
 

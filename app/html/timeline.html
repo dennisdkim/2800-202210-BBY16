@@ -13,7 +13,7 @@
 <body>
   <div id="navbar"></div>
   <div id="content">
-    <div id="open-new-post-button" onclick=togglePostForm(1)>New Post +</div>
+    <div id="open-new-post-button" onclick="togglePostForm(1)">New Post +</div>
     <!--"post-list-container" is the left "list" section-->
     <div id="post-list-container">
       <!--following "post-containers" to be generated with JS-->
@@ -21,8 +21,8 @@
     <!--"post-content-container" is the right "content" section-->
     <!--content inside to be generated with JS-->
     <div id="post-content-container" hidden>
-      <div id="edit-post-button" onclick=togglePostEdit(1)>Edit Post</div>
-      <div id="close-edit-user-button" class="close-button" onclick=togglePostContent(0)>X</div>
+      <div id="edit-post-button" onclick="togglePostEdit(1)">Edit Post</div>
+      <div id="close-edit-user-button" class="close-button" onclick="togglePostContent(0)">X</div>
       <div id="post-content-header">
         <div id="poster-name-container">
           <img class="poster-display-pic" id="post-content-poster-display-picture"
@@ -32,7 +32,13 @@
         <h3 id="post-content-post-title">New Water Fountain at Broadway and Main St.</h3>
         <h3 id="post-content-post-date-time">Posted April 27 2022 <span class="post-time">2:55pm</span></h3>
       </div>
-      <div id="image-slider"></div>
+      <div id="image-slider">
+        
+      </div>
+      <div id="picture-controls">
+        <div id="previous-picture">&#60;</div>
+        <div id="next-picture">&#62;</div>
+      </div>
       <div id="post-content-post-info">
         <div id="post-content-post-amenities">
           Amenities: <button class="find-on-map-button">Find on Map</button>
@@ -50,7 +56,7 @@
       <h3 id="post-form-header">
         Create a new post
       </h3>
-      <div class="close-button" onclick=togglePostForm(0)>X</div>
+      <div class="close-button" onclick="togglePostForm(0)">X</div>
       <div class="post-form-input">
         <p>Post Title</p> <input id="post-form-title" type="text" maxlength="50">
       </div>
@@ -74,10 +80,10 @@
     </div>
 
     <div id="timeline-post-edit-form-container" hidden>
-      <h3 id="post-form-header">
+      <h3 id="post-edit-form-header">
         Edit your post
       </h3>
-      <div class="close-button" onclick=togglePostEdit(0)>X</div>
+      <div class="close-button" onclick="togglePostEdit(0)">X</div>
       <div class="post-form-input">
         <p>Post Title</p> <input id="post-edit-form-title" type="text" maxlength="50">
       </div>
@@ -93,12 +99,18 @@
         <button id="add-post-photo-button">Add Photo</button>
       </div>
       <div id="edit-buttons-container">
-        <button id="delete-post-edit-button">Delete Post</button>
+        <button id="delete-post-edit-button" onclick=toggleDeletePost(1)>Delete Post</button>
         <button id="submit-post-edit-button">Submit Changes</button>
       </div>
     </div>
+    <div id="delete-confirmation-container" hidden>
+      <div id="confirm-buttons">
+      <p>Are you sure you want to delete this post?</p>
+      <button id="delete-post-confirm-screen-button">Delete</button>
+      <button id="close-confirm-screen-button" onclick=toggleDeletePost(0)>Close</button>
+      </div>
+    </div>
   </div>
-
   <div id="footer"></div>
   <script src="/js/nav_footer_loader.js"></script>
   <script src="/js/timeline.js"></script>

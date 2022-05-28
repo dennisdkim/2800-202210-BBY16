@@ -1,3 +1,9 @@
+/*
+Notes about homdLanding.js
+This file contains all the Javascript functions for home.html
+Function below loads the user's name into a welcome message.
+*/
+
 'use strict';
 
 // loads users first and last name in a greeting on home page

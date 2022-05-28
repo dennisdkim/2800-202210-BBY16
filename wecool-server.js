@@ -1,3 +1,8 @@
+/*
+Notes about wecool-server.js
+This file contains all the back-end javascript code the entire application.
+*/
+
 'use strict';
 
 //Requires
@@ -51,7 +56,8 @@ const coolzoneStorage = multer.diskStorage({
         callback(null, "./public/img/coolzones/")
     },
     filename: function (req, file, callback) {
-        callback(null, "coolzone-user" + req.session.userID + ".png");
+        const photoCode = Date.now() + "-" + Math.round(Math.random() * Math.pow(10, 10));
+        callback(null, "coolzone-" + photoCode + ".png");
     }
 });
 const coolzoneUpload = multer({
@@ -65,19 +71,17 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//heroku db configuration. Use only for hosting. //
-
+//----heroku db configuration. Uncomment only for hosting.----//
 const dbConfigHeroku = {
     host: "us-cdbr-east-05.cleardb.net",
     user: "b3823a53995411",
     password: "762e1d0a",
     database: "heroku_c99a07a4f72e738"
 }
-
 let connection = mysql.createPool(dbConfigHeroku);
 
 
-//local connection configuration object. //
+//----local connection configuration object.---- //
 // const connection = mysql.createConnection({
 //     host: "localhost",
 //     user: "root",
@@ -141,17 +145,36 @@ app.post("/newSignUp", function (req, res) {
         });
 });
 
-//inputs into the coolzone database table//
-app.post("/tryCoolzone", function (req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    // Checking for coolzone exists
-    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag],
+//inputs into the coolzone database table and saves the path to the uploaded coolzone image into the 'picture' column//
+app.post("/tryCoolzone", coolzoneUpload.single("files"), function (req, res) {
+    let path;
+    if (req.file) {
+        path = "/img/coolzones/" + req.file.filename;
+    }
+    else {
+        path = "/img/coolzones/default.png";
+    }
+    connection.query('INSERT INTO BBY_16_coolzones(hostid, czname, location, startdate, enddate, description, longitude, latitude, aircon, freedrinks, waterpark, pool, outdoors, indoors, wifi, pictures) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [req.session.userID, req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, path],
         function (error, results, fields) {
             if (error) {
                 console.log(error);
             }
-            res.send({ status: "success", msg: "Coolzone created." });
+            res.send({ status: "success", msg: "Coolzone Created!" });
+        });
+});
+
+//modifies coolzones in database table//
+app.post("/changeCoolzone", function (req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    // Checking for coolzone exists
+    connection.query('UPDATE bby_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?',
+        [req.body.coolzoneName, req.body.location, req.body.dateTag, req.body.enddateTag, req.body.description, req.body.longitude, req.body.latitude, req.body.acTag, req.body.fdTag, req.body.wpTag, req.body.poolTag, req.body.outdoorTag, req.body.indoorTag, req.body.wifiTag, req.session.userID, req.body.eventid],
+        function (error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+            res.send({ status: "success", msg: "Coolzone Changes Saved!." });
         });
 });
 
@@ -170,6 +193,16 @@ app.get("/coolzone", function (req, res) {
     if (req.session.loggedIn) {
         let coolzone = fs.readFileSync("./app/html/coolzone.html", "utf8");
         res.send(coolzone);
+    } else {
+        res.redirect("/");
+    }
+});
+
+//loads the mycoolzones page//
+app.get("/mycoolzones", function (req, res) {
+    if (req.session.loggedIn) {
+        let mycoolzones = fs.readFileSync("./app/html/mycoolzones.html", "utf8");
+        res.send(mycoolzones);
     } else {
         res.redirect("/");
     }
@@ -347,28 +380,6 @@ app.post("/loadUserData", function (req, res) {
     });
 });
 
-//returns the info for all users to be sent to admin//
-app.get("/getUserTable", function (req, res) {
-    connection.query('SELECT * FROM BBY_16_user WHERE userID = ?;', req.body.userID, function (error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        let user = results[0];
-        const userData = {
-            "userID": user.userID,
-            "fname": user.fname,
-            "lname": user.lname,
-            "displayName": user.displayName,
-            "email": user.email,
-            "password": user.password,
-            "admin": user.admin,
-            "avatar": displayPic
-        };
-        res.send(JSON.stringify(userData));
-    });
-});
-
-
 // Delete user from database on admin dashboard - the user must enter the correct display name to confirm the deletion,
 // they also cannot delete themselves which will also protect against deleting the last admin as well (as they can't delete
 // themselves anyway if they're the last admin in the database)
@@ -479,6 +490,7 @@ app.post("/getUserList", function (req, res) {
     }
 });
 
+
 // Checks the database for the current user's password to verify identity before making changes
 app.post("/verifyPw", function (req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -547,6 +559,22 @@ app.post("/editUserData", function (req, res) {
     }
 });
 
+// Updates the user info and checks if display name and email is already in use, before setting values 
+app.post("/editCoolzonesData", function (req, res) {
+    if (req.body.czname == "" || req.body.location == "" || req.body.startdate == "" || req.body.enddate == "" || req.body.description == "") {
+        res.send({ status: "fail", msg: "Fields must not be empty!" });
+    } else {
+        connection.query('UPDATE BBY_16_coolzones SET czname = ?, location = ?, startdate = ?, enddate = ?, description = ?, longitude = ?, latitude = ?, aircon = ?, freedrinks = ?, waterpark = ?, pool = ?, outdoors = ?, indoors = ?, wifi = ? WHERE hostid = ? AND eventid = ?;',
+            [req.body.czname, req.body.location, req.body.startdate, req.body.enddate, req.body.description, req.body.longitude, req.body.latitude, req.body.aircon, req.body.freedrinks, req.body.waterpark, req.body.pool, req.body.outdoors, req.body.indoors, req.body.wifi, req.session.userID, req.body.eventid],
+            function (error, results, fields) {
+                if (error) {
+                    console.log(error);
+                }
+                res.send({ status: "success", msg: "Changes saved" });
+            });
+    }
+});
+
 //Update all fields with the valid inputs after checks have been done
 function updateChanges(req, res, connection) {
     connection.query('UPDATE BBY_16_user SET fname = ?, lname = ?, displayName = ?, email = ?, password = ? WHERE userID = ?;', [req.body.fname, req.body.lname, req.body.displayName, req.body.email, req.body.password, req.body.userID],
@@ -586,7 +614,6 @@ app.post("/upload-avatar", avatarUpload.single("avatar"), function (req, res) {
 
 // Submits timeline post information into the database BBY_16_timeline, and also uploads any photos into the file system in img/timelinePhotos
 app.post("/submitTimelinePost", timelineUpload.array("photos"), function (req, res) {
-    console.log(req.body.title);
     let coolzoneID;
     if (req.body.coolzoneID == "") {
         coolzoneID = null;
@@ -618,7 +645,6 @@ app.get("/getTimelinePosts", function (req, res) {
     connection.query(`SELECT BBY_16_user.displayName, BBY_16_timeline.userID, BBY_16_timeline.postTime, BBY_16_timeline.title, BBY_16_timeline.coolzoneID, BBY_16_timeline.postID `
         + `FROM BBY_16_timeline INNER JOIN BBY_16_user ON BBY_16_timeline.userID = BBY_16_user.userID ORDER BY postTime DESC;`,
         function (error, results, fields) {
-            console.log(results);
             for (let i = 0; i < results.length; i++) {
                 let displayPic;
                 const avatarPath = "/img/userAvatars/avatar-user" + results[i].userID + ".png";
@@ -635,12 +661,39 @@ app.get("/getTimelinePosts", function (req, res) {
                     coolzoneID: results[i].coolzoneID,
                     postID: results[i].postID
                 };
-                console.log(timelineData[i]);
             }
-            console.log(timelineData);
             res.send(JSON.stringify(timelineData));
         });
+});
 
+// Sends the information necessary to display the my coolzones "preview" cards on the my coolzones page
+app.get("/getMyCoolzones", function (req, res) {
+    let coolzoneData = [];
+    connection.query(`SELECT * FROM bby_16_coolzones WHERE hostid = ?;`, [req.session.userID],
+        function (error, results, fields) {
+            for (let i = 0; i < results.length; i++) {
+                coolzoneData[i] = {
+                    eventid: results[i].eventid,
+                    hostid: results[i].hostid,
+                    czname: results[i].czname,
+                    location: results[i].location,
+                    startdate: results[i].startdate,
+                    enddate: results[i].enddate,
+                    description: results[i].description,
+                    longitude: results[i].longitude,
+                    latitude: results[i].latitude,
+                    aircon: results[i].aircon,
+                    freedrinks: results[i].freedrinks,
+                    waterpark: results[i].waterpark,
+                    pool: results[i].pool,
+                    outdoors: results[i].outdoors,
+                    indoors: results[i].indoors,
+                    wifi: results[i].wifi,
+                    image: results[i].pictures
+                };
+            }
+            res.send(JSON.stringify(coolzoneData));
+        });
 });
 
 // Loads the content page for each timeline post. It will load slightly different information, depending on if the post is associated with a
@@ -677,9 +730,9 @@ app.post("/loadPostContent", function (req, res) {
                     pool: results[0].pool,
                     outdoors: results[0].outdoors,
                     wifi: results[0].wifi,
-                    editPermissions: (results[0].userID == req.session.userID) ? true : false
+                    editPermissions: (results[0].userID == req.session.userID) ? true : false,
+                    admin: (req.session.admin > 0) ? true : false
                 };
-                console.log(postData);
                 res.send(JSON.stringify(postData));
             });
         // A regular timeline post not associated to any coolzone, it will only load post info
@@ -705,7 +758,8 @@ app.post("/loadPostContent", function (req, res) {
                     title: results[0].title,
                     description: results[0].description,
                     pictures: results[0].pictures,
-                    editPermissions: (results[0].userID == req.session.userID) ? true : false
+                    editPermissions: (results[0].userID == req.session.userID) ? true : false,
+                    admin: (req.session.admin > 0) ? true : false
                 };
                 res.send(JSON.stringify(postData));
             });
@@ -715,27 +769,8 @@ app.post("/loadPostContent", function (req, res) {
 // Uploads coolzone image to file system
 app.post('/upload-coolzone', coolzoneUpload.single("files"), function (req, res) {
     req.file.filename = req.file.originalname;
-    res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
-});
 
-//loads all coolzones within search radius
-app.post("/loadCoolzones", function (req, res) {
-    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
-        [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
-        function (error, results) {
-            if (error) {
-                console.log(error);
-            }
-            else if (results.length == 0) {
-                res.send({ status: "success", msg: "no coolzones" });
-            } else {
-                res.send({
-                    status: "success",
-                    msg: "yes coolzones",
-                    coolzones: results
-                });
-            }
-        });
+    res.send({ "status": "success", "path": "/img/coolzones/coolzone-user" + req.session.userID + ".png" });
 });
 
 // Allows admin user to delete avatar from file system 
@@ -755,7 +790,33 @@ app.post("/deleteUserAvatar", function (req, res) {
 
 //loads all coolzones within search radius
 app.post("/loadCoolzones", function (req, res) {
-    connection.query('SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?',
+
+
+    // BBY_16_user.displayName, BBY_16_coolzones.aircon, BBY_16_coolzones.freedrinks, BBY_16_coolzones.waterpark, BBY_16_coolzones.pool, BBY_16_coolzones.outdoors, BBY_16_coolzones.wifi
+    let selectStatement = 'SELECT * FROM bby_16_coolzones WHERE longitude BETWEEN ? AND ? AND latitude BETWEEN ? AND ?';
+    if (req.body.aircon) {
+        selectStatement = selectStatement + " AND aircon = 1";
+    }
+    if (req.body.freeWater) {
+        selectStatement = selectStatement + " AND freedrinks = 1";
+    }
+    if (req.body.swimmingPool) {
+        selectStatement = selectStatement + " AND waterpark = 1";
+    }
+    if (req.body.waterPark) {
+        selectStatement = selectStatement + " AND pool = 1";
+    }
+    if (req.body.outdoor) {
+        selectStatement = selectStatement + " AND outdoors = 1";
+    }
+    if (req.body.indoor) {
+        selectStatement = selectStatement + " AND indoors = 1";
+    }
+    if (req.body.freeWifi) {
+        selectStatement = selectStatement + " AND wifi = 1";
+    }
+
+    connection.query(selectStatement,
         [req.body.minLng, req.body.maxLng, req.body.minLat, req.body.maxLat],
         function (error, results) {
             if (error) {
@@ -864,9 +925,6 @@ app.post("/deleteTimelinePost", function (req, res) {
                 if (fs.existsSync(path)) {
                     fs.unlink(path, err => {
                         if (err) { console.log(err); }
-                        else {
-                            console.log("photo deleted");
-                        }
                     });
                 }
             }
@@ -881,7 +939,6 @@ app.post("/deleteTimelinePost", function (req, res) {
 });
 
 app.post("/getCoolzoneSuggestions", (req, res) => {
-
     connection.query(`SELECT EVENTID, CZNAME, LOCATION FROM BBY_16_COOLZONES WHERE CZNAME LIKE "%${req.body.query}%" OR LOCATION LIKE "%${req.body.query}%";`, (error, results, fields) => {
         if (error) {
             console.log(error);
@@ -890,7 +947,6 @@ app.post("/getCoolzoneSuggestions", (req, res) => {
         }
     })
 })
-
 
 //Run server on port 8000
 let port = 8000;

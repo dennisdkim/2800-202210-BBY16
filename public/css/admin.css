@@ -14,6 +14,10 @@ body {
     height: 100vh;
     min-height: 500px;
     overflow: hidden;
+    background-image: url("/img/background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
 }
 
 /* ----main content window----- */
@@ -21,18 +25,18 @@ body {
     min-height: 500px;
     height: calc(100vh - 180px);
     width: 100%;
-    background-color: lightgrey;
     display: flex;
     flex-direction:column;
     justify-content: center;
     align-items: center;
+    background-color: rgba(255,255,255,0.5);
 }
 
 #greeting-message {
     color: #69869D;
     font-size: 2em;
     font-weight: 200;
-    margin-bottom: min(20%, 200px);
+    margin-bottom: 100px;
 }
 
 #links {

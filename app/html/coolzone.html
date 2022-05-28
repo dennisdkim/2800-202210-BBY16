@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Host a Coolzone</title>
-  <link rel="stylesheet" type="text/css" href="/css/coolzone.css">
+  <link rel="stylesheet" type="text/css" href="/css/create-coolzone.css">
   <link rel="icon" type="image/x-icon" href="/img/icons/favicon.ico">
   <link rel="stylesheet"
     href="https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
@@ -16,112 +16,116 @@
   <div id="navbar"></div>
 
   <div class="container">
-
-    <div class="topContainer" >
-      <div class="containerName">
-        <span>Coolzone Information</span>
-      </div>
-      <div class="coolzoneInfo">
-        <div class="labelContainer">
-          <label id="czName">Coolzone Name: </label>
-          <label id="loc">Location: </label>
-          <label id="date">Start Date: </label>
-          <label id="enddate">End Date: </label>
+    <div id="coolzone-form">
+      <div class="topContainer">
+        <div class="containerName">
+          <span>Coolzone Information</span>
         </div>
-        <div class="inputContainer">
-          <input type="text" id="coolzoneName" name="coolzoneName">
-          <input type="text" id="location" name="location">
-          <input type="datetime-local" id="dateTag" name="dateTag">
-          <input type="datetime-local" id="enddateTag" name="enddateTag">
+        <div class="coolzoneInfo">
+          <div class="input-field">
+            <label id="czName">Coolzone Name: </label>
+            <input type="text" id="coolzoneName" name="coolzoneName" maxlength="30">
+          </div>
+          <div class="input-field">
+            <label id="loc">Location: </label>
+            <input type="text" id="location" name="location" maxlength="100">
+          </div>
+          <div class="input-field">
+            <label id="date">Start Date: </label>
+            <input type="datetime-local" id="dateTag" name="dateTag">
+          </div>
+          <div class="input-field">
+            <label id="enddate">End Date: </label>
+            <input type="datetime-local" id="enddateTag" name="enddateTag">
+          </div>
         </div>
       </div>
+
+      <div class="descriptionContainer">
+        <div class="containerName">
+          <span>Description</span>
+        </div>
+        <div class="descInputContainer">
+          <textarea id="description" name="description" rows="10" cols="50"
+            placeholder="Enter a small description about the CoolZone!" maxlength="200"></textarea>
+        </div>
+      </div>
+
+      <div class="amenitiesContainer">
+        <div class="containerName">
+          <span>Amenities</span>
+        </div>
+        <div id="amenities">
+          <input type="checkbox" id="aircon" />
+          <label for="aircon">Air Conditioning
+            <span class="material-symbols-outlined">
+              ac_unit
+            </span>
+          </label>
+          <input type="checkbox" id="freeWater" />
+          <label for="freeWater">Free Water
+            <span class="material-symbols-outlined">
+              water_drop
+            </span>
+          </label>
+          <input type="checkbox" id="swimmingPool" />
+          <label for="swimmingPool">Swimming Pool
+            <span class="material-symbols-outlined">
+              pool
+
+            </span>
+          </label>
+          <input type="checkbox" id="waterParks" />
+          <label for="waterParks">Water Park
+            <span class="material-symbols-outlined">
+              sprinkler
+            </span>
+          </label>
+          <input type="checkbox" id="outdoor" />
+          <label for="outdoor">Outdoor
+            <span class="material-symbols-outlined">
+              location_away
+            </span></label>
+          <input type="checkbox" id="indoor" />
+          <label for="indoor">Indoor
+            <span class="material-symbols-outlined">
+              location_home
+            </span></label>
+          <input type="checkbox" id="freeWifi" />
+          <label for="freeWifi">Free Wi-Fi
+            <span class="material-symbols-outlined">
+              wifi
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div class="picContainer">
+        <div class="containerName">
+          <span>Upload An Image</span>
+        </div>
+        <form id="upload-images-form">
+          <input id="coolzone-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" />
+        </form>
+      </div>
+
+      <div class="botContainer">
+        <span id="errorMsg" class="errors"></span>
+        <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
+      </div>
+
     </div>
 
-    <div class="descriptionContainer">
-      <div class="containerName">
-        <span>Description</span>
-      </div>
-      <div class="descInputContainer">
-        <textarea id="description" name="description" rows="10" cols="50"
-          placeholder="Enter a small description about the CoolZone!"></textarea>
-      </div>
-    </div>
-
-    <div class="amenitiesContainer">
-      <div class="containerName">
-        <span>Amenities</span>
-      </div>
-      <div id="amenities">
-        <input type="checkbox" id="aircon" />
-        <label for="aircon">Air Conditioning
-          <span class="material-symbols-outlined">
-            ac_unit
-          </span>
-        </label>
-        <input type="checkbox" id="freeWater" />
-        <label for="freeWater">Free Water
-          <span class="material-symbols-outlined">
-            water_drop
-          </span>
-        </label>
-        <input type="checkbox" id="swimmingPool" />
-        <label for="swimmingPool">Swimming Pool
-          <span class="material-symbols-outlined">
-            pool
-
-          </span>
-        </label>
-        <input type="checkbox" id="waterParks" />
-        <label for="waterParks">Water Park
-          <span class="material-symbols-outlined">
-            sprinkler
-          </span>
-        </label>
-        <input type="checkbox" id="outdoor" />
-        <label for="outdoor">Outdoor
-          <span class="material-symbols-outlined">
-            location_away
-          </span></label>
-        <input type="checkbox" id="indoor" />
-        <label for="indoor">Indoor
-          <span class="material-symbols-outlined">
-            location_home
-          </span></label>
-        <input type="checkbox" id="freeWifi" />
-        <label for="freeWifi">Free Wi-Fi
-          <span class="material-symbols-outlined">
-            wifi
-          </span>
-        </label>
-      </div>
-    </div>
-
-    <div class="picContainer">
-      <div class="containerName">
-        <span>Upload An Image</span>
-      </div>
-      <form id="upload-images-form">
-        <input id="coolzone-upload" type="file" value="Upload Image" accept="image/png, image/gif, image/jpeg" />
-        <input id="submit" type="submit" value="Submit" />
-      </form>
-    </div>
-
-    <div class="botContainer">
-      <span id="errorMsg" class="errors"></span>
-      <input type="button" id="createCoolzone" name="createCoolzone" value="Create Coolzone" />
-    </div>
-
+    
   </div>
 
   <div id="footer"></div>
 
   <script src="/js/nav_footer_loader.js"></script>
   <script src="/js/coolzone.js"></script>
-  <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOqbqaS0oBq9r9N35OvJiD20aEvr__grI&libraries=places&callback=initGoogle"
-    ></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOqbqaS0oBq9r9N35OvJiD20aEvr__grI&libraries=places&callback=initGoogle">
+    </script>
 </body>
 
 </html>

@@ -1,3 +1,10 @@
+/*
+Notes about profile.js
+This file contains all the javascript for profile.html. 
+Functions retrieves existing user info, and inserts it 
+into the edit-profile form.
+*/
+
 'use strict';
 // Fields //
 var currentUID;
@@ -121,17 +128,17 @@ window.addEventListener("load", loadProfileData);
 // Saves new data onto the database when the "save button" is clicked and passwords match 
 saveButton.addEventListener("click", function (e) {
   verifyPassword({
-    password1: document.getElementById("password").value,
-    password2: document.getElementById("passwordVerify").value
+    password1: document.getElementById("password").value.replace(/\s+/g, ''),
+    password2: document.getElementById("passwordVerify").value.replace(/\s+/g, '')
   }).then((verified) => {
     if (verified) {
       let changes = {
         userID: currentUID,
-        fname: document.getElementById("fname").value,
-        lname: document.getElementById("lname").value,
-        displayName: document.getElementById("displayName").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("newPassword").value
+        fname: document.getElementById("fname").value.replace(/\s+/g, ''),
+        lname: document.getElementById("lname").value.replace(/\s+/g, ''),
+        displayName: document.getElementById("displayName").value.replace(/\s+/g, ''),
+        email: document.getElementById("email").value.replace(/\s+/g, ''),
+        password: document.getElementById("newPassword").value.replace(/\s+/g, '')
       };
       submitChanges(changes);
       if (document.getElementById("avatar-upload").files.length == 1) {
